@@ -99,27 +99,27 @@
             </button>
           </div>
 
-          <!-- Если есть товары для отображения -->
           <template v-else-if="filteredProducts.length > 0">
-            <!-- Информация о пагинации -->
             <div class="pagination-info">
               <div class="pagination-stats">
                 Показано {{ startItem }}-{{ endItem }} из {{ filteredProducts.length }} товаров
               </div>
             </div>
 
-            <!-- Компонент CardCatalog -->
+            <!-- ✅ ВАЖНО: передаем index -->
             <div class="products-grid">
               <CardCatalog
-                v-for="product in paginatedProducts"
+                v-for="(product, i) in paginatedProducts"
                 :key="product.id"
                 :product="product"
+                :index="pageStartIndex + i"
+                :eager-count="8"
+                :high-priority-count="2"
                 @details-click="openModal"
                 @card-click="openModal"
               />
             </div>
 
-            <!-- Пагинация -->
             <div v-if="totalPages > 1" class="pagination">
               <button
                 :disabled="currentPage === 1"
@@ -157,7 +157,6 @@
             </div>
           </template>
 
-          <!-- Сообщение если нет товаров в категории -->
           <div v-else class="no-products">
             <p>Товары в этой категории скоро появятся</p>
           </div>
@@ -165,7 +164,6 @@
       </div>
     </main>
 
-    <!-- Модальное окно с размерами и ценами -->
     <ModalPriceSizes
       v-if="showModal"
       :product="selectedProduct"
@@ -185,14 +183,11 @@ import CardCatalog from '@/components/CardCatalog.vue'
 import ModalPriceSizes from '@/components/ModalPriceSizes.vue'
 import { useProducts } from '@/composables/useProducts'
 
-// Константы для пагинации
 const ITEMS_PER_PAGE = 21
 
-// Router
 const route = useRoute()
 const router = useRouter()
 
-// Products composable
 const {
   productsData,
   loading,
@@ -204,7 +199,6 @@ const {
 
 const categories = getAllCategories()
 
-// Парсим параметры из URL
 const parseUrlParams = () => {
   const params = route.query
   return {
@@ -224,14 +218,14 @@ const showModal = ref(false)
 const selectedProduct = ref(null)
 const isChangingPage = ref(false)
 
-// Обновление URL (только query)
+/** ✅ Индекс начала текущей страницы, чтобы приоритеты картинок работали нормально */
+const pageStartIndex = computed(() => (currentPage.value - 1) * ITEMS_PER_PAGE)
+
 const updateUrl = () => {
   const query = {}
-
   if (activeFilter.value !== 'all') query.filter = activeFilter.value
   if (currentPage.value !== 1) query.page = String(currentPage.value)
   if (searchQuery.value) query.search = searchQuery.value
-
   router.replace({ query, hash: route.hash })
 }
 
@@ -239,19 +233,16 @@ watch(activeFilter, updateUrl)
 watch(currentPage, updateUrl)
 watch(searchQuery, updateUrl)
 
-// если меняем фильтр/поиск — страницу сбрасываем
 watch([activeFilter, searchQuery], () => {
   currentPage.value = 1
 })
 
-// безопасный поиск
 const safeSearch = (products, query) => {
   if (!query || query.trim() === '') return products
   const normalizedQuery = query.toLowerCase().trim()
 
   return products.filter(product => {
     if (!product || typeof product !== 'object') return false
-
     const name = String(product.name || '').toLowerCase()
     const description = String(product.description || '').toLowerCase()
     const category = String(product.category || '').toLowerCase()
@@ -285,7 +276,6 @@ watch(totalPages, (newTotal) => {
   if (currentPage.value > newTotal && newTotal > 0) currentPage.value = newTotal
 })
 
-// пагинация номера
 const visiblePages = computed(() => {
   const maxVisible = 5
   const pages = []
@@ -304,7 +294,6 @@ const visiblePages = computed(() => {
 
 const showEllipsis = computed(() => totalPages.value > visiblePages.value.length)
 
-// debounce search
 let searchTimeout = null
 const handleSearch = () => {
   clearTimeout(searchTimeout)
@@ -337,7 +326,6 @@ const changePage = (page) => {
   })
 }
 
-// modal
 const openModal = (product) => {
   selectedProduct.value = product
   showModal.value = true
@@ -361,7 +349,6 @@ const resetAllFilters = () => {
   router.replace({ name: route.name })
 }
 
-// синхронизация при "назад/вперед"
 watch(() => route.query, () => {
   const newParams = parseUrlParams()
   activeFilter.value = newParams.filter
@@ -378,6 +365,9 @@ onUnmounted(() => {
   clearTimeout(searchTimeout)
 })
 </script>
+
+<!-- style оставь как у тебя -->
+
 
 <style scoped>
 /* ТВОЙ CSS ОСТАВЛЯЮ 1в1 — без изменений */

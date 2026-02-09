@@ -14,7 +14,7 @@
           Сбросить все фильтры
         </button>
 
-        <!-- Поле поиска -->
+        <!-- ПОИСК -->
         <div class="search-container">
           <div class="search-box">
             <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20">
@@ -24,7 +24,6 @@
               />
             </svg>
 
-            <!-- ✅ ВАЖНО: v-model теперь на searchInput -->
             <input
               v-model="searchInput"
               type="text"
@@ -33,13 +32,11 @@
               @keydown.enter.prevent="applySearch"
             />
 
-            <!-- очистка поля ввода -->
             <button
               v-if="searchInput"
               @click="clearSearchInput"
               class="clear-search-btn"
               type="button"
-              aria-label="Очистить"
             >
               <svg viewBox="0 0 24 24" width="18" height="18">
                 <path
@@ -50,18 +47,17 @@
             </button>
           </div>
 
-          <!-- ✅ Кнопка "Найти" + инфо -->
           <div class="search-info" v-if="searchInput || appliedSearch">
-            <span v-if="appliedSearch">Найдено товаров: {{ filteredProducts.length }}</span>
+            <span v-if="appliedSearch">
+              Найдено товаров: {{ filteredProducts.length }}
+            </span>
             <span v-else>Введите запрос и нажмите Enter</span>
 
-            <div style="display:flex; gap:0.5rem; align-items:center;">
+            <div style="display:flex; gap:.5rem;">
               <button
                 class="clear-all-btn"
-                type="button"
                 @click="applySearch"
                 :disabled="!searchInput.trim()"
-                title="Применить поиск"
               >
                 Найти
               </button>
@@ -69,9 +65,7 @@
               <button
                 v-if="appliedSearch"
                 class="clear-all-btn"
-                type="button"
                 @click="clearAppliedSearch"
-                title="Очистить примененный поиск"
               >
                 Очистить поиск
               </button>
@@ -79,66 +73,52 @@
           </div>
         </div>
 
-        <!-- Загрузка данных -->
+        <!-- КАТЕГОРИИ -->
+        <div class="category-filters">
+          <button
+            v-for="category in categories"
+            :key="category.id"
+            :class="['filter-btn', { active: activeFilter === category.id }]"
+            @click="setActiveFilter(category.id)"
+          >
+            {{ category.name }}
+          </button>
+        </div>
+
+        <!-- КОНТЕНТ -->
         <div v-if="loading" class="loading">
           <div class="spinner"></div>
           <p>Загрузка каталога...</p>
         </div>
 
-        <!-- Ошибка загрузки -->
         <div v-else-if="error" class="error">
           <p>Ошибка загрузки каталога: {{ error }}</p>
-          <button @click="reloadProducts" class="retry-btn">Попробовать снова</button>
         </div>
 
-        <!-- Основной контент -->
         <div v-else>
-          <!-- Фильтры по категориям -->
-          <div class="category-filters">
-            <button
-              v-for="category in categories"
-              :key="category.id"
-              :class="['filter-btn', { active: activeFilter === category.id }]"
-              @click="setActiveFilter(category.id)"
-            >
-              {{ category.name }}
-            </button>
-          </div>
-
-          <!-- Сообщение при отсутствии результатов -->
-          <div v-if="appliedSearch && filteredProducts.length === 0" class="no-results">
-            <svg class="no-results-icon" viewBox="0 0 24 24" width="48" height="48">
-              <path
-                fill="#6b7280"
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
-              />
-            </svg>
-            <p class="no-results-title">Товары не найдены</p>
-            <p class="no-results-text">
-              По запросу "{{ appliedSearch }}" ничего не найдено.
-              <br />Попробуйте изменить запрос или сбросить фильтры.
-            </p>
-            <button @click="clearAppliedSearch" class="back-to-catalog-btn">
-              Вернуться к каталогу
-            </button>
-          </div>
-
-          <!-- Если есть товары -->
-          <template v-else-if="filteredProducts.length > 0">
+          <template v-if="filteredProducts.length > 0">
             <div class="pagination-info">
               <div class="pagination-stats">
-                Показано {{ startItem }}-{{ endItem }} из {{ filteredProducts.length }} товаров
+                Показано {{ startItem }}–{{ endItem }} из {{ filteredProducts.length }} товаров
               </div>
             </div>
 
-            <div class="products-grid">
+            <!-- ФУРНИТУРА → ТАБЛИЦА -->
+            <FurnitureTable
+              v-if="activeFilter === 'furniture'"
+              :items="paginatedProducts"
+            />
+
+            <!-- ОСТАЛЬНЫЕ → КАРТОЧКИ -->
+            <div
+              v-else
+              class="products-grid"
+            >
               <CardCatalog
                 v-for="(product, i) in paginatedProducts"
                 :key="product.id"
                 :product="product"
                 :index="pageStartIndex + i"
-                :eager-count="8"
-                :high-priority-count="2"
                 @details-click="openModal"
                 @card-click="openModal"
               />
@@ -148,11 +128,8 @@
               <button
                 :disabled="currentPage === 1"
                 @click="changePage(currentPage - 1)"
-                class="pagination-btn pagination-prev"
+                class="pagination-btn"
               >
-                <svg viewBox="0 0 24 24" width="16" height="16">
-                  <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                </svg>
                 Назад
               </button>
 
@@ -165,121 +142,107 @@
                 >
                   {{ page }}
                 </button>
-                <span v-if="showEllipsis" class="pagination-ellipsis">...</span>
               </div>
 
               <button
                 :disabled="currentPage === totalPages"
                 @click="changePage(currentPage + 1)"
-                class="pagination-btn pagination-next"
+                class="pagination-btn"
               >
-                Вперед
-                <svg viewBox="0 0 24 24" width="16" height="16">
-                  <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                </svg>
+                Вперёд
               </button>
             </div>
           </template>
 
-          <!-- Если нет товаров -->
           <div v-else class="no-products">
-            <p>Товары в этой категории скоро появятся</p>
+            <p>Товары не найдены</p>
           </div>
         </div>
       </div>
     </main>
-
-    <ModalPriceSizes
-      v-if="showModal"
-      :product="selectedProduct"
-      @close="closeModal"
-    />
 
     <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed } from 'vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import CardCatalog from '@/components/CardCatalog.vue'
-import ModalPriceSizes from '@/components/ModalPriceSizes.vue'
+import FurnitureTable from '@/components/FurnitureTable.vue'
 import { useProducts } from '@/composables/useProducts'
+import furnitureData from '@/data/furniture.json'
 
 const ITEMS_PER_PAGE = 21
-
-const route = useRoute()
-const router = useRouter()
 
 const {
   loading,
   error,
-  getFilteredProducts: getFilteredProductsFromComposable,
-  getAllCategories,
-  reloadProducts
+  getFilteredProducts,
+  getAllCategories
 } = useProducts()
 
 const categories = getAllCategories()
 
-// --- URL params -> state
-const parseUrlParams = () => {
-  const params = route.query
-  return {
-    filter: params.filter && categories.some(c => c.id === params.filter) ? params.filter : 'all',
-    page: params.page && parseInt(params.page) > 0 ? parseInt(params.page) : 1,
-    search: params.search ? String(params.search) : ''
+const activeFilter = ref('all')
+const currentPage = ref(1)
+
+const searchInput = ref('')
+const appliedSearch = ref('')
+
+const pageStartIndex = computed(() =>
+  (currentPage.value - 1) * ITEMS_PER_PAGE
+)
+
+const filteredProducts = computed(() => {
+  let items = []
+
+  if (activeFilter.value === 'furniture') {
+    items = furnitureData
+  } else {
+    items = getFilteredProducts(activeFilter.value)
   }
-}
 
-const urlParams = parseUrlParams()
+  if (appliedSearch.value) {
+    const q = appliedSearch.value.toLowerCase().trim()
 
-const activeFilter = ref(urlParams.filter)
-const currentPage = ref(urlParams.page)
+    items = items.filter(item =>
+      String(item.name || '').toLowerCase().includes(q) ||
+      String(item.description || '').toLowerCase().includes(q) ||
+      String(item.group || '').toLowerCase().includes(q)
+    )
+  }
 
-/**
- * ✅ Разделяем:
- * searchInput — что печатают
- * appliedSearch — что реально фильтрует
- */
-const searchInput = ref(urlParams.search)
-const appliedSearch = ref(urlParams.search)
-
-const showModal = ref(false)
-const selectedProduct = ref(null)
-const isChangingPage = ref(false)
-
-const pageStartIndex = computed(() => (currentPage.value - 1) * ITEMS_PER_PAGE)
-
-// --- URL builder (search берём из appliedSearch)
-function buildQuery() {
-  const query = {}
-  if (activeFilter.value !== 'all') query.filter = activeFilter.value
-  if (currentPage.value !== 1) query.page = String(currentPage.value)
-  if (appliedSearch.value) query.search = appliedSearch.value
-  return query
-}
-
-function updateUrl() {
-  router.replace({ query: buildQuery(), hash: route.hash })
-}
-
-// filter/page — обновляем сразу
-watch(activeFilter, () => updateUrl())
-watch(currentPage, () => updateUrl())
-
-// если меняем фильтр — сбрасываем страницу
-watch(activeFilter, () => {
-  currentPage.value = 1
+  return items
 })
 
-// --- search actions
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE
+  return filteredProducts.value.slice(start, start + ITEMS_PER_PAGE)
+})
+
+const totalPages = computed(() =>
+  Math.ceil(filteredProducts.value.length / ITEMS_PER_PAGE)
+)
+
+const startItem = computed(() =>
+  (currentPage.value - 1) * ITEMS_PER_PAGE + 1
+)
+
+const endItem = computed(() =>
+  Math.min(currentPage.value * ITEMS_PER_PAGE, filteredProducts.value.length)
+)
+
+const visiblePages = computed(() => {
+  const pages = []
+  for (let i = 1; i <= totalPages.value; i++) pages.push(i)
+  return pages
+})
+
 const applySearch = () => {
-  const next = searchInput.value.trim()
-  appliedSearch.value = next
+  appliedSearch.value = searchInput.value.trim()
   currentPage.value = 1
-  updateUrl()
 }
 
 const clearSearchInput = () => {
@@ -290,143 +253,37 @@ const clearAppliedSearch = () => {
   searchInput.value = ''
   appliedSearch.value = ''
   currentPage.value = 1
-  updateUrl()
 }
 
-// --- filtering
-const safeSearch = (products, query) => {
-  if (!query || query.trim() === '') return products
-  const normalizedQuery = query.toLowerCase().trim()
-
-  return products.filter(product => {
-    if (!product || typeof product !== 'object') return false
-    const name = String(product.name || '').toLowerCase()
-    const description = String(product.description || '').toLowerCase()
-    const category = String(product.category || '').toLowerCase()
-
-    return (
-      name.includes(normalizedQuery) ||
-      description.includes(normalizedQuery) ||
-      category.includes(normalizedQuery)
-    )
-  })
-}
-
-const filteredProducts = computed(() => {
-  let products = getFilteredProductsFromComposable(activeFilter.value)
-  if (appliedSearch.value) products = safeSearch(products, appliedSearch.value)
-  return products
-})
-
-const paginatedProducts = computed(() => {
-  const startIndex = (currentPage.value - 1) * ITEMS_PER_PAGE
-  return filteredProducts.value.slice(startIndex, startIndex + ITEMS_PER_PAGE)
-})
-
-const totalPages = computed(() => Math.ceil(filteredProducts.value.length / ITEMS_PER_PAGE))
-
-const startItem = computed(() => (currentPage.value - 1) * ITEMS_PER_PAGE + 1)
-const endItem = computed(() => {
-  const end = currentPage.value * ITEMS_PER_PAGE
-  return end > filteredProducts.value.length ? filteredProducts.value.length : end
-})
-
-watch(totalPages, (newTotal) => {
-  if (currentPage.value > newTotal && newTotal > 0) currentPage.value = newTotal
-})
-
-const visiblePages = computed(() => {
-  const maxVisible = 5
-  const pages = []
-  if (totalPages.value <= maxVisible) {
-    for (let i = 1; i <= totalPages.value; i++) pages.push(i)
-    return pages
-  }
-
-  let start = Math.max(1, currentPage.value - 2)
-  let end = Math.min(totalPages.value, start + maxVisible - 1)
-  if (end - start + 1 < maxVisible) start = Math.max(1, end - maxVisible + 1)
-
-  for (let i = start; i <= end; i++) pages.push(i)
-  return pages
-})
-
-const showEllipsis = computed(() => totalPages.value > visiblePages.value.length)
-
-// --- UI handlers
-const setActiveFilter = (categoryId) => {
-  activeFilter.value = categoryId
-  // примененный поиск сбрасываем, иначе пользователь не поймёт, почему “ничего нет”
+const setActiveFilter = (id) => {
+  activeFilter.value = id
   searchInput.value = ''
   appliedSearch.value = ''
   currentPage.value = 1
-  updateUrl()
 }
 
 const changePage = (page) => {
-  if (isChangingPage.value) return
   if (page < 1 || page > totalPages.value) return
-
-  isChangingPage.value = true
   currentPage.value = page
-
-  requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    setTimeout(() => (isChangingPage.value = false), 400)
-  })
-}
-
-// modal
-const openModal = (product) => {
-  selectedProduct.value = product
-  showModal.value = true
-  document.body.style.overflow = 'hidden'
-}
-
-const closeModal = () => {
-  showModal.value = false
-  selectedProduct.value = null
-  document.body.style.overflow = 'auto'
-}
-
-const handleKeyDown = (event) => {
-  if (event.key === 'Escape' && showModal.value) closeModal()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const resetAllFilters = () => {
   activeFilter.value = 'all'
-  currentPage.value = 1
   searchInput.value = ''
   appliedSearch.value = ''
-  router.replace({ name: route.name })
+  currentPage.value = 1
 }
 
-// назад/вперед: подтягиваем URL -> состояние (и input, и applied)
-watch(() => route.query, () => {
-  const newParams = parseUrlParams()
-
-  activeFilter.value = newParams.filter
-  currentPage.value = newParams.page
-
-  searchInput.value = newParams.search
-  appliedSearch.value = newParams.search
-})
-
-onMounted(() => {
-  document.addEventListener('keydown', handleKeyDown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeyDown)
-})
+const openModal = () => {}
 </script>
-ы
-<!-- style оставь как у тебя -->
+
 
 <style scoped>
-/* ТВОЙ CSS ОСТАВЛЯЮ 1в1 — без изменений */
-  
-/* ТВОЙ CSS (как был) + sticky + улучшенный адаптив */
+
+.furniture-table-container {
+  grid-column: 1 / -1;
+}
 
 .page-header {
   display: flex;

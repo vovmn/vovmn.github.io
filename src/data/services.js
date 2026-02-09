@@ -8,15 +8,13 @@ export const serviceSections = [
       { id: 'euro-cut-countertop', name: 'Еврозапил столешницы', description: 'Точный еврозапил для стыковки столешницы.', price: '1 900 руб/шт' },
       { id: 'edging-countertop-plastic', name: 'Кромление столешницы (пластик)', description: 'Кромление столешницы пластиком по торцам.', price: '250 руб/м' },
       { id: 'edging-countertop-nonstd-pvc', name: 'Кромление столешницы и нестандартных толщин (ПВХ)', description: 'Кромление столешниц и нестандартных толщин ПВХ-кромкой.', price: '85 руб/м' },
-      { id: 'cut-countertop-client-material-3', name: 'Раскрой столешницы (3) — материал клиента', description: 'Раскрой столешницы из материала клиента.', price: '350 руб/шт' },
       { id: 'cut-countertop-26-3', name: 'Раскрой столешницы 26 мм (3)', description: 'Раскрой столешницы толщиной 26 мм.', price: '300 руб/шт' },
       { id: 'cut-countertop-38-3', name: 'Раскрой столешницы 38 мм (3)', description: 'Раскрой столешницы толщиной 38 мм.', price: '350 руб/шт' },
       { id: 'cut-countertop-38-42', name: 'Раскрой столешницы 38 мм (4,2)', description: 'Раскрой столешницы 38 мм (позиция 4,2).', price: '400 руб/шт' },
-      { id: 'saw-countertop', name: 'Рез столешницы', description: 'Рез/распил столешницы.', price: '300 руб/шт' },
-      { id: 'saw-countertop-client', name: 'Рез столешницы клиента', description: 'Рез/распил столешницы из материала клиента.', price: '120 руб/шт' }
+      { id: 'saw-countertop', name: 'Рез столешницы', description: 'Рез/распил столешницы.', price: '300 руб/шт' }
     ]
-  },
-
+      },
+    
   {
     id: 'edging',
     title: 'Кромление',
@@ -73,7 +71,6 @@ export const serviceSections = [
       { id: 'nonstandard-thickness-glue', name: 'Изготовление нестандартных толщин (склейка)', description: 'Склейка для получения нестандартной толщины детали.', price: '450 руб/м²' },
       { id: 'oval-making', name: 'Изготовление овала', description: 'Фигурная обработка: овал по заданному размеру.', price: '600 руб/шт' },
       { id: 'radius-making', name: 'Изготовление радиуса', description: 'Скругление (радиус) по шаблону/размеру.', price: '400 руб/шт' },
-      { id: 'radius-with-edging', name: 'Изготовление радиуса с кромлением', description: 'Скругление + кромление для аккуратного края.', price: '350 руб/шт' },
       { id: 'custom-order-ready', name: 'Индивидуальный заказ (готовое изделие)', description: 'Изготовление изделия по индивидуальному ТЗ.', price: '1 550 руб/шт' }
     ]
   }

@@ -29,7 +29,7 @@
     </nav>
 
     <div class="header-right">
-      <a href="https://2gis.ru" target="_blank" class="gis-link">
+      <a href="https://go.2gis.com/v3vLE" target="_blank" class="gis-link">
         <svg class="gis-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
@@ -44,7 +44,7 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <style scoped>
-/* ----------  контейнер  ---------- */
+
 .header {
   display: flex;
   align-items: center;
@@ -56,9 +56,7 @@ import { RouterLink } from 'vue-router'
   letter-spacing: 0.02em;
 }
 
-/* ----------  логотип  ---------- */
-/* ---------- логотип ---------- */
-/* ---------- логотип ---------- */
+
 
 .logo {
   flex-shrink: 0;

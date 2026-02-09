@@ -101,12 +101,12 @@
           <div class="address-section">
             <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; margin-right: 8px; vertical-align: middle;">
               <path d="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z"/>
-            </svg> Офис: ул. Блинова, д. 52А</h3>
+            </svg> Офис: ул. Блинова, д. 52Б</h3>
             <div class="yandex-map">
               <!-- Яндекс.Карта для адреса ул. Блинова, 52Б -->
               <div id="map-blinova" style="width: 100%; height: 400px;"></div>
               <div class="map-info">
-                <p><strong>Адрес:</strong> г. Саратов, ул. Блинова, д. 52А</p>
+                <p><strong>Адрес:</strong> г. Саратов, ул. Блинова, д. 52Б</p>
                 <a href="https://yandex.com/maps/-/CPA57M81" 
                    target="_blank" 
                    class="map-link">

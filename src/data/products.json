@@ -1924,6 +1924,13 @@
           "height": 600,
           "depth": 38,
           "price": 4200
+        },
+        {
+          "id": 7001,
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },
@@ -2394,6 +2401,13 @@
           "height": 600,
           "depth": 38,
           "price": 4200
+        },
+        {
+          "id": 7002,
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },
@@ -2449,6 +2463,13 @@
           "height": 600,
           "depth": 38,
           "price": 4200
+        },
+        {
+          "id": 7003,
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },
@@ -2473,6 +2494,13 @@
           "height": 600,
           "depth": 38,
           "price": 4200
+        },
+        {
+          "id": 7004,
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },
@@ -2734,6 +2762,13 @@
           "height": 600,
           "depth": 38,
           "price": 6400
+        },
+        {
+          "id": 7005,
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },
@@ -3184,6 +3219,13 @@
           "height": 600,
           "depth": 38,
           "price": 6400
+        },
+        {
+          "id": 7006,
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },
@@ -3349,6 +3391,12 @@
           "height": 600,
           "depth": 38,
           "price": 6400
+        },
+        {
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },
@@ -4462,6 +4510,13 @@
           "height": 600,
           "depth": 38,
           "price": 5400
+        },
+        {
+          "id": 7008,
+          "width": 3000,
+          "height": 800,
+          "depth": 38,
+          "price": 7300
         }
       ]
     },

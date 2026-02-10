@@ -6,6 +6,7 @@
       <div class="container">
         <h1 class="page-title">Каталог продукции</h1>
 
+        <!-- Сброс -->
         <button
           v-if="activeFilter !== 'all' || appliedSearch || currentPage !== 1"
           @click="resetAllFilters"
@@ -20,7 +21,10 @@
             <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20">
               <path
                 fill="currentColor"
-                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5
+                   6.5 6.5 0 1 0 9.5 16
+                   c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99
+                   L20.49 19l-4.99-5z"
               />
             </svg>
 
@@ -38,12 +42,7 @@
               class="clear-search-btn"
               type="button"
             >
-              <svg viewBox="0 0 24 24" width="18" height="18">
-                <path
-                  fill="currentColor"
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-                />
-              </svg>
+              ✕
             </button>
           </div>
 
@@ -61,7 +60,6 @@
               >
                 Найти
               </button>
-
               <button
                 v-if="appliedSearch"
                 class="clear-all-btn"
@@ -85,81 +83,86 @@
           </button>
         </div>
 
-        <!-- КОНТЕНТ -->
+        <!-- ЗАГРУЗКА -->
         <div v-if="loading" class="loading">
           <div class="spinner"></div>
-          <p>Загрузка каталога...</p>
+          <p>Загрузка каталога…</p>
         </div>
 
         <div v-else-if="error" class="error">
           <p>Ошибка загрузки каталога: {{ error }}</p>
         </div>
 
+        <!-- КОНТЕНТ -->
         <div v-else>
-          <template v-if="filteredProducts.length > 0">
-            <div class="pagination-info">
-              <div class="pagination-stats">
-                Показано {{ startItem }}–{{ endItem }} из {{ filteredProducts.length }} товаров
+          <!-- ФУРНИТУРА -->
+          <FurnitureTable v-if="activeFilter === 'furniture'" />
+
+          <!-- КАРТОЧКИ -->
+          <template v-else>
+            <template v-if="filteredProducts.length > 0">
+              <div class="pagination-info">
+                <div class="pagination-stats">
+                  Показано {{ startItem }}–{{ endItem }}
+                  из {{ filteredProducts.length }} товаров
+                </div>
               </div>
-            </div>
 
-            <!-- ФУРНИТУРА → ТАБЛИЦА -->
-            <FurnitureTable
-              v-if="activeFilter === 'furniture'"
-              :items="paginatedProducts"
-            />
+              <div class="products-grid">
+                <CardCatalog
+                  v-for="(product, i) in paginatedProducts"
+                  :key="product.id"
+                  :product="product"
+                  :index="pageStartIndex + i"
+                  @card-click="openModal"
+                  @details-click="openModal"
+                />
+              </div>
 
-            <!-- ОСТАЛЬНЫЕ → КАРТОЧКИ -->
-            <div
-              v-else
-              class="products-grid"
-            >
-              <CardCatalog
-                v-for="(product, i) in paginatedProducts"
-                :key="product.id"
-                :product="product"
-                :index="pageStartIndex + i"
-                @details-click="openModal"
-                @card-click="openModal"
-              />
-            </div>
-
-            <div v-if="totalPages > 1" class="pagination">
-              <button
-                :disabled="currentPage === 1"
-                @click="changePage(currentPage - 1)"
-                class="pagination-btn"
-              >
-                Назад
-              </button>
-
-              <div class="pagination-numbers">
+              <div v-if="totalPages > 1" class="pagination">
                 <button
-                  v-for="page in visiblePages"
-                  :key="page"
-                  @click="changePage(page)"
-                  :class="['pagination-number', { active: currentPage === page }]"
+                  :disabled="currentPage === 1"
+                  @click="changePage(currentPage - 1)"
+                  class="pagination-btn"
                 >
-                  {{ page }}
+                  Назад
+                </button>
+
+                <div class="pagination-numbers">
+                  <button
+                    v-for="page in visiblePages"
+                    :key="page"
+                    @click="changePage(page)"
+                    :class="['pagination-number', { active: currentPage === page }]"
+                  >
+                    {{ page }}
+                  </button>
+                </div>
+
+                <button
+                  :disabled="currentPage === totalPages"
+                  @click="changePage(currentPage + 1)"
+                  class="pagination-btn"
+                >
+                  Вперёд
                 </button>
               </div>
+            </template>
 
-              <button
-                :disabled="currentPage === totalPages"
-                @click="changePage(currentPage + 1)"
-                class="pagination-btn"
-              >
-                Вперёд
-              </button>
+            <div v-else class="no-products">
+              <p>Товары в этой категории скоро появятся</p>
             </div>
           </template>
-
-          <div v-else class="no-products">
-            <p>Товары не найдены</p>
-          </div>
         </div>
       </div>
     </main>
+
+    <!-- МОДАЛКА -->
+    <ModalPriceSizes
+      v-if="showModal && selectedProduct"
+      :product="selectedProduct"
+      @close="closeModal"
+    />
 
     <Footer />
   </div>
@@ -171,8 +174,8 @@ import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import CardCatalog from '@/components/CardCatalog.vue'
 import FurnitureTable from '@/components/FurnitureTable.vue'
+import ModalPriceSizes from '@/components/ModalPriceSizes.vue'
 import { useProducts } from '@/composables/useProducts'
-import furnitureData from '@/data/furniture.json'
 
 const ITEMS_PER_PAGE = 21
 
@@ -191,30 +194,25 @@ const currentPage = ref(1)
 const searchInput = ref('')
 const appliedSearch = ref('')
 
-const pageStartIndex = computed(() =>
-  (currentPage.value - 1) * ITEMS_PER_PAGE
+const showModal = ref(false)
+const selectedProduct = ref(null)
+
+const pageStartIndex = computed(
+  () => (currentPage.value - 1) * ITEMS_PER_PAGE
 )
 
 const filteredProducts = computed(() => {
-  let items = []
-
-  if (activeFilter.value === 'furniture') {
-    items = furnitureData
-  } else {
-    items = getFilteredProducts(activeFilter.value)
-  }
+  let products = getFilteredProducts(activeFilter.value)
 
   if (appliedSearch.value) {
-    const q = appliedSearch.value.toLowerCase().trim()
-
-    items = items.filter(item =>
-      String(item.name || '').toLowerCase().includes(q) ||
-      String(item.description || '').toLowerCase().includes(q) ||
-      String(item.group || '').toLowerCase().includes(q)
+    const q = appliedSearch.value.toLowerCase()
+    products = products.filter(p =>
+      p.name?.toLowerCase().includes(q) ||
+      p.description?.toLowerCase().includes(q)
     )
   }
 
-  return items
+  return products
 })
 
 const paginatedProducts = computed(() => {
@@ -234,12 +232,11 @@ const endItem = computed(() =>
   Math.min(currentPage.value * ITEMS_PER_PAGE, filteredProducts.value.length)
 )
 
-const visiblePages = computed(() => {
-  const pages = []
-  for (let i = 1; i <= totalPages.value; i++) pages.push(i)
-  return pages
-})
+const visiblePages = computed(() =>
+  Array.from({ length: totalPages.value }, (_, i) => i + 1)
+)
 
+/* handlers */
 const applySearch = () => {
   appliedSearch.value = searchInput.value.trim()
   currentPage.value = 1
@@ -275,8 +272,20 @@ const resetAllFilters = () => {
   currentPage.value = 1
 }
 
-const openModal = () => {}
+/* MODAL */
+const openModal = (product) => {
+  selectedProduct.value = product
+  showModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeModal = () => {
+  showModal.value = false
+  selectedProduct.value = null
+  document.body.style.overflow = 'auto'
+}
 </script>
+
 
 
 <style scoped>

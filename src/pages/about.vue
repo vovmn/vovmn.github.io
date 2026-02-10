@@ -464,4 +464,116 @@ import Footer from '@/components/Footer.vue'
     font-size: 2.2rem;
   }
 }
+@media (max-width: 1024px) {
+  .page-title {
+    font-size: 2.2rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .section-head h2 {
+    font-size: 1.75rem;
+  }
+
+  .prose {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .stats-section {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* ====== MOBILE (≤768px) ====== */
+@media (max-width: 768px) {
+  .about-main {
+    padding: 2rem 0;
+  }
+
+  .about-hero {
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-size: 1.9rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .section-head {
+    margin-bottom: 1.25rem;
+  }
+
+  .section-head h2 {
+    font-size: 1.6rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .value-card {
+    padding: 1.4rem;
+  }
+
+  .value-card h3 {
+    font-size: 1.15rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+  }
+}
+
+/* ====== SMALL MOBILE (≤480px) ====== */
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.7rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .section-head h2,
+  .values-section h2,
+  .stats-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .list li {
+    padding-left: 1.2rem;
+  }
+
+  .callout-inner {
+    padding: 1rem 1.25rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+}
 </style>

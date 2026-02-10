@@ -172,25 +172,36 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <style scoped>
+/* ================== BASE ================== */
+
 .about-page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+.about-page,
+.about-page * {
+  box-sizing: border-box;
+}
+
 .about-main {
   flex: 1;
   padding: 2.5rem 0;
   background: #f8f9fa;
+  overflow-x: hidden;
 }
 
 .container {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 1rem;
+  overflow-x: hidden;
 }
 
-/* Hero */
+/* ================== HERO ================== */
+
 .about-hero {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -212,16 +223,22 @@ import Footer from '@/components/Footer.vue'
   line-height: 1.7;
 }
 
-/* Layout */
+/* ================== CONTENT ================== */
+
 .about-content {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .section {
   width: 100%;
 }
+
+/* ================== CARD ================== */
 
 .card {
   background: #fff;
@@ -229,6 +246,8 @@ import Footer from '@/components/Footer.vue'
   border-radius: 14px;
   box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05);
   padding: 2rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .section-head {
@@ -255,12 +274,14 @@ import Footer from '@/components/Footer.vue'
   color: #6b7280;
 }
 
-/* Two columns cards */
+/* ================== GRID ================== */
+
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
-  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
 }
 
 .info-card {
@@ -276,7 +297,8 @@ import Footer from '@/components/Footer.vue'
   color: #111827;
 }
 
-/* Lists */
+/* ================== LISTS ================== */
+
 .list {
   list-style: none;
   padding: 0;
@@ -304,15 +326,14 @@ import Footer from '@/components/Footer.vue'
 
 .list-check li::before {
   content: "✓";
-  width: auto;
-  height: auto;
   background: transparent;
   color: #2b6cb0;
   font-weight: 900;
   top: 0.1rem;
 }
 
-/* Callout */
+/* ================== CALLOUT ================== */
+
 .callout {
   padding: 0;
   background: transparent;
@@ -329,32 +350,22 @@ import Footer from '@/components/Footer.vue'
   text-align: center;
 }
 
-.callout-inner h2 {
-  margin: 0 0 0.5rem;
-  color: #111827;
-}
+/* ================== PROSE ================== */
 
-.callout-inner p {
-  margin: 0;
-  color: #4b5563;
-  line-height: 1.7;
-}
-
-/* Prose */
 .prose {
   max-width: 900px;
   margin: 0 auto;
-  text-align: left;
   color: #4b5563;
   line-height: 1.85;
   font-size: 1.05rem;
 }
 
 .prose p {
-  margin: 0 0 1rem;
+  margin-bottom: 1rem;
 }
 
-/* Values */
+/* ================== VALUES ================== */
+
 .values-section h2 {
   text-align: center;
   font-size: 2rem;
@@ -366,6 +377,8 @@ import Footer from '@/components/Footer.vue'
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.25rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .value-card {
@@ -374,12 +387,7 @@ import Footer from '@/components/Footer.vue'
   border-radius: 12px;
   box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
   text-align: center;
-  transition: transform 0.25s ease;
   border: 1px solid #e5e7eb;
-}
-
-.value-card:hover {
-  transform: translateY(-4px);
 }
 
 .value-icon {
@@ -387,32 +395,16 @@ import Footer from '@/components/Footer.vue'
   margin-bottom: 1rem;
 }
 
-.value-card h3 {
-  font-size: 1.25rem;
-  color: #111827;
-  margin-bottom: 0.75rem;
-}
+/* ================== STATS ================== */
 
-.value-card p {
-  color: #4b5563;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* Stats */
 .stats-section {
   background: white;
   padding: 2.5rem;
   border-radius: 14px;
   box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
   border: 1px solid #e5e7eb;
-}
-
-.stats-section h2 {
-  text-align: center;
-  font-size: 2rem;
-  color: #111827;
-  margin-bottom: 1.75rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .stats-grid {
@@ -421,22 +413,15 @@ import Footer from '@/components/Footer.vue'
   gap: 1.25rem;
 }
 
-.stat-item {
-  text-align: center;
+/* ================== SVG SAFE ================== */
+
+svg {
+  max-width: 100%;
+  height: auto;
 }
 
-.stat-number {
-  font-size: 2.6rem;
-  font-weight: 800;
-  color: #2b6cb0;
-  margin-bottom: 0.25rem;
-}
+/* ================== RESPONSIVE ================== */
 
-.stat-label {
-  color: #6b7280;
-}
-
-/* Responsive */
 @media (max-width: 900px) {
   .grid-2 {
     grid-template-columns: 1fr;
@@ -460,120 +445,53 @@ import Footer from '@/components/Footer.vue'
     padding: 1.25rem;
   }
 
-  .stat-number {
-    font-size: 2.2rem;
-  }
-}
-@media (max-width: 1024px) {
-  .page-title {
-    font-size: 2.2rem;
-  }
-
-  .page-subtitle {
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-
-  .section-head h2 {
-    font-size: 1.75rem;
-  }
-
-  .prose {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
   .stats-section {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
   }
+  
 }
 
-/* ====== MOBILE (≤768px) ====== */
-@media (max-width: 768px) {
-  .about-main {
-    padding: 2rem 0;
-  }
-
-  .about-hero {
-    margin-bottom: 2rem;
-  }
-
-  .page-title {
-    font-size: 1.9rem;
-  }
-
-  .page-subtitle {
-    font-size: 1rem;
-  }
-
-  .card {
-    padding: 1.25rem;
-  }
-
-  .section-head {
-    margin-bottom: 1.25rem;
-  }
-
-  .section-head h2 {
-    font-size: 1.6rem;
-  }
-
-  .lead {
-    font-size: 1rem;
-  }
-
-  .values-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .value-card {
-    padding: 1.4rem;
-  }
-
-  .value-card h3 {
-    font-size: 1.15rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .stat-number {
-    font-size: 2.2rem;
-  }
+.stats-section {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+  overflow: visible;
 }
 
-/* ====== SMALL MOBILE (≤480px) ====== */
-@media (max-width: 480px) {
-  .page-title {
-    font-size: 1.7rem;
-  }
-
-  .page-subtitle {
-    font-size: 0.95rem;
-  }
-
-  .section-head h2,
-  .values-section h2,
-  .stats-section h2 {
-    font-size: 1.5rem;
-  }
-
-  .list li {
-    padding-left: 1.2rem;
-  }
-
-  .callout-inner {
-    padding: 1rem 1.25rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-number {
-    font-size: 2rem;
-  }
+.stats-section h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.75rem;
 }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #2b6cb0;
+  line-height: 1;
+}
+
+.stat-label {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
 </style>

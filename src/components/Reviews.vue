@@ -21,10 +21,20 @@
       </ul>
     </div>
 
-    <div class="nav">
-      <button @click="scroll(-1)">‹</button>
-      <button @click="scroll(1)">›</button>
-    </div>
+   <div class="nav">
+  <button class="nav-btn" @click="scroll(-1)" aria-label="Назад">
+    <svg viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <button class="nav-btn" @click="scroll(1)" aria-label="Вперёд">
+    <svg viewBox="0 0 24 24">
+      <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
   </section>
 </template>
 
@@ -152,16 +162,47 @@ onMounted(async () => {
   margin-top: .5rem;
 }
 
-.nav button {
-  font-size: 1.8rem;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-  background: #fff;
-  cursor: pointer;
-  margin: 0 .3rem;
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
+
+.nav-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.nav-btn svg {
+  width: 20px;
+  height: 20px;
+  color: #374151;
+}
+
+.nav-btn:hover {
+  background: #2b6cb0;
+  border-color: #2b6cb0;
+  transform: translateY(-2px);
+}
+
+.nav-btn:hover svg {
+  color: white;
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
 
 @media (max-width: 768px) {
   .review {
@@ -174,5 +215,27 @@ onMounted(async () => {
     flex-basis: 200px;
   }
 }
+@media (max-width: 768px) {
+  .nav-btn {
+    width: 46px;
+    height: 46px;
+  }
 
+  .nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
 </style>

@@ -134,14 +134,22 @@
               </button>
 
               <div class="pagination-numbers">
-                <button
-                  v-for="page in visiblePages"
-                  :key="page"
-                  @click="changePage(page)"
-                  :class="['pagination-number', { active: currentPage === page }]"
-                >
-                  {{ page }}
-                </button>
+                <template v-for="page in visiblePages" :key="page">
+                  <span
+                    v-if="page === '...'"
+                    class="pagination-ellipsis"
+                  >
+                    …
+                  </span>
+
+                  <button
+                    v-else
+                    @click="changePage(page)"
+                    :class="['pagination-number', { active: currentPage === page }]"
+                  >
+                    {{ page }}
+                  </button>
+                </template>
               </div>
 
               <button
@@ -242,10 +250,40 @@ const endItem = computed(() =>
 )
 
 const visiblePages = computed(() => {
+  const total = totalPages.value
+  const current = currentPage.value
+
+  // если страниц мало — показываем все
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1)
+  }
+
   const pages = []
-  for (let i = 1; i <= totalPages.value; i++) pages.push(i)
+
+  // всегда первая
+  pages.push(1)
+
+  if (current > 4) {
+    pages.push('...')
+  }
+
+  const start = Math.max(2, current - 1)
+  const end = Math.min(total - 1, current + 1)
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+
+  if (current < total - 3) {
+    pages.push('...')
+  }
+
+  // всегда последняя
+  pages.push(total)
+
   return pages
 })
+
 
 const applySearch = () => {
   appliedSearch.value = searchInput.value.trim()
@@ -722,4 +760,35 @@ const closeModal = () => {
 .clear-search-btn {
   flex: 0 0 auto;
 }
+@media (max-width: 480px) {
+  .pagination {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pagination-numbers {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pagination-number {
+    min-width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+
+  .pagination-btn {
+    min-width: 64px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .pagination-ellipsis {
+    min-width: 24px;
+    text-align: center;
+    color: #9ca3af;
+    user-select: none;
+  }
+}
+
 </style>

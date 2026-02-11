@@ -190,14 +190,11 @@ onMounted(async () => {
 }
 
 .nav-btn:hover {
-  background: #2b6cb0;
-  border-color: #2b6cb0;
+
   transform: translateY(-2px);
 }
 
-.nav-btn:hover svg {
-  color: white;
-}
+
 
 .nav-btn:active {
   transform: scale(0.95);

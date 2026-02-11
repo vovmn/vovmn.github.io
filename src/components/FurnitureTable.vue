@@ -42,7 +42,7 @@ defineProps({
 })
 
 const formatPrice = (price) =>
-  new Intl.NumberFormat('ru-RU').format(price) + ' ₽'
+  new Intl.NumberFormat('ru-RU').format(price) + ' руб.'
 </script>
 
 <style scoped>

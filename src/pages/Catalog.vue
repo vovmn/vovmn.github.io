@@ -4,7 +4,9 @@
 
     <main class="catalog-main">
       <div class="container">
-        <h1 class="page-title">Каталог продукции</h1>
+        <h1 ref="catalogTop" class="page-title">
+          Каталог продукции
+        </h1>
 
         <button
           v-if="activeFilter !== 'all' || appliedSearch || currentPage !== 1"
@@ -20,7 +22,11 @@
             <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20">
               <path
                 fill="currentColor"
-                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5
+                6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57
+                l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0
+                C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5
+                14 7.01 14 9.5 11.99 14 9.5 14z"
               />
             </svg>
 
@@ -38,38 +44,8 @@
               class="clear-search-btn"
               type="button"
             >
-              <svg viewBox="0 0 24 24" width="18" height="18">
-                <path
-                  fill="currentColor"
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-                />
-              </svg>
+              ✕
             </button>
-          </div>
-
-          <div class="search-info" v-if="searchInput || appliedSearch">
-            <span v-if="appliedSearch">
-              Найдено товаров: {{ filteredProducts.length }}
-            </span>
-            <span v-else>Введите запрос и нажмите Enter</span>
-
-            <div style="display:flex; gap:.5rem;">
-              <button
-                class="clear-all-btn"
-                @click="applySearch"
-                :disabled="!searchInput.trim()"
-              >
-                Найти
-              </button>
-
-              <button
-                v-if="appliedSearch"
-                class="clear-all-btn"
-                @click="clearAppliedSearch"
-              >
-                Очистить поиск
-              </button>
-            </div>
           </div>
         </div>
 
@@ -88,32 +64,24 @@
         <!-- КОНТЕНТ -->
         <div v-if="loading" class="loading">
           <div class="spinner"></div>
-          <p>Загрузка каталога...</p>
-        </div>
-
-        <div v-else-if="error" class="error">
-          <p>Ошибка загрузки каталога: {{ error }}</p>
         </div>
 
         <div v-else>
           <template v-if="filteredProducts.length > 0">
+
             <div class="pagination-info">
-              <div class="pagination-stats">
-                Показано {{ startItem }}–{{ endItem }} из {{ filteredProducts.length }} товаров
-              </div>
+              Показано {{ startItem }}–{{ endItem }}
+              из {{ filteredProducts.length }} товаров
             </div>
 
-            <!-- ФУРНИТУРА → ТАБЛИЦА -->
+            <!-- ФУРНИТУРА -->
             <FurnitureTable
               v-if="activeFilter === 'furniture'"
               :items="paginatedProducts"
             />
 
-            <!-- ОСТАЛЬНЫЕ → КАРТОЧКИ -->
-            <div
-              v-else
-              class="products-grid"
-            >
+            <!-- КАРТОЧКИ -->
+            <div v-else class="products-grid">
               <CardCatalog
                 v-for="(product, i) in paginatedProducts"
                 :key="product.id"
@@ -124,7 +92,9 @@
               />
             </div>
 
+            <!-- ПАГИНАЦИЯ -->
             <div v-if="totalPages > 1" class="pagination">
+
               <button
                 :disabled="currentPage === 1"
                 @click="changePage(currentPage - 1)"
@@ -138,9 +108,7 @@
                   <span
                     v-if="page === '...'"
                     class="pagination-ellipsis"
-                  >
-                    …
-                  </span>
+                  >…</span>
 
                   <button
                     v-else
@@ -160,72 +128,66 @@
                 Вперёд
               </button>
             </div>
+
           </template>
 
           <div v-else class="no-products">
-            <p>Товары не найдены</p>
+            Товары не найдены
           </div>
         </div>
       </div>
     </main>
+
+    <!-- МОДАЛКА -->
     <ModalPriceSizes
       v-if="showModal"
       :product="selectedProduct"
       @close="closeModal"
-/>
+    />
+
     <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import CardCatalog from '@/components/CardCatalog.vue'
 import FurnitureTable from '@/components/FurnitureTable.vue'
+import ModalPriceSizes from '@/components/ModalPriceSizes.vue'
 import { useProducts } from '@/composables/useProducts'
 import furnitureData from '@/data/furniture.json'
-import ModalPriceSizes from '@/components/ModalPriceSizes.vue'
 
 const ITEMS_PER_PAGE = 21
 
-const {
-  loading,
-  error,
-  getFilteredProducts,
-  getAllCategories
-} = useProducts()
+const { loading, getFilteredProducts, getAllCategories } = useProducts()
 
 const categories = getAllCategories()
 
 const activeFilter = ref('all')
 const currentPage = ref(1)
-
 const searchInput = ref('')
 const appliedSearch = ref('')
+
 const showModal = ref(false)
 const selectedProduct = ref(null)
+const catalogTop = ref(null)
 
 const pageStartIndex = computed(() =>
   (currentPage.value - 1) * ITEMS_PER_PAGE
 )
 
 const filteredProducts = computed(() => {
-  let items = []
-
-  if (activeFilter.value === 'furniture') {
-    items = furnitureData
-  } else {
-    items = getFilteredProducts(activeFilter.value)
-  }
+  let items = activeFilter.value === 'furniture'
+    ? furnitureData
+    : getFilteredProducts(activeFilter.value)
 
   if (appliedSearch.value) {
-    const q = appliedSearch.value.toLowerCase().trim()
-
+    const q = appliedSearch.value.toLowerCase()
     items = items.filter(item =>
       String(item.name || '').toLowerCase().includes(q) ||
-      String(item.description || '').toLowerCase().includes(q) ||
-      String(item.group || '').toLowerCase().includes(q)
+      String(item.description || '').toLowerCase().includes(q)
     )
   }
 
@@ -253,37 +215,35 @@ const visiblePages = computed(() => {
   const total = totalPages.value
   const current = currentPage.value
 
-  // если страниц мало — показываем все
   if (total <= 7) {
     return Array.from({ length: total }, (_, i) => i + 1)
   }
 
-  const pages = []
+  const pages = [1]
 
-  // всегда первая
-  pages.push(1)
+  if (current > 4) pages.push('...')
 
-  if (current > 4) {
-    pages.push('...')
-  }
-
-  const start = Math.max(2, current - 1)
-  const end = Math.min(total - 1, current + 1)
-
-  for (let i = start; i <= end; i++) {
+  for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++) {
     pages.push(i)
   }
 
-  if (current < total - 3) {
-    pages.push('...')
-  }
+  if (current < total - 3) pages.push('...')
 
-  // всегда последняя
   pages.push(total)
-
   return pages
 })
 
+const changePage = async (page) => {
+  if (page < 1 || page > totalPages.value) return
+
+  currentPage.value = page
+  await nextTick()
+
+  catalogTop.value?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  })
+}
 
 const applySearch = () => {
   appliedSearch.value = searchInput.value.trim()
@@ -294,23 +254,11 @@ const clearSearchInput = () => {
   searchInput.value = ''
 }
 
-const clearAppliedSearch = () => {
-  searchInput.value = ''
-  appliedSearch.value = ''
-  currentPage.value = 1
-}
-
 const setActiveFilter = (id) => {
   activeFilter.value = id
   searchInput.value = ''
   appliedSearch.value = ''
   currentPage.value = 1
-}
-
-const changePage = (page) => {
-  if (page < 1 || page > totalPages.value) return
-  currentPage.value = page
-  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const resetAllFilters = () => {
@@ -326,6 +274,7 @@ const openModal = (product) => {
   showModal.value = true
   document.body.style.overflow = 'hidden'
 }
+
 const closeModal = () => {
   showModal.value = false
   selectedProduct.value = null

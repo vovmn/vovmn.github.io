@@ -11517,7 +11517,7 @@
       "description": "",
       "category": "facades",
       "price": "от 110 руб.",
-      "image": "",
+      "image": "/src/img/facades/прочее/glass.webp",
       "sizes": [
         {
           "id": 1770,
@@ -11654,7 +11654,7 @@
       "description": "",
       "category": "facades",
       "price": "от 2 руб.",
-      "image": "",
+      "image": "/src/img/facades/прочее/shtapik.webp",
       "sizes": [
         {
           "id": 1799,

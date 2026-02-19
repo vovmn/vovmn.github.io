@@ -70,7 +70,7 @@ export function useProducts() {
   
   }
 
-  // допустим, добавь картинку-заглушку: src/img/placeholder.webp
+
 
 function resolveImagePath(p) {
   if (!p) return imageModules["/src/img/placeholder.webp"] || ""
@@ -90,7 +90,7 @@ function resolveImagePath(p) {
     productsData,
     loading,
     error,
-    loadProducts,          // ✅ чтобы "loadProducts is not a function" больше не всплывал
+    loadProducts,         
     getFilteredProducts,
     getProductById,
     getAllCategories,

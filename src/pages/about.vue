@@ -172,7 +172,7 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <style scoped>
-/* ================== BASE ================== */
+
 
 .about-page {
   min-height: 100vh;
@@ -200,7 +200,7 @@ import Footer from '@/components/Footer.vue'
   overflow-x: hidden;
 }
 
-/* ================== HERO ================== */
+
 
 .about-hero {
   text-align: center;
@@ -223,7 +223,7 @@ import Footer from '@/components/Footer.vue'
   line-height: 1.7;
 }
 
-/* ================== CONTENT ================== */
+
 
 .about-content {
   display: flex;
@@ -238,7 +238,6 @@ import Footer from '@/components/Footer.vue'
   width: 100%;
 }
 
-/* ================== CARD ================== */
 
 .card {
   background: #fff;
@@ -274,7 +273,7 @@ import Footer from '@/components/Footer.vue'
   color: #6b7280;
 }
 
-/* ================== GRID ================== */
+
 
 .grid-2 {
   display: grid;
@@ -297,7 +296,7 @@ import Footer from '@/components/Footer.vue'
   color: #111827;
 }
 
-/* ================== LISTS ================== */
+
 
 .list {
   list-style: none;
@@ -332,7 +331,6 @@ import Footer from '@/components/Footer.vue'
   top: 0.1rem;
 }
 
-/* ================== CALLOUT ================== */
 
 .callout {
   padding: 0;
@@ -350,7 +348,6 @@ import Footer from '@/components/Footer.vue'
   text-align: center;
 }
 
-/* ================== PROSE ================== */
 
 .prose {
   max-width: 900px;
@@ -364,7 +361,7 @@ import Footer from '@/components/Footer.vue'
   margin-bottom: 1rem;
 }
 
-/* ================== VALUES ================== */
+
 
 .values-section h2 {
   text-align: center;
@@ -395,8 +392,6 @@ import Footer from '@/components/Footer.vue'
   margin-bottom: 1rem;
 }
 
-/* ================== STATS ================== */
-
 .stats-section {
   background: white;
   padding: 2.5rem;
@@ -413,14 +408,14 @@ import Footer from '@/components/Footer.vue'
   gap: 1.25rem;
 }
 
-/* ================== SVG SAFE ================== */
+
 
 svg {
   max-width: 100%;
   height: auto;
 }
 
-/* ================== RESPONSIVE ================== */
+
 
 @media (max-width: 900px) {
   .grid-2 {

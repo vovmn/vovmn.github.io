@@ -7,7 +7,7 @@
         <h1 class="page-title">Контакты</h1>
         <p class="page-subtitle">Свяжитесь с нами удобным для вас способом</p>
         
-        <!-- Контактная информация -->
+
         <div class="contact-info">
           <div class="contact-card">
             <div class="contact-icon">
@@ -55,17 +55,17 @@
           </div>
         </div>
 
-        <!-- Карты адресов -->
+
         <div class="addresses-section">
           <h2>Наши адреса в Саратове</h2>
           
-          <!-- Адрес 1 -->
+
           <div class="address-section">
             <h3><svg class="address-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18 2h-8L4.02 8 4 20c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V8.83L10.83 4H18v16zM9 7h2v4H9zm3 0h2v4h-2zm3 0h2v4h-2z"/>
             </svg> Основной офис: ул. Огородная, 3д</h3>
             <div class="yandex-map">
-              <!-- Яндекс.Карта для адреса ул. Огородная, 3д -->
+
               <div id="map-ogorodnaya" style="width: 100%; height: 400px;"></div>
               <div class="map-info">
                 <p><strong>Адрес:</strong> г. Саратов, ул. Огородная, 3д</p>
@@ -78,13 +78,13 @@
             </div>
           </div>
 
-          <!-- Адрес 2 -->
+
           <div class="address-section">
             <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; margin-right: 8px; vertical-align: middle;">
               <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4-4h2v14h-2z"/>
             </svg> Офис: ул. Техническая, д. 5</h3>
             <div class="yandex-map">
-              <!-- Яндекс.Карта для адреса ул. Техническая, 5 -->
+
               <div id="map-tehnicheskaya" style="width: 100%; height: 400px;"></div>
               <div class="map-info">
                 <p><strong>Адрес:</strong> г. Саратов, ул. Техническая, д. 5</p>
@@ -97,13 +97,13 @@
             </div>
           </div>
 
-          <!-- Адрес 3 -->
+
           <div class="address-section">
             <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; margin-right: 8px; vertical-align: middle;">
               <path d="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z"/>
             </svg> Офис: ул. Блинова, д. 52Б</h3>
             <div class="yandex-map">
-              <!-- Яндекс.Карта для адреса ул. Блинова, 52Б -->
+
               <div id="map-blinova" style="width: 100%; height: 400px;"></div>
               <div class="map-info">
                 <p><strong>Адрес:</strong> г. Саратов, ул. Блинова, д. 52Б</p>
@@ -128,10 +128,10 @@ import { onMounted } from 'vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
-// Инициализация Яндекс.Карт
+
 const initYandexMaps = () => {
   if (typeof ymaps === 'undefined') {
-    // Загружаем API Яндекс.Карт
+ 
     const script = document.createElement('script')
     script.src = 'https://api-maps.yandex.ru/2.1/?apikey=ваш_api_ключ&lang=ru_RU'
     script.async = true
@@ -146,9 +146,9 @@ const initYandexMaps = () => {
 }
 
 const initMaps = () => {
-  // Карта для ул. Огородная, 3д
+
   const mapOgorodnaya = new ymaps.Map('map-ogorodnaya', {
-    center: [51.515378, 45.977223], // Координаты ул. Огородная, 3д
+    center: [51.515378, 45.977223], 
     zoom: 17
   })
   
@@ -161,9 +161,9 @@ const initMaps = () => {
   
   mapOgorodnaya.geoObjects.add(placemarkOgorodnaya)
   
-  // Карта для ул. Техническая, 5
+
   const mapTehnicheskaya = new ymaps.Map('map-tehnicheskaya', {
-    center: [51.576461, 46.011934], // Координаты ул. Техническая, 5
+    center: [51.576461, 46.011934], 
     zoom: 17
   })
   
@@ -176,9 +176,9 @@ const initMaps = () => {
   
   mapTehnicheskaya.geoObjects.add(placemarkTehnicheskaya)
   
-  // Карта для ул. Блинова, 52Б
+
   const mapBlinova = new ymaps.Map('map-blinova', {
-    center: [51.598688, 46.006659], // Координаты ул. Блинова, 52Б
+    center: [51.598688, 46.006659],
     zoom: 17
   })
   

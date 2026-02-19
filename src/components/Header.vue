@@ -70,7 +70,7 @@ import { RouterLink } from 'vue-router'
   color: #1f2937;
 }
 
-/* PNG */
+
 .logo-image {
   height: 56px;
   width: auto;
@@ -78,7 +78,7 @@ import { RouterLink } from 'vue-router'
   object-fit: contain;
 }
 
-/* текст АКВИЛОН */
+
 .logo-text {
   position: relative;
   font-family: "Georgia", "Times New Roman", serif;
@@ -89,7 +89,7 @@ import { RouterLink } from 'vue-router'
   padding-bottom: 0.4rem;
 }
 
-/* линия под названием */
+
 .logo-text::after {
   content: "";
   position: absolute;
@@ -100,17 +100,11 @@ import { RouterLink } from 'vue-router'
   background-color: #1f2937;
   opacity: 0.85;
 }
-
-
-/* hover — сдержанно */
 .logo-link:hover {
   opacity: 0.9;
   transform: translateY(-1px);
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-
-
-/* адаптив */
 @media (max-width: 900px) {
   .logo-image {
     height: 48px;
@@ -171,7 +165,7 @@ import { RouterLink } from 'vue-router'
   width: 100%;
 }
 
-/* Активная ссылка */
+
 .nav a.router-link-active {
   color: #c00;
 }
@@ -180,7 +174,7 @@ import { RouterLink } from 'vue-router'
   width: 100%;
 }
 
-/* ----------  правая часть (2GIS)  ---------- */
+
 .header-right {
   flex-shrink: 0;
 }
@@ -210,7 +204,7 @@ import { RouterLink } from 'vue-router'
   flex-shrink: 0;
 }
 
-/* ----------  адаптив  ---------- */
+
 @media (max-width: 900px) {
   .header {
     flex-wrap: wrap;

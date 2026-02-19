@@ -48,7 +48,7 @@
 
 
 
-/* затемнение ТОЛЬКО для читабельности текста */
+
 .hero::before {
   content: '';
   position: absolute;
@@ -62,7 +62,7 @@
   left: 0;
   right: 0;
   bottom: -1px;
-  height: 260px; /* ключевой момент */
+  height: 260px; 
   background: linear-gradient(
     to bottom,
     rgba(248, 249, 250, 0) 0%,
@@ -77,7 +77,7 @@
 
 
 
-/* контент поверх */
+
 .hero > * {
   position: relative;
   z-index: 1;

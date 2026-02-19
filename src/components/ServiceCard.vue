@@ -1,7 +1,7 @@
 <template>
   <div class="service-card" @click="$emit('cardClick', service)">
     <div class="service-image">
-      <!-- Вместо картинки: иконка в той же зоне, что product-image -->
+
       <div class="service-icon">
         <slot name="icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -22,7 +22,6 @@
       <div class="service-footer">
         <p class="service-price" v-if="service.price">{{ service.price }}</p>
 
-        <!-- ✅ Link не ломает флекс и не создает лишний блок -->
         <RouterLink to="/contact" class="contact-link">
           <button class="details-btn" @click.stop="$emit('detailsClick', service)">
             Связаться
@@ -64,13 +63,13 @@ const getCategoryName = (categoryId) => {
 </script>
 
 <style scoped>
-/* ======= 0) На всякий: чтобы грид/флекс не раздувало ======= */
+
 .service-card,
 .service-card * {
   box-sizing: border-box;
 }
 
-/* ======= 1) КАРТОЧКА — как product-card ======= */
+
 .service-card {
   background: white;
   padding: 1.5rem;
@@ -83,8 +82,6 @@ const getCategoryName = (categoryId) => {
   height: 100%;
   cursor: pointer;
   position: relative;
-
-  /* ✅ важно для grid: не даем карточке раздувать колонку */
   min-width: 0;
 }
 
@@ -93,7 +90,7 @@ const getCategoryName = (categoryId) => {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ======= 2) ЗОНА “КАРТИНКИ” — как product-image ======= */
+
 .service-image {
   flex-shrink: 0;
   margin-bottom: 1rem;
@@ -104,12 +101,12 @@ const getCategoryName = (categoryId) => {
   position: relative;
   width: 100%;
 
-  /* ✅ чтобы ничего не вылезало и не создавало наложений */
+
   overflow: hidden;
   border-radius: 10px;
 }
 
-/* Иконка/плашка внутри зоны картинки */
+
 .service-icon {
   width: 100%;
   height: 100%;
@@ -126,7 +123,7 @@ const getCategoryName = (categoryId) => {
   height: 56px;
 }
 
-/* Бейдж категории — копия product-category-badge */
+
 .service-category-badge {
   position: absolute;
   top: 0.5rem;
@@ -139,13 +136,11 @@ const getCategoryName = (categoryId) => {
   font-weight: 500;
 }
 
-/* ======= 3) ТЕКСТЫ — как product-info ======= */
 .service-info {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 
-  /* ✅ чтобы длинные слова не ломали сетку */
   min-width: 0;
 }
 
@@ -156,7 +151,7 @@ const getCategoryName = (categoryId) => {
   margin-bottom: 0.5rem;
   line-height: 1.3;
 
-  /* ✅ фикс длинных названий */
+
   word-break: break-word;
 }
 
@@ -172,11 +167,11 @@ const getCategoryName = (categoryId) => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 
-  /* ✅ чтобы карточки были стабильнее по высоте */
+
   min-height: calc(1.4em * 3);
 }
 
-/* ======= 4) ФУТЕР — как product-footer ======= */
+
 .service-footer {
   display: flex;
   justify-content: space-between;
@@ -194,7 +189,7 @@ const getCategoryName = (categoryId) => {
   white-space: nowrap;
 }
 
-/* ✅ RouterLink не должен быть “непонятным блоком” во флексе */
+
 .contact-link {
   display: inline-flex;
   min-width: 0;
@@ -210,7 +205,7 @@ const getCategoryName = (categoryId) => {
   font-size: 0.9rem;
   transition: background 0.3s ease;
 
-  /* ✅ чтобы кнопка не раздувала колонку */
+
   white-space: nowrap;
 }
 
@@ -218,7 +213,7 @@ const getCategoryName = (categoryId) => {
   background: #2c5282;
 }
 
-/* ======= 5) АДАПТИВ — копия твоего product-card ======= */
+
 @media (max-width: 768px) {
   .service-card {
     padding: 1.2rem;

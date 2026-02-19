@@ -51,7 +51,7 @@ const raw = [
   { stars: '★★★★', name: 'Яр Гл', text: 'Было то , что мне надо)Далековато)', date: '24.11.19' }
 ]
 
-// даём uid, чтобы Vue не путался
+
 const list = ref(
   raw.map((r, i) => ({ ...r, uid: i + '-' + Math.random() }))
 )
@@ -82,7 +82,7 @@ function scroll(dir) {
   animating.value = true
 
   if (dir > 0) {
-    // 👉 вправо
+
     offset.value = -step.value
 
     setTimeout(() => {
@@ -94,7 +94,7 @@ function scroll(dir) {
     }, 300)
 
   } else {
-    // 👈 влево — ТЕПЕРЬ С АНИМАЦИЕЙ
+
     offset.value = step.value
 
     setTimeout(() => {

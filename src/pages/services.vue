@@ -2,7 +2,7 @@
   <div class="services-page">
     <Header />
 
-    <!-- ✅ класс совпадает со стилями -->
+
     <main class="services-main">
       <div class="container">
         <h1 class="page-title">Услуги</h1>
@@ -14,7 +14,7 @@
         >
           <h2 class="section-title">{{ section.title }}</h2>
 
-          <!-- ✅ отдельный класс именно для услуг (чтобы не конфликтовать с каталогом) -->
+       
           <div class="services-grid">
             <ServiceCard
               v-for="service in section.items"
@@ -49,7 +49,7 @@ const onDetailsClick = (service) => console.log('detailsClick:', service)
   flex-direction: column;
 }
 
-/* ✅ теперь реально применяется */
+
 .services-main {
   flex: 1;
   padding: 2rem 0;
@@ -70,7 +70,7 @@ const onDetailsClick = (service) => console.log('detailsClick:', service)
   margin-bottom: 1.25rem;
 }
 
-/* ===== Секции ===== */
+
 .service-section {
   margin: 28px 0 38px;
 }
@@ -95,26 +95,25 @@ const onDetailsClick = (service) => console.log('detailsClick:', service)
   box-shadow: 0 0 0 6px rgba(43, 108, 176, 0.12);
 }
 
-/* ===== Сетка карточек (главный фикс) ===== */
+
 .services-grid {
   display: grid;
 
-  /* авто-колонки без шаманства с span */
+
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 
   gap: 16px;
 
-  /* чтобы карточки были одной высоты и не наезжали */
   align-items: stretch;
   grid-auto-rows: 1fr;
 }
 
-/* чтобы ничего не раздувало колонки */
+
 .services-grid > * {
   min-width: 0;
 }
 
-/* Чуть шире на больших экранах */
+
 @media (min-width: 1100px) {
   .services-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -135,7 +134,7 @@ const onDetailsClick = (service) => console.log('detailsClick:', service)
   }
 }
 
-/* Адаптивность заголовка */
+
 @media (max-width: 768px) {
   .services-main {
     padding: 1rem 0;

@@ -27,8 +27,8 @@
 </template>
 
 <script setup>
-// Добавили index + параметры приоритета загрузки.
-// index нужно передавать из родителя в v-for: (product, i) -> :index="i"
+
+
 const props = defineProps({
   product: {
     type: Object,
@@ -46,17 +46,17 @@ const props = defineProps({
     type: Number,
     default: 9999
   },
-  // сколько первых карточек грузим сразу
+
   eagerCount: {
     type: Number,
     default: 6
   },
-  // сколько самых первых картинок просим грузить с высоким приоритетом
+
   highPriorityCount: {
     type: Number,
     default: 2
   },
-  // путь к плейсхолдеру (положи файл в /public)
+
   placeholderSrc: {
     type: String,
     default: '/placeholder.webp'
@@ -78,7 +78,6 @@ const getCategoryName = (categoryId) => {
 const onImgError = (e) => {
   const img = e?.target
   if (!img) return
-  // чтобы не уйти в бесконечный цикл ошибок
   if (img.dataset.fallbackApplied) return
   img.dataset.fallbackApplied = '1'
   img.src = props.placeholderSrc
@@ -114,7 +113,7 @@ const onImgError = (e) => {
   height: 180px;
   position: relative;
 
-  /* помогает браузеру заранее зарезервировать место и не дергать верстку */
+
   width: 100%;
 }
 
@@ -122,7 +121,6 @@ const onImgError = (e) => {
   max-width: 100%;
   max-height: 160px;
 
-  /* стабильнее и предсказуемее, чем width/height auto в больших списках */
   width: 100%;
   height: 100%;
   object-fit: contain;

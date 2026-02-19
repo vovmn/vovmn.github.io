@@ -16,7 +16,6 @@
           Сбросить все фильтры
         </button>
 
-        <!-- ПОИСК -->
         <div class="search-container">
           <div class="search-box">
             <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20">
@@ -49,7 +48,6 @@
           </div>
         </div>
 
-        <!-- КАТЕГОРИИ -->
         <div class="category-filters">
           <button
             v-for="category in categories"
@@ -61,7 +59,7 @@
           </button>
         </div>
 
-        <!-- КОНТЕНТ -->
+
         <div v-if="loading" class="loading">
           <div class="spinner"></div>
         </div>
@@ -74,13 +72,12 @@
               из {{ filteredProducts.length }} товаров
             </div>
 
-            <!-- ФУРНИТУРА -->
+
             <FurnitureTable
               v-if="activeFilter === 'furniture'"
               :items="paginatedProducts"
             />
 
-            <!-- КАРТОЧКИ -->
             <div v-else class="products-grid">
               <CardCatalog
                 v-for="(product, i) in paginatedProducts"
@@ -92,7 +89,7 @@
               />
             </div>
 
-            <!-- ПАГИНАЦИЯ -->
+
             <div v-if="totalPages > 1" class="pagination">
 
               <button
@@ -138,7 +135,7 @@
       </div>
     </main>
 
-    <!-- МОДАЛКА -->
+
     <ModalPriceSizes
       v-if="showModal"
       :product="selectedProduct"
@@ -654,7 +651,7 @@ const closeModal = () => {
   color: #6b7280;
 }
 
-/* sticky-поведение для поиска */
+
 .search-container {
   position: sticky;
   top: 0;
@@ -666,7 +663,7 @@ const closeModal = () => {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
 }
 
-/* sticky-поведение для категорий */
+
 .category-filters {
   position: sticky;
   top: 96px;
@@ -676,7 +673,7 @@ const closeModal = () => {
   margin-bottom: 2rem;
 }
 
-/* === FIX: инпут/поиск не вылезает за экран === */
+
 .catalog-page,
 .catalog-page * {
   box-sizing: border-box;

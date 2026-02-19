@@ -33,7 +33,6 @@ import CardCatalog from '@/components/CardCatalog.vue'
 import ModalPriceSizes from '@/components/ModalPriceSizes.vue'
 import { useProducts } from '@/composables/useProducts'
 
-/* 🔹 ТУТ ВПИСЫВАЕШЬ ID НУЖНЫХ ТОВАРОВ */
 const FEATURED_IDS = [
   72, 162,      // Вотан
   94, 171,      // Марквина

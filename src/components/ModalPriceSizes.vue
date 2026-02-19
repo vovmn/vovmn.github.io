@@ -1,15 +1,15 @@
 <template>
   <div class="modal-overlay" @click.self="closeModal" role="dialog" aria-modal="true">
     <div class="modal-content">
-      <!-- Header -->
+
       <div class="modal-header">
         <h2 class="modal-title">{{ product?.name }}</h2>
         <button class="close-btn" @click="closeModal" type="button" aria-label="Закрыть">×</button>
       </div>
 
-      <!-- Body -->
+
       <div class="modal-body">
-        <!-- Preview -->
+
         <div class="product-preview">
           <div class="image-wrap">
             <img
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <!-- Sizes -->
+
         <div class="sizes-prices-section">
           <div class="section-head">
             <h3 class="section-title">
@@ -49,7 +49,6 @@
             </div>
           </div>
 
-          <!-- Table -->
           <div class="table-container">
             <table class="sizes-table">
               <thead>
@@ -94,7 +93,7 @@
         </div>
       </div>
 
-      <!-- Footer -->
+
       <div class="modal-footer">
         <button class="btn-close" @click="closeModal" type="button">
           <span class="icon-close">←</span> Вернуться в каталог
@@ -239,13 +238,13 @@ const formatSize = (size) => {
 .close-btn:hover { background: #e9ecef; color: #333; }
 .close-btn:active { transform: scale(0.95); }
 
-/* body scroll area */
+
 .modal-body {
   padding: 18px 20px;
   overflow: auto;
 }
 
-/* preview layout */
+
 .product-preview {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -354,14 +353,14 @@ const formatSize = (size) => {
 .table-container {
   border: 1px solid #e9ecef;
   border-radius: 10px;
-  overflow: auto; /* горизонтальный скролл на мобилке */
+  overflow: auto; 
   -webkit-overflow-scrolling: touch;
 }
 
 .sizes-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 640px; /* чтобы на телефоне не ломало */
+  min-width: 640px; 
 }
 
 .sizes-table th {
@@ -429,7 +428,6 @@ const formatSize = (size) => {
 
 .icon-close { font-size: 1.2em; }
 
-/* ====== ADAPTIVE ====== */
 @media (max-width: 900px) {
   .modal-content {
     width: min(900px, 100%);
@@ -470,7 +468,7 @@ const formatSize = (size) => {
     justify-content: space-between;
   }
 
-  /* таблица на телефоне всегда со скроллом */
+
   .sizes-table {
     min-width: 620px;
   }

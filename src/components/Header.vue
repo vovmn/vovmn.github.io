@@ -130,12 +130,19 @@ import { RouterLink } from 'vue-router'
 }
 
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
 .nav {
   display: flex;
   gap: 1.8rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 auto; /* центрируем нормально */
 }
 
 .nav a {
@@ -144,6 +151,7 @@ import { RouterLink } from 'vue-router'
   color: #444;
   text-decoration: none;
   transition: color 0.25s;
+    white-space: nowrap;
 }
 
 .nav a::after {

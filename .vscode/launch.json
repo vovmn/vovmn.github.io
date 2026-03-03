@@ -1,0 +1,8 @@
+{
+  "type": "node",
+  "request": "launch",
+  "name": "Debug Direct",
+  "program": "${workspaceFolder}/backend/src/server.js",
+  "cwd": "${workspaceFolder}/backend",
+  "console": "integratedTerminal"
+}

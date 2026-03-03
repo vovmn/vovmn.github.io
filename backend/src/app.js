@@ -1,9 +1,12 @@
 const express = require('express')
 const pool = require('./db/pool')
-
+const cookieParser = require('cookie-parser')
+const authRoutes = require('./modules/auth/auth.routes')
 const app = express()
 
+app.use(cookieParser())
 app.use(express.json())
+app.use('/auth', authRoutes)
 
 app.get('/health', async (req, res) => {
   try {
@@ -17,5 +20,7 @@ app.get('/health', async (req, res) => {
     res.status(500).json({ error: 'Database connection failed' })
   }
 })
+
+
 
 module.exports = app

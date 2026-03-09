@@ -147,7 +147,8 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, nextTick, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import CardCatalog from '@/components/CardCatalog.vue'
@@ -158,9 +159,12 @@ import furnitureData from '@/data/furniture.json'
 
 const ITEMS_PER_PAGE = 21
 
-const { loading, getFilteredProducts, getAllCategories } = useProducts()
+const route = useRoute()
+const router = useRouter()
 
+const { loading, getFilteredProducts, getAllCategories } = useProducts()
 const categories = getAllCategories()
+const validCategoryIds = new Set(['all', ...categories.map(c => c.id)])
 
 const activeFilter = ref('all')
 const currentPage = ref(1)
@@ -170,6 +174,67 @@ const appliedSearch = ref('')
 const showModal = ref(false)
 const selectedProduct = ref(null)
 const catalogTop = ref(null)
+
+const parsePage = (value) => {
+  const n = Number(value)
+  return Number.isInteger(n) && n > 0 ? n : 1
+}
+
+const parseCategory = (value) => {
+  return typeof value === 'string' && validCategoryIds.has(value) ? value : 'all'
+}
+
+const parseSearch = (value) => {
+  return typeof value === 'string' ? value : ''
+}
+
+const buildQuery = () => {
+  const query = {}
+
+  if (activeFilter.value !== 'all') {
+    query.category = activeFilter.value
+  }
+
+  if (appliedSearch.value) {
+    query.q = appliedSearch.value
+  }
+
+  if (currentPage.value > 1) {
+    query.page = String(currentPage.value)
+  }
+
+  return query
+}
+
+const syncStateFromRoute = () => {
+  activeFilter.value = parseCategory(route.query.category)
+  appliedSearch.value = parseSearch(route.query.q)
+  searchInput.value = appliedSearch.value
+  currentPage.value = parsePage(route.query.page)
+}
+
+const syncRouteFromState = async () => {
+  const nextQuery = buildQuery()
+  const resolved = router.resolve({
+    path: route.path,
+    query: nextQuery
+  })
+
+  if (resolved.fullPath === route.fullPath) return
+
+  await router.replace({
+    path: route.path,
+    query: nextQuery
+  })
+}
+
+watch(
+  () => route.query,
+  () => {
+    syncStateFromRoute()
+  },
+  { immediate: true }
+)
 
 const pageStartIndex = computed(() =>
   (currentPage.value - 1) * ITEMS_PER_PAGE
@@ -197,11 +262,13 @@ const paginatedProducts = computed(() => {
 })
 
 const totalPages = computed(() =>
-  Math.ceil(filteredProducts.value.length / ITEMS_PER_PAGE)
+  Math.max(1, Math.ceil(filteredProducts.value.length / ITEMS_PER_PAGE))
 )
 
 const startItem = computed(() =>
-  (currentPage.value - 1) * ITEMS_PER_PAGE + 1
+  filteredProducts.value.length === 0
+    ? 0
+    : (currentPage.value - 1) * ITEMS_PER_PAGE + 1
 )
 
 const endItem = computed(() =>
@@ -230,10 +297,18 @@ const visiblePages = computed(() => {
   return pages
 })
 
+watch(totalPages, async (total) => {
+  if (currentPage.value > total) {
+    currentPage.value = total
+    await syncRouteFromState()
+  }
+})
+
 const changePage = async (page) => {
   if (page < 1 || page > totalPages.value) return
 
   currentPage.value = page
+  await syncRouteFromState()
   await nextTick()
 
   catalogTop.value?.scrollIntoView({
@@ -242,27 +317,33 @@ const changePage = async (page) => {
   })
 }
 
-const applySearch = () => {
+const applySearch = async () => {
   appliedSearch.value = searchInput.value.trim()
   currentPage.value = 1
+  await syncRouteFromState()
 }
 
-const clearSearchInput = () => {
+const clearSearchInput = async () => {
   searchInput.value = ''
+  appliedSearch.value = ''
+  currentPage.value = 1
+  await syncRouteFromState()
 }
 
-const setActiveFilter = (id) => {
+const setActiveFilter = async (id) => {
   activeFilter.value = id
   searchInput.value = ''
   appliedSearch.value = ''
   currentPage.value = 1
+  await syncRouteFromState()
 }
 
-const resetAllFilters = () => {
+const resetAllFilters = async () => {
   activeFilter.value = 'all'
   searchInput.value = ''
   appliedSearch.value = ''
   currentPage.value = 1
+  await syncRouteFromState()
 }
 
 const openModal = (product) => {
@@ -278,7 +359,6 @@ const closeModal = () => {
   document.body.style.overflow = ''
 }
 </script>
-
 
 <style scoped>
 

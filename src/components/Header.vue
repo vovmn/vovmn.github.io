@@ -130,19 +130,12 @@ import { RouterLink } from 'vue-router'
 }
 
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
 
 .nav {
   display: flex;
-  gap: 1.8rem;
-  margin: 0 auto; /* центрируем нормально */
+  gap: clamp(0.8rem, 2vw, 1.8rem);
+  margin: 0 auto;
+  min-width: 0;
 }
 
 .nav a {
@@ -246,6 +239,35 @@ import { RouterLink } from 'vue-router'
   .gis-icon {
     margin: 0;
   }
+}
+@media (max-width: 420px) {
+
+  .header {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .logo-image {
+    height: 34px;
+  }
+
+  .logo-text {
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+  }
+
+  .nav {
+    gap: 0.6rem;
+  }
+
+  .nav a {
+    font-size: 0.8rem;
+  }
+
+  .gis-link {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
 }
 
 </style>

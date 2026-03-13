@@ -26,4 +26,21 @@ async function login(req, res) {
   }
 }
 
-module.exports = { login }
+async function register(req, res) {
+  try {
+    
+    const { username, email, password } = req.body || {}
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: 'username, email and password are required' })
+    }
+    
+    const {user} = await authService.register(username, email, password)
+
+    return res.status(201).json(user)
+  } catch (err) {
+    const status = err.status || 500
+    return res.status(status).json({ error: err.message || 'Internal server error' })
+  }
+}
+
+module.exports = { login, register }

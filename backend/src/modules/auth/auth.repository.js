@@ -10,4 +10,14 @@ async function findUserByUsername(username) {
   return rows[0] || null
 }
 
-module.exports = { findUserByUsername }
+async function RegisterUser(username, email, hash) {
+  const { rows } = await pool.query(
+    `INSERT INTO users (username, email, password_hash, role)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id, username, role`,
+    [username, email, hash, 'user']
+  )
+  return rows[0] || null
+}
+
+module.exports = { findUserByUsername, RegisterUser }

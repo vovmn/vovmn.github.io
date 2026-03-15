@@ -15,7 +15,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   server:
-    image: my-node-app:latest
+    build: .
     container_name: server_js
     restart: always
     ports:
@@ -24,10 +24,13 @@ services:
       - db  
     environment:
       DATABASE_URL: postgres://auth_user:superpassword@db:5432/auth_db
+    env_file:
+      - .env
 
 networks:
   default:
-    name: myapp-network
+    name: myapp-networkq
+
 
 volumes:
   pgdata:

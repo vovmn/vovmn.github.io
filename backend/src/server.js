@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({ path: '/backend/.env'})
 console.log('CWD:', process.cwd())
 console.log('ENV DB_PASSWORD:', process.env.DB_PASSWORD)
 

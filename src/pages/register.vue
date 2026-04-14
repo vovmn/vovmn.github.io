@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form @submit.prevent="login" class="auth_form">
+    <form @submit.prevent="onSubmit" class="auth_form">
       <h2 class="form_title">Регистрация</h2>
 
       <div class="data">
@@ -8,72 +8,130 @@
         <input
           type="text"
           id="username"
-          v-model="username"
+          v-model.trim="form.username"
           placeholder="Введите имя пользователя"
           class="form_input"
         />
+        <p v-if="errors.username" class="error">{{ errors.username }}</p>
       </div>
 
-        <div class="data">
+      <div class="data">
         <label for="email">Почта:</label>
         <input
-          type="text"
-          id="Email"
-          v-model="username"
-          placeholder="Введите Почту"
+          type="email"
+          id="email"
+          v-model.trim="form.email"
+          placeholder="Введите почту"
           class="form_input"
         />
+        <p v-if="errors.email" class="error">{{ errors.email }}</p>
       </div>
-
 
       <div class="data">
         <label for="password">Пароль:</label>
         <input
           type="password"
           id="password"
-          v-model="password"
+          v-model="form.password"
           placeholder="Введите пароль"
           class="form_input"
         />
+        <p v-if="errors.password" class="error">{{ errors.password }}</p>
       </div>
 
-          <div class="data">
-        <label for="repassword">Пароль:</label>
+      <div class="data">
+        <label for="repassword">Повторите пароль:</label>
         <input
           type="password"
           id="repassword"
-          v-model="password"
+          v-model="form.repassword"
           placeholder="Введите пароль еще раз"
           class="form_input"
         />
+        <p v-if="errors.repassword" class="error">{{ errors.repassword }}</p>
       </div>
 
-      <button type="submit" class="submit_btn">Войти</button>
+      <button type="submit" class="submit_btn" :disabled="loading">
+        {{ loading ? 'Регистрируем…' : 'Зарегистрироваться' }}
+      </button>
+
+      <p v-if="errors.common" class="error common">{{ errors.common }}</p>
 
       <div class="form_footer">
-        <router-link>забыли пароль?</router-link>
-        <p class="register_text">Уже есть аккаунт?<router-link to="/Autorization">Войти</router-link></p>
+        <p class="register_text">Уже есть аккаунт? <router-link to="/login">Войти</router-link></p>
       </div>
     </form>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      repassword: '',
-      email: ''
-    }
-  },
-  methods: {
-    login() {
-      console.log('Пользователь авторизован:', this.username)
-      // код отправка на серв
-    },
-  },
+<script setup>
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { authApi } from '@/services/authApi'
+import { useAuthStore } from '@/stores/auth'
+
+const router = useRouter()
+const auth = useAuthStore()
+
+const form = reactive({
+  username: '',
+  email: '',
+  password: '',
+  repassword: '',
+})
+
+const errors = reactive({
+  username: '',
+  email: '',
+  password: '',
+  repassword: '',
+  common: '',
+})
+
+const loading = ref(false)
+
+function validate() {
+  errors.username = ''
+  errors.email = ''
+  errors.password = ''
+  errors.repassword = ''
+  errors.common = ''
+
+  if (!form.username) errors.username = 'Введите имя пользователя'
+  if (!form.email) errors.email = 'Введите почту'
+  if (!form.email.includes('@')) errors.email = 'Неверный формат почты'
+  if (!form.password) errors.password = 'Введите пароль'
+  if (form.password && form.password.length < 6) errors.password = 'Минимум 6 символов'
+  if (!form.repassword) errors.repassword = 'Подтвердите пароль'
+  if (form.password !== form.repassword) errors.repassword = 'Пароли не совпадают'
+
+  return !(errors.username || errors.email || errors.password || errors.repassword)
+}
+
+async function onSubmit() {
+  if (!validate()) return
+
+  loading.value = true
+  try {
+    const res = await authApi.register({
+      username: form.username,
+      email: form.email,
+      password: form.password,
+    })
+
+    // сохраняем access_token
+    auth.setAccessToken(res.access_token)
+    await auth.fetchMe() // /me
+
+    router.replace('/home')
+  } catch (e) {
+    errors.common =
+      e?.response?.data?.error ||
+      e?.message ||
+      'Не удалось зарегистрироваться. Попробуй ещё раз.'
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

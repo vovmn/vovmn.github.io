@@ -10,7 +10,7 @@ function signAccessToken(user) {
     { expiresIn: '15m' }
   )
 }
-
+const TIME_REFRESH = 30 // дней
 // refresh лучше делать “случайной строкой”, а не JWT
 function makeRefreshToken() {
   return crypto.randomBytes(64).toString('hex') // 128 hex chars
@@ -40,12 +40,13 @@ const ok = await argon2.verify(user.password_hash, password)
 
   const accessToken = signAccessToken(user)
 
-  // если делаешь refresh:
+  // создаём refresh token
   const refreshToken = makeRefreshToken()
   const refreshHash = hashToken(refreshToken)
-
-  // TODO: сохранить refreshHash в БД + expires_at (например +30 дней)
-  // await repo.saveRefreshSession(user.id, refreshHash, expiresAt)
+  
+  // сохраняем в БД с expiration (30 дней)
+  const expiresAt = new Date(Date.now() + TIME_REFRESH * 24 * 60 * 60 * 1000)
+  await repo.saveRefreshSession(user.id, refreshHash, expiresAt)
 
   return { accessToken, refreshToken }
 }
@@ -70,11 +71,60 @@ async function register(username, email, password) {
   // 4 создаём access token
   const accessToken = signAccessToken(user)
 
+  // 5 создаём refresh token
+  const refreshToken = makeRefreshToken()
+  const refreshHash = hashToken(refreshToken)
+  
+  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+  await repo.saveRefreshSession(user.id, refreshHash, expiresAt)
+
   return {
     user,
-    accessToken
+    accessToken,
+    refreshToken
   }
 }
 
 
-module.exports = { login, register }
+async function getMe(userId) {
+  const user = await repo.findUserById(userId)
+  if (!user) {
+    const err = new Error('User not found')
+    err.status = 404
+    throw err
+  }
+  return user
+}
+
+async function refreshAccessToken(refreshToken) {
+  const refreshHash = hashToken(refreshToken)
+  const session = await repo.findRefreshSession(refreshHash)
+
+  if (!session) {
+    const err = new Error('Invalid refresh token')
+    err.status = 401
+    throw err
+  }
+
+  // проверяем expiration
+  if (new Date(session.expires_at) < new Date()) {
+    const err = new Error('Refresh token expired')
+    err.status = 401
+    throw err
+  }
+
+  // проверяем revoked
+  if (session.revoked_at) {
+    const err = new Error('Refresh token revoked')
+    err.status = 401
+    throw err
+  }
+
+  // получаем пользователя и выдаём новый access token
+  const user = await repo.findUserById(session.user_id)
+  const accessToken = signAccessToken(user)
+
+  return { accessToken }
+}
+
+module.exports = { login, register, getMe, refreshAccessToken }

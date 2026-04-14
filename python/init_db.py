@@ -3,7 +3,7 @@ import psycopg
 def main():
     conn = psycopg.connect(
         host="127.0.0.1",
-        port=5433,
+        port=5432,
         dbname="auth_db",
         user="auth_user",
         password="superpassword",
@@ -17,6 +17,7 @@ def main():
         CREATE TABLE IF NOT EXISTS users (
             id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
             username VARCHAR(100) UNIQUE NOT NULL,
+            email VARCHAR(255) UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             role VARCHAR(20) DEFAULT 'user',
             created_at TIMESTAMP DEFAULT NOW()

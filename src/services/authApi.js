@@ -5,6 +5,10 @@ export const authApi = {
     const { data } = await http.post('/auth/login', payload)
     return data
   },
+  async register(payload) {
+    const { data } = await http.post('/auth/register', payload)
+    return data
+  },
   async me() {
     const { data } = await http.get('/auth/me')
     return data

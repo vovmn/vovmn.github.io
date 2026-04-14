@@ -1,5 +1,5 @@
 const authService = require('./auth.service')
-
+const TIME_REFRESH = 30 // дней
 async function login(req, res) {
   try {
     const { username, password } = req.body || {}
@@ -34,13 +34,53 @@ async function register(req, res) {
       return res.status(400).json({ error: 'username, email and password are required' })
     }
     
-    const {user} = await authService.register(username, email, password)
+    const {user, accessToken, refreshToken} = await authService.register(username, email, password)
 
-    return res.status(201).json(user)
+    // refresh-cookie
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: false,
+      path: '/auth',
+      maxAge: TIME_REFRESH * 24 * 60 * 60 * 1000,
+    })
+
+    return res.status(201).json({
+      user,
+      access_token: accessToken
+    })
   } catch (err) {
     const status = err.status || 500
     return res.status(status).json({ error: err.message || 'Internal server error' })
   }
 }
 
-module.exports = { login, register }
+async function me(req, res) {
+  try {
+    const user = await authService.getMe(req.user.sub)
+    return res.json(user)
+  } catch (err) {
+    const status = err.status || 500
+    return res.status(status).json({ error: err.message || 'Internal server error' })
+  }
+}
+
+async function refresh(req, res) {
+  try {
+    const refreshToken = req.cookies.refresh_token
+
+    if (!refreshToken) {
+      return res.status(401).json({ error: 'Missing refresh token' })
+    }
+
+    const { accessToken } = await authService.refreshAccessToken(refreshToken)
+
+    return res.json({ access_token: accessToken })
+  } catch (err) {
+    const status = err.status || 500
+    res.clearCookie('refresh_token')
+    return res.status(status).json({ error: err.message || 'Internal server error' })
+  }
+}
+
+module.exports = { login, register, me, refresh }

@@ -94,8 +94,8 @@ async function onSubmit() {
     })
 
     // если сервер возвращает access_token:
-    auth.setAccessToken(res.access_token)
-    await auth.fetchMe() // /me
+     auth.setAccessToken(res.access_token)
+     await auth.fetchMe() // /me
 
     router.replace('/home')
   } catch (e) {

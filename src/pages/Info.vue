@@ -1,65 +1,125 @@
 
 <script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { watch } from 'vue'
+import Header from '../components/header.vue'
 
-  import Header from '../components/header.vue'
-  import Main_content from '../components/main_content.vue';
+const router = useRouter()
+const auth = useAuthStore()
 
+// перенаправляем, если не авторизован
+watch(
+  () => auth.accessToken,
+  (token) => {
+    if (!token) {
+      router.push('/login')
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
-  <body class="body">
+  <div class="page" v-if="auth.user">
     <Header />
     
     <div class="container">
-      <div class="title-content">
-        <Main_content />      
-      </div>
-      <div class="content">
+      <div class="profile-card">
+        <h2 class="title">Мой профиль</h2>
         
-        <Main_content />
-        <Main_content />
-        
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Логин:</label>
+            <p>{{ auth.user.username }}</p>
+          </div>
+          
+          <div class="info-item">
+            <label>Почта:</label>
+            <p>{{ auth.user.email }}</p>
+          </div>
+          
+          <div class="info-item">
+            <label>Роль:</label>
+            <p class="role" :class="auth.user.role">{{ auth.user.role }}</p>
+          </div>
+        </div>
       </div>
-
     </div>
-  </body>
-     
-  
-   
-
+  </div>
 </template>
 
-<style>
-  .main{
-    flex: 1;
-    padding: 2rem;
-    gap: 1.5rem;
-    
-  }
+<style scoped>
+.page {
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
 
-  .content{
-    display: grid;
-    gap: 1.5rem;
-    padding: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-  /* .rightbar{
-    width: 256px;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
-  .container{
-    min-height: calc(100vh - 80px);
-    gap: 1.5rem;
-    padding: 2rem;
-  }
-  
-  .body{
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
 
-    background-color: #f5f7fa;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    
-  }
+.profile-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+label {
+  font-weight: 600;
+  color: #555;
+  min-width: 120px;
+}
+
+p {
+  margin: 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.role {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.role.user {
+  background: #e8f0ff;
+  color: #2563eb;
+}
+
+.role.admin {
+  background: #ffe8e8;
+  color: #dc2626;
+}
 </style>

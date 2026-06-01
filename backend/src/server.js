@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '/backend/.env'})
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 console.log('CWD:', process.cwd())
 console.log('ENV DB_PASSWORD:', process.env.DB_PASSWORD)
 

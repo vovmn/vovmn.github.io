@@ -43,9 +43,9 @@ const ok = await argon2.verify(user.password_hash, password)
   // если делаешь refresh:
   const refreshToken = makeRefreshToken()
   const refreshHash = hashToken(refreshToken)
+  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
 
-  // TODO: сохранить refreshHash в БД + expires_at (например +30 дней)
-  // await repo.saveRefreshSession(user.id, refreshHash, expiresAt)
+  await repo.saveRefreshSession(user.id, refreshHash, expiresAt)
 
   return { accessToken, refreshToken }
 }

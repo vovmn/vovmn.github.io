@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: superpassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - myapp-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: server_js
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://auth_user:superpassword@db:5432/auth_db
+    env_file:
+      - ./backend/.env
+    networks:
+      - myapp-network
+
+  frontend:
+    image: node:20-slim
+    container_name: frontend
+    working_dir: /app
+    volumes:
+      - ./:/app:cached
+    ports:
+      - "5173:5173"
+    command: sh -c "./scripts/start-frontend.sh"
+    depends_on:
+      - backend
+    networks:
+      - myapp-network
+
+volumes:
+  pgdata:
+  frontend_dist:
+
+networks:
+  myapp-network:
+    external: true

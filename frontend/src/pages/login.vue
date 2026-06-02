@@ -138,13 +138,15 @@ async function onSubmit() {
 
 .auth_form {
   background: white;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 1.75rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   width: 100%;
-  max-width: 420px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 480px;
+  max-height: calc(100vh - 80px);
+  overflow: auto;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .form_title {
@@ -173,12 +175,12 @@ label {
 
 .form_input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e1e5e9;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid #e1e5e9;
   border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: #f8f9fa;
+  font-size: 0.98rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  background: #fbfdff;
   box-sizing: border-box;
 }
 
@@ -279,17 +281,10 @@ label {
 
 /* Адаптивность */
 @media (max-width: 480px) {
-  .container {
-    padding: 10px;
-  }
-
-  .auth_form {
-    padding: 2rem 1.5rem;
-  }
-
-  .form_title {
-    font-size: 1.5rem;
-  }
+  .container { padding: 8px; }
+  .auth_form { padding: 1rem; max-width: 100%; border-radius: 10px; }
+  .form_title { font-size: 1.4rem; }
+  .form_input { font-size: 0.95rem; padding: 0.55rem 0.8rem }
 }
 
 /* Дополнительные эффекты при валидации */

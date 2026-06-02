@@ -31,7 +31,7 @@ async function login(username, password) {
     throw err
   }
 
-const ok = await argon2.verify(user.password_hash, password)
+  const ok = await argon2.verify(user.password_hash, password)
   if (!ok) {
     const err = new Error('Invalid credentials')
     err.status = 401
@@ -47,11 +47,24 @@ const ok = await argon2.verify(user.password_hash, password)
 
   await repo.saveRefreshSession(user.id, refreshHash, expiresAt)
 
-  return { accessToken, refreshToken }
+  return { accessToken, refreshToken, user }
 }
 
+async function verifyAccessToken(token) {
+  try {
+    return jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+  } catch (err) {
+    const error = new Error('Invalid or expired access token')
+    error.status = 401
+    throw error
+  }
+}
 
-async function register(username, email, password) {
+async function findUserById(id) {
+  return repo.findUserById(id)
+}
+
+async function register(username, email, password, phone = null, birth_date = null, residence = null) {
   // 1 проверяем, существует ли пользователь
   const existing = await repo.findUserByUsername(username)
 
@@ -62,19 +75,24 @@ async function register(username, email, password) {
   }
 
   // 2 хешируем пароль
+
   const hash = await argon2.hash(password)
 
-  // 3 создаём пользователя
-  const user = await repo.RegisterUser(username, email, hash)
+  // 3 создаём пользователя (accept optional phone, birth_date, residence)
+  // service layer expects repo.RegisterUser(username, email, hash, phone, birth_date, residence)
+  // but controller will pass these parameters when available
+  const user = await repo.RegisterUser(username, email, hash, phone, birth_date, residence)
 
   // 4 создаём access token
   const accessToken = signAccessToken(user)
 
   return {
     user,
-    accessToken
+    accessToken,
   }
 }
 
+module.exports = { login, register, verifyAccessToken, findUserById }
 
-module.exports = { login, register }
+// export signAccessToken so controllers can issue tokens
+module.exports.signAccessToken = signAccessToken

@@ -12,7 +12,7 @@ import Record from './pages/Record.vue'
 import Login from './pages/Login.vue'
 
 const routes = [
-  { path: '/', redirect: '/home' },
+  { path: '/', redirect: '/login' },
   { path: '/home', component: Home, name: 'Home' },
   { path: '/login', component: Login, name: 'Login' },
   { path: '/register', component: Register, name: 'Register' },
@@ -31,5 +31,23 @@ const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia) // ✅ сначала Pinia
 app.use(router) // потом router (можно и наоборот, но Pinia должна быть ДО использования store)
+
+// Route guard: require auth for most pages, allow login/register publicly
+import { useAuthStore } from './stores/auth'
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore()
+  const publicNames = ['Login', 'Register']
+  if (publicNames.includes(to.name)) {
+    // if already logged in, redirect to home
+    if (auth.user || auth.accessToken) return next({ name: 'Home' })
+    return next()
+  }
+
+  // all other routes require auth
+  if (!auth.user && !auth.accessToken) {
+    return next({ name: 'Login' })
+  }
+  return next()
+})
 
 app.mount('#app')

@@ -21,7 +21,7 @@
         </ul>
       </router-link>
 
-      <router-link to="/Record">
+      <router-link to="/record">
         <ul class="side">
           <b>Запись на прием</b>
         </ul>
@@ -29,11 +29,27 @@
     </nav>
 
     <div class="usermenu">
-      <span><router-link to="/login">Владимир</router-link></span>
-      <b>Выйти</b>
+      <span>
+        <router-link v-if="!auth.user" to="/login">Войти</router-link>
+        <span v-else>{{ auth.user.username }}</span>
+      </span>
+      <b v-if="auth.user" @click="logout">Выйти</b>
     </div>
   </header>
 </template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
+const router = useRouter()
+
+function logout() {
+  auth.logout()
+  router.replace('/login')
+}
+</script>
 
 <style scoped>
 .usermenu {

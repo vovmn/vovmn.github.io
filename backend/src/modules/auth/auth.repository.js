@@ -10,12 +10,22 @@ async function findUserByUsername(username) {
   return rows[0] || null
 }
 
-async function RegisterUser(username, email, hash) {
+async function RegisterUser(username, email, hash, phone = null, birth_date = null, residence = null) {
   const { rows } = await pool.query(
-    `INSERT INTO users (username, email, password_hash, role)
-     VALUES ($1, $2, $3, $4)
-     RETURNING id, username, email, role`,
-    [username, email, hash, 'user']
+    `INSERT INTO users (username, email, password_hash, role, phone, birth_date, residence)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING id, username, email, role, phone, birth_date, residence`,
+    [username, email, hash, 'user', phone, birth_date, residence]
+  )
+  return rows[0] || null
+}
+
+async function findUserById(id) {
+  const { rows } = await pool.query(
+    `SELECT id, username, email, role, phone, birth_date, residence
+     FROM users
+     WHERE id = $1`,
+    [id]
   )
   return rows[0] || null
 }
@@ -30,4 +40,14 @@ async function saveRefreshSession(userId, tokenHash, expiresAt) {
   return rows[0] || null
 }
 
-module.exports = { findUserByUsername, RegisterUser, saveRefreshSession }
+async function findRefreshSession(tokenHash) {
+  const { rows } = await pool.query(
+    `SELECT id, user_id, expires_at
+     FROM refresh_tokens
+     WHERE token_hash = $1 AND expires_at > now()`,
+    [tokenHash]
+  )
+  return rows[0] || null
+}
+
+module.exports = { findUserByUsername, findUserById, RegisterUser, saveRefreshSession }

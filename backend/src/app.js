@@ -4,11 +4,15 @@ const pool = require('./db/pool') // твой пул для работы с Post
 const cookieParser = require('cookie-parser') // для парсинга cookies, если используешь httpOnly refresh токены в куках
 const authRoutes = require('./modules/auth/auth.routes') // роуты для /auth, например, POST /auth/login, POST /auth/me и т.д.
 const app = express()
+const questionnaireRoutes = require('./modules/questionnaire/questionnaire.routes');
+
 
 const allowedOrigins = (process.env.CLIENT_ORIGIN || process.env.CORS_ORIGIN || 'http://localhost:5173')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean)
+
+app.use('/api/questionnaire', questionnaireRoutes);
 
 function isLocalOrigin(origin) {
   return [

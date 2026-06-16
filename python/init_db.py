@@ -1,6 +1,166 @@
 import psycopg
+import json
+import argparse
+from pathlib import Path
+
+def create_tables(conn):
+    """Создание всех таблиц, если их нет"""
+    conn.execute("""
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    """)
+
+    # users и refresh_tokens уже существуют, но убедимся, что gender есть
+    conn.execute("""
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS gender CHAR(1) CHECK (gender IN ('M', 'F'));
+    """)
+
+    # Справочник систем организма
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS body_systems (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            name VARCHAR(100) NOT NULL,
+            code VARCHAR(50) NOT NULL UNIQUE
+        );
+    """)
+
+    # Банк вопросов
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS questions (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            system_id UUID NOT NULL REFERENCES body_systems(id) ON DELETE CASCADE,
+            question_text TEXT NOT NULL,
+            question_type VARCHAR(20) NOT NULL CHECK (question_type IN ('boolean','numeric','single_choice','multiple_choice','text')),
+            gender_filter CHAR(1) DEFAULT NULL CHECK (gender_filter IN ('M','F', NULL)),
+            required BOOLEAN DEFAULT TRUE,
+            sort_order INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (system_id, question_text)
+        );
+    """)
+
+    # Варианты ответов для single_choice / multiple_choice
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS answer_options (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            question_id UUID NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
+            option_text TEXT NOT NULL,
+            option_code VARCHAR(50),
+            sort_order INTEGER DEFAULT 0,
+            UNIQUE (question_id, option_code)
+        );
+    """)
+
+    # Назначение опросников пользователям
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS user_questionnaire_assignments (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            system_id UUID NOT NULL REFERENCES body_systems(id),
+            status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending','in_progress','completed')),
+            assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            completed_at TIMESTAMP,
+            UNIQUE (user_id, system_id)
+        );
+    """)
+
+    # Ответы пользователей
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS user_answers (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            question_id UUID NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
+            assignment_id UUID REFERENCES user_questionnaire_assignments(id),
+            value_boolean BOOLEAN,
+            value_numeric DOUBLE PRECISION,
+            value_text TEXT,
+            selected_option_id UUID REFERENCES answer_options(id),
+            answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (user_id, question_id, selected_option_id)
+        );
+    """)
+
+def create_indexes(conn):
+    """Индексы для часто используемых запросов"""
+    conn.execute("""
+        CREATE INDEX IF NOT EXISTS idx_questions_system ON questions(system_id);
+        CREATE INDEX IF NOT EXISTS idx_answer_options_question ON answer_options(question_id);
+        CREATE INDEX IF NOT EXISTS idx_assignments_user ON user_questionnaire_assignments(user_id);
+        CREATE INDEX IF NOT EXISTS idx_assignments_system ON user_questionnaire_assignments(system_id);
+        CREATE INDEX IF NOT EXISTS idx_user_answers_user ON user_answers(user_id);
+        CREATE INDEX IF NOT EXISTS idx_user_answers_question ON user_answers(question_id);
+        CREATE INDEX IF NOT EXISTS idx_user_answers_assignment ON user_answers(assignment_id);
+    """)
+
+def load_json_data(conn, filepath):
+    """Читает JSON и заполняет body_systems, questions, answer_options"""
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    # Вставка систем
+    systems = data.get('body_systems', [])
+    system_map = {}
+    for s in systems:
+        result = conn.execute("""
+            INSERT INTO body_systems (name, code)
+            VALUES (%(name)s, %(code)s)
+            ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name
+            RETURNING id, code;
+        """, {'name': s['name'], 'code': s['code']}).fetchone()
+        system_map[s['code']] = result[0]  # UUID
+
+    # Вставка вопросов и их вариантов
+    questions = data.get('questions', [])
+    for q in questions:
+        system_id = system_map.get(q['system_code'])
+        if not system_id:
+            print(f"Пропускаем вопрос: неизвестная система {q['system_code']}")
+            continue
+
+        # Вставка вопроса
+        result = conn.execute("""
+            INSERT INTO questions (system_id, question_text, question_type, gender_filter, sort_order)
+            VALUES (%(system_id)s, %(text)s, %(type)s, %(gender)s, %(order)s)
+            ON CONFLICT (system_id, question_text) DO UPDATE SET
+                question_type = EXCLUDED.question_type,
+                gender_filter = EXCLUDED.gender_filter,
+                sort_order = EXCLUDED.sort_order
+            RETURNING id;
+        """, {
+            'system_id': system_id,
+            'text': q['text'],
+            'type': q['type'],
+            'gender': q.get('gender_filter'),
+            'order': q.get('sort_order', 0)
+        }).fetchone()
+
+        question_id = result[0]
+
+        # Вставка вариантов ответа, если есть
+        options = q.get('options')
+        if options:
+            for opt in options:
+                conn.execute("""
+                    INSERT INTO answer_options (question_id, option_text, option_code, sort_order)
+                    VALUES (%(question_id)s, %(text)s, %(code)s, %(order)s)
+                    ON CONFLICT (question_id, option_code) DO NOTHING;
+                """, {
+                    'question_id': question_id,
+                    'text': opt['text'],
+                    'code': opt['code'],
+                    'order': opt.get('sort_order', 0)
+                })
 
 def main():
+    parser = argparse.ArgumentParser(description='Загрузка медицинской анкеты в БД из JSON')
+    parser.add_argument('json_file', nargs='?', default='questionnaire.json',
+                        help='Путь к JSON-файлу с анкетой (по умолчанию questionnaire.json)')
+    args = parser.parse_args()
+
+    json_path = Path(args.json_file)
+    if not json_path.exists():
+        print(f"Ошибка: файл {json_path} не найден")
+        return
+
     conn = psycopg.connect(
         host="127.0.0.1",
         port=5433,
@@ -9,104 +169,17 @@ def main():
         password="superpassword",
     )
 
-    conn.execute("""
-        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-    """)
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-            username VARCHAR(100) UNIQUE NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            role VARCHAR(20) DEFAULT 'user',
-            created_at TIMESTAMP DEFAULT NOW()
-        );
-    """)
-
-    conn.execute("""
-        ALTER TABLE users
-        ADD COLUMN IF NOT EXISTS email VARCHAR(255) UNIQUE NOT NULL;
-    """)
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS refresh_tokens (
-            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-            user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-            token_hash TEXT NOT NULL,
-            expires_at TIMESTAMP NOT NULL,
-            revoked_at TIMESTAMP,
-            created_at TIMESTAMP DEFAULT NOW()
-        );
-    """)
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS questionnaires (
-            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-            name VARCHAR(200) NOT NULL,
-            description TEXT,
-            system_type VARCHAR(100) NOT NULL,
-            created_at TIMESTAMP DEFAULT NOW()
-        );
-    """)
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS questions (
-            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-            questionnaire_id UUID NOT NULL REFERENCES questionnaires(id) ON DELETE CASCADE,
-            question_text TEXT NOT NULL,
-            field_type VARCHAR(50) NOT NULL,
-            system_type VARCHAR(100) NOT NULL,
-            options JSONB DEFAULT '[]'::jsonb,
-            is_required BOOLEAN DEFAULT TRUE,
-            sort_order INT DEFAULT 0,
-            created_at TIMESTAMP DEFAULT NOW()
-        );
-    """)
-
-    result = conn.execute("""
-        SELECT COUNT(*) FROM questionnaires;
-    """)
-    if result.fetchone()[0] == 0:
-        questionnaire_result = conn.execute("""
-            INSERT INTO questionnaires (name, description, system_type)
-            VALUES ($1, $2, $3)
-            RETURNING id;
-        """, (
-            'Медицинская анкета пациента',
-            'Анкета для сбора первичных данных пациента и симптомов.',
-            'medical'
-        ))
-        questionnaire_id = questionnaire_result.fetchone()[0]
-
-        conn.execute("""
-            INSERT INTO questions (questionnaire_id, question_text, field_type, system_type, options, is_required, sort_order)
-            VALUES
-              ($1, 'ФИО пациента', 'text', 'personal', '[]', TRUE, 1),
-              ($1, 'Возраст', 'number', 'personal', '[]', TRUE, 2),
-              ($1, 'Пол', 'radio', 'personal', '["Мужской","Женский","Другое"]', TRUE, 3),
-              ($1, 'Дата рождения', 'date', 'personal', '[]', FALSE, 4),
-              ($1, 'Основные жалобы', 'textarea', 'medical', '[]', TRUE, 5),
-              ($1, 'Хронические заболевания', 'textarea', 'medical', '[]', FALSE, 6),
-              ($1, 'Принимаемые лекарства', 'textarea', 'medical', '[]', FALSE, 7),
-              ($1, 'Тип системы', 'select', 'system', '["Поликлиника","Стационар","Диагностика"]', TRUE, 8);
-        """, [questionnaire_id])
-
-    conn.execute("""
-        CREATE INDEX IF NOT EXISTS idx_refresh_user_id 
-        ON refresh_tokens(user_id);
-    """)
-
-    conn.execute("""
-        CREATE INDEX IF NOT EXISTS idx_refresh_expires 
-        ON refresh_tokens(expires_at);
-    """)
-
-    conn.commit()
-    conn.close()
-
-    print("Schema initialized successfully.")
-
+    try:
+        create_tables(conn)
+        create_indexes(conn)
+        load_json_data(conn, json_path)
+        conn.commit()
+        print("Схема и данные из JSON успешно загружены.")
+    except Exception as e:
+        conn.rollback()
+        print(f"Ошибка при инициализации: {e}")
+    finally:
+        conn.close()
 
 if __name__ == "__main__":
     main()

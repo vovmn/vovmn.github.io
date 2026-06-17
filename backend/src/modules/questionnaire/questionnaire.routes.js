@@ -24,5 +24,6 @@ function verifyToken(req, res, next) {
 router.get('/systems', verifyToken, ctrl.getSystems);
 router.post('/start/:systemCode', verifyToken, ctrl.startQuestionnaire);
 router.post('/submit/:assignmentId', verifyToken, ctrl.submitAnswers);
+router.get('/my-assignments', verifyToken, ctrl.myAssignments);
 
 module.exports = router;

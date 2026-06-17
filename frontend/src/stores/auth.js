@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { authApi } from '@/services/authApi'
 
-const STORAGE_TOKEN_KEY = 'auth_token'
+const STORAGE_TOKEN_KEY = 'access_token'
 const STORAGE_USER_KEY = 'auth_user'
 
 function saveToken(token) {

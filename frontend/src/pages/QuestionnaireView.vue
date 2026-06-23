@@ -8,7 +8,7 @@
       <div v-else-if="error" class="error">{{ error }}</div>
       <div v-else-if="submitted" class="success">
         <h2>Спасибо!</h2>
-        <p>Опросник успешно завершён.</p>
+        <p>Опросник успешно завершен.</p>
         <button @click="goBack">Вернуться к списку</button>
       </div>
       <template v-else>
@@ -37,7 +37,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/axios'
-import Header from '@/components/header.vue'
+import Header from '@/components/Header.vue'
 import QuestionWidget from '@/components/QuestionWidget.vue'
 
 const route = useRoute()
@@ -51,7 +51,7 @@ const loading = ref(true)
 const error = ref(null)
 const submitted = ref(false)
 const isSubmitting = ref(false)
-const answers = reactive({})   // ключ — question.id, значение — объект ответа
+const answers = reactive({})
 
 onMounted(async () => {
   try {
@@ -70,10 +70,19 @@ onMounted(async () => {
 async function handleSubmit() {
   isSubmitting.value = true
   try {
-    const payload = Object.entries(answers).map(([qId, val]) => ({
-      question_id: qId,
-      ...val,   // { value_boolean: true } или { selected_option_id: "..." } и т.д.
-    }))
+    const missingRequired = questions.value.find((question) => question.required && !hasAnswer(question))
+    if (missingRequired) {
+      alert('Заполните все обязательные вопросы')
+      return
+    }
+
+    const payload = questions.value
+      .filter((question) => hasAnswer(question))
+      .map((question) => ({
+        question_id: question.id,
+        ...answers[question.id],
+      }))
+
     await api.post(`/api/questionnaire/submit/${assignmentId.value}`, { answers: payload })
     submitted.value = true
   } catch (e) {
@@ -84,8 +93,28 @@ async function handleSubmit() {
   }
 }
 
+function hasAnswer(question) {
+  const answer = answers[question.id]
+  if (!answer) return false
+
+  switch (question.question_type) {
+    case 'boolean':
+      return Object.prototype.hasOwnProperty.call(answer, 'value_boolean')
+    case 'numeric':
+      return answer.value_numeric !== null && answer.value_numeric !== '' && !Number.isNaN(answer.value_numeric)
+    case 'single_choice':
+      return Boolean(answer.selected_option_id)
+    case 'multiple_choice':
+      return Array.isArray(answer.selected_option_ids) && answer.selected_option_ids.length > 0
+    case 'text':
+      return Boolean(answer.value_text?.trim())
+    default:
+      return false
+  }
+}
+
 function goBack() {
-  router.push('/systems')   // или '/my-assignments', если у тебя такой роут
+  router.push('/info')
 }
 </script>
 

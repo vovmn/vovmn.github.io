@@ -72,31 +72,57 @@ async function submitAnswers(req, res) {
       'SELECT id, user_id, system_id FROM user_questionnaire_assignments WHERE id = $1',
       [assignmentId]
     );
-    if (assignCheck.rows.length === 0 || assignCheck.rows[0].user_id !== userId) {
+    if (assignCheck.rows.length === 0 || String(assignCheck.rows[0].user_id) !== String(userId)) {
       await client.query('ROLLBACK');
       return res.status(403).json({ error: 'Forbidden' });
     }
 
-    for (const ans of answers) {
-      await client.query(
-        `INSERT INTO user_answers (user_id, question_id, assignment_id,
-                value_boolean, value_numeric, value_text, selected_option_id)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
-         ON CONFLICT (user_id, question_id, selected_option_id)
-         DO UPDATE SET value_boolean = EXCLUDED.value_boolean,
-                       value_numeric = EXCLUDED.value_numeric,
-                       value_text = EXCLUDED.value_text,
-                       selected_option_id = EXCLUDED.selected_option_id`,
-        [
-          userId,
-          ans.question_id,
-          assignmentId,
-          ans.value_boolean || null,
-          ans.value_numeric || null,
-          ans.value_text || null,
-          ans.selected_option_id || null
-        ]
+    if (answers.some((ans) => !ans?.question_id)) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'answers must contain question_id' });
+    }
+
+    const questionIds = [...new Set(answers.map((ans) => ans.question_id).map(String))];
+    if (questionIds.length > 0) {
+      const questionsCheck = await client.query(
+        `SELECT id FROM questions
+         WHERE system_id = $1 AND id::text = ANY($2::text[])`,
+        [assignCheck.rows[0].system_id, questionIds]
       );
+      if (questionsCheck.rows.length !== questionIds.length) {
+        await client.query('ROLLBACK');
+        return res.status(400).json({ error: 'answers contain questions from another questionnaire' });
+      }
+    }
+
+    await client.query(
+      'DELETE FROM user_answers WHERE user_id = $1 AND assignment_id = $2',
+      [userId, assignmentId]
+    );
+
+    for (const ans of answers) {
+      const selectedOptionIds = Array.isArray(ans.selected_option_ids)
+        ? ans.selected_option_ids
+        : ans.selected_option_id
+          ? [ans.selected_option_id]
+          : [null];
+
+      for (const selectedOptionId of selectedOptionIds) {
+        await client.query(
+          `INSERT INTO user_answers (user_id, question_id, assignment_id,
+                  value_boolean, value_numeric, value_text, selected_option_id)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [
+            userId,
+            ans.question_id,
+            assignmentId,
+            Object.prototype.hasOwnProperty.call(ans, 'value_boolean') ? ans.value_boolean : null,
+            Object.prototype.hasOwnProperty.call(ans, 'value_numeric') ? ans.value_numeric : null,
+            Object.prototype.hasOwnProperty.call(ans, 'value_text') ? ans.value_text : null,
+            selectedOptionId
+          ]
+        );
+      }
     }
 
     await client.query(

@@ -2,7 +2,6 @@
   <div class="question-widget">
     <p class="question-text">{{ question.question_text }}</p>
 
-    <!-- Boolean (Да/Нет) -->
     <div v-if="question.question_type === 'boolean'" class="options">
       <label class="option">
         <input
@@ -24,17 +23,15 @@
       </label>
     </div>
 
-    <!-- Numeric (число) -->
     <div v-else-if="question.question_type === 'numeric'" class="numeric-input">
       <input
         type="number"
         :value="modelValue?.value_numeric ?? ''"
-        @input="emitValue({ value_numeric: parseFloat($event.target.value) || null })"
+        @input="emitNumericValue($event.target.value)"
         placeholder="Введите число"
       />
     </div>
 
-    <!-- Single choice (один вариант) -->
     <div v-else-if="question.question_type === 'single_choice'" class="options">
       <label
         v-for="opt in question.options"
@@ -51,7 +48,21 @@
       </label>
     </div>
 
-    <!-- Text (свободный текст) -->
+    <div v-else-if="question.question_type === 'multiple_choice'" class="options">
+      <label
+        v-for="opt in question.options"
+        :key="opt.id"
+        class="option"
+      >
+        <input
+          type="checkbox"
+          :checked="selectedOptionIds.includes(opt.id)"
+          @change="toggleOption(opt.id, $event.target.checked)"
+        />
+        {{ opt.text }}
+      </label>
+    </div>
+
     <div v-else-if="question.question_type === 'text'" class="text-input">
       <textarea
         :value="modelValue?.value_text ?? ''"
@@ -61,7 +72,6 @@
       ></textarea>
     </div>
 
-    <!-- Для неописанных типов можно вывести заглушку -->
     <div v-else>
       Тип вопроса "{{ question.question_type }}" не поддерживается
     </div>
@@ -69,6 +79,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   question: {
     type: Object,
@@ -82,8 +94,25 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
+const selectedOptionIds = computed(() => props.modelValue?.selected_option_ids ?? [])
+
 function emitValue(val) {
   emit('update:modelValue', val)
+}
+
+function emitNumericValue(rawValue) {
+  emitValue({
+    value_numeric: rawValue === '' ? null : Number(rawValue),
+  })
+}
+
+function toggleOption(optionId, checked) {
+  const currentIds = selectedOptionIds.value
+  const nextIds = checked
+    ? [...new Set([...currentIds, optionId])]
+    : currentIds.filter((id) => id !== optionId)
+
+  emitValue({ selected_option_ids: nextIds })
 }
 </script>
 
@@ -93,7 +122,7 @@ function emitValue(val) {
   background: #fff;
   padding: 1.25rem;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 .question-text {
   font-weight: 600;

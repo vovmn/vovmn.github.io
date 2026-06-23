@@ -12,8 +12,6 @@ const allowedOrigins = (process.env.CLIENT_ORIGIN || process.env.CORS_ORIGIN || 
   .map((origin) => origin.trim())
   .filter(Boolean)
 
-app.use('/api/questionnaire', questionnaireRoutes);
-
 function isLocalOrigin(origin) {
   return [
     /^http:\/\/localhost(:\d+)?$/,
@@ -36,6 +34,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use(express.json());
+app.use('/api/questionnaire', questionnaireRoutes);
 
 // Ensure new user columns exist (safe, idempotent migration at app start)
 ;(async () => {

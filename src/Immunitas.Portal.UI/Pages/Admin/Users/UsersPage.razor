@@ -1,0 +1,78 @@
+﻿@page "/admin/users"
+@layout AdminLayout
+
+@using Immunitas.Portal.UI.ApiProxies.Contracts
+@using Immunitas.Portal.UI.ApiProxies.Contracts.Enums
+
+@* Название вкладки в браузере *@
+<PageTitle>Админ | Пользователи</PageTitle>
+
+@* Заголовок страницы *@
+<PageHeader>Пользователи</PageHeader>
+
+<MudButton OnClick="OpenCreateUserDialog" 
+           Color="Color.Primary"
+           Variant="Variant.Filled"
+           Class="mb-3" 
+           StartIcon="@Icons.Material.Filled.Add">
+	Добавить
+</MudButton>
+
+@* Таблица с пользователями *@
+<MudDataGrid @ref="_usersDataGrid"
+             T="UserDto"
+             ServerData="ServerReload"
+             Filterable="false"
+             Loading="_isLoading">
+
+    @* Панель инструментов таблицы *@
+    <ToolBarContent>
+
+        @* Поисковая строка *@
+        <MudTextField T="string"
+                      ValueChanged="@(s => OnSearch(s))"
+                      Placeholder="Поиск"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Immediate
+                      DebounceInterval="300"
+                      Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        @* Id *@
+        <PropertyColumn Property="@(u => u.Id)" Title="ID"/>
+
+        @* ФИО *@
+        <PropertyColumn Property="@(u => u.FullName)" Title="ФИО" />
+
+        @* E-mail *@
+        <PropertyColumn Property="@(u => u.Email)" Title="E-mail" />
+
+        @* Лаборатория *@
+        <PropertyColumn Property="@(u => u.LaboratoryName)"
+                        Title="Лаборатория"/>
+
+        @* Дата/время добавления *@
+        <PropertyColumn Property="@(u => u.CreatedAt)" 
+                        Title="Дата/время добавления"
+                        Format="dd.MM.yyyy HH:mm"/>
+        
+        @* Дата/время обновления *@
+        <PropertyColumn Property="@(u => u.UpdatedAt)"
+                        Title="Дата/время обновления"
+                        Format="dd.MM.yyyy HH:mm" />
+    </Columns>
+
+    @* Пагинатор *@
+    <PagerContent>
+        <MudDataGridPager T="UserDto"
+                          RowsPerPageString="Показывать на странице:" />
+    </PagerContent>
+</MudDataGrid>
+
+<CreateUserDialog @ref="_createUserDialog" 
+                  OnUserCreated="OnUserCreated"
+                  Laboratories="_laboratories"/>

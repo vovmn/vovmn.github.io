@@ -1,0 +1,10 @@
+﻿@using Plotly.Blazor;
+
+<div>
+    <PlotlyChart @ref="_chart" 
+                 Data="_chartData" 
+                 Layout="_chartLayout" 
+                 Config="_chartConfig"
+                 ClickAction="ClickAction" 
+                 AfterRender="SubscribeEvents"/>
+</div>

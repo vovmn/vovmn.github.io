@@ -1,0 +1,71 @@
+﻿@using Immunitas.Portal.UI.ApiProxies.Contracts.Enums;
+
+<MudDialog Options="_options"
+		   Visible="_isDialogOpened"
+		   VisibleChanged="OpenedChanged">
+	<TitleContent>
+		<MudText Typo="Typo.h6">Добавление пользователя</MudText>
+	</TitleContent>
+	<DialogContent>
+		<MudForm @bind-IsValid="_isValid" 
+				 Spacing="1">
+			<MudTextField @bind-Value="_email"
+						  Label="E-mail"
+						  Required="true"
+						  RequiredError="Это поле обязательно"/>
+			<MudTextField @bind-Value="_password"
+						  Label="Пароль"
+						  Required="true"
+						  InputType="InputType.Password"
+						  RequiredError="Это поле обязательно"/>
+			<MudTextField @bind-Value="_fullName"
+						  Label="ФИО"
+						  Required="true"
+						  RequiredError="Это поле обязательно"/>
+			<MudSelect T="UserRole?" 
+					   @bind-Value="_role"
+					   Label="Роль"
+					   Required="true"
+					   RequiredError="Это поле обязательно">
+				<MudSelectItem T="UserRole?"
+							   Value="UserRole.Admin">
+					Админ
+				</MudSelectItem>
+				<MudSelectItem T="UserRole?"
+							   Value="UserRole.Doctor">
+					Врач
+				</MudSelectItem>
+			</MudSelect>
+			<MudSelect T="int?"
+					   @bind-Value="_laboratoryId"
+					   Label="Лаборатория"
+					   Required="true"
+					   RequiredError="Это поле обязательно">
+				@foreach (var lab in Laboratories)
+				{
+					<MudSelectItem T="int?"
+								   Value="lab.Id">
+						@lab.Name
+					</MudSelectItem>
+				}
+			</MudSelect>
+		</MudForm>
+	</DialogContent>
+	<DialogActions>
+		@if (_isLoading)
+		{
+			<div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: auto;">
+				<MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+			</div>
+		}
+		else
+		{
+			<MudButton OnClick="CloseDialog" Color="Color.Secondary" Variant="Variant.Outlined">
+				Отмена
+			</MudButton>
+			<MudButton OnClick="CreateUser" Color="Color.Primary" Variant="Variant.Filled" Disabled="!_isValid">
+				Создать
+			</MudButton>
+		}
+	</DialogActions>
+</MudDialog>

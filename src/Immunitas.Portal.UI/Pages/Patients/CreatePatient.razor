@@ -1,0 +1,144 @@
+﻿@page "/patients/create"
+@using Immunitas.Portal.UI.ApiProxies.Contracts
+@using Immunitas.Portal.UI.ApiProxies.Contracts.Enums
+@layout AuthorizedLayout
+
+<PageTitle>Создание пациента</PageTitle>
+
+<PageHeader>Создание нового пациента</PageHeader>
+
+<MudPaper Class="pa-6" Elevation="2">
+    <MudForm Model="_command"
+             @bind-IsValid="_isValid"
+             @bind-Errors="_errors">
+
+        <MudGrid>
+            @* Фамилия *@
+            <MudItem xs="12" sm="6" md="4">
+                <MudTextField @bind-Value="_command.LastName"
+                              Label="Фамилия"
+                              Variant="Variant.Outlined"
+                              Required="true"
+                              RequiredError="Фамилия обязательна"
+                              Disabled="_isSubmitting" />
+            </MudItem>
+
+            @* Имя *@
+            <MudItem xs="12" sm="6" md="4">
+                <MudTextField @bind-Value="_command.FirstName"
+                              Label="Имя"
+                              Variant="Variant.Outlined"
+                              Required="true"
+                              RequiredError="Имя обязательно"
+                              Disabled="_isSubmitting" />
+            </MudItem>
+
+            @* Отчество *@
+            <MudItem xs="12" sm="6" md="4">
+                <MudTextField @bind-Value="_command.MiddleName"
+                              Label="Отчество"
+                              Variant="Variant.Outlined"
+                              Disabled="_isSubmitting" />
+            </MudItem>
+
+            @* Пол *@
+            <MudItem xs="12" sm="6" md="4">
+                <MudSelect @bind-Value="_command.Gender"
+                           Label="Пол"
+                           Variant="Variant.Outlined"
+                           Required="true"
+                           RequiredError="Выберите пол"
+                           PlaceHolder="Не выбрано"
+                           Disabled="_isSubmitting">
+                    <MudSelectItem Value="@Gender.Male">Мужской</MudSelectItem>
+                    <MudSelectItem Value="@Gender.Female">Женский</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+
+            @* Дата рождения *@
+            <MudItem xs="12" sm="6" md="4">
+                <MudDatePicker @bind-Date="_birthDate"
+                               Label="Дата рождения"
+                               Variant="Variant.Outlined"
+                               Disabled="_isSubmitting"
+                               AutoClose="true" />
+            </MudItem>
+
+			@* Номер телефона *@
+            <MudItem xs="12" sm="6" md="4">
+                <MudTextField @bind-Value="_command.PhoneNumber"
+                              Label="Номер телефона"
+                              Variant="Variant.Outlined"
+                              InputType="InputType.Telephone"
+                              Required="true"
+                              RequiredError="Введите номер телефона"
+                              Disabled="_isSubmitting"
+                              Placeholder="+7 (999) 999-99-99" />
+            </MudItem>
+
+            @* Email *@
+            <MudItem xs="12" sm="6" md="4">
+                <MudTextField @bind-Value="_command.Email"
+                              Label="Email"
+                              Variant="Variant.Outlined"
+                              Disabled="_isSubmitting" />
+            </MudItem>
+
+            @* Адрес *@
+            <MudItem xs="12" sm="12" md="8">
+                <MudAutocomplete T="DaDataSuggestion"
+                                 Label="Адрес"
+                                 Variant="Variant.Outlined"
+                                 Required="true"
+                                 RequiredError="Адрес обязателен"
+                                 Disabled="_isSubmitting"
+                                 SearchFunc="@SearchAddress"
+                                 ToStringFunc="@(s => s?.Value ?? string.Empty)"
+                                 ValueChanged="@OnAddressSelected"
+                                 DebounceInterval="500"
+                                 Strict="false"
+                                 CoerceValue="true" 
+                                 MinCharacters="3" />
+            </MudItem>
+        </MudGrid>
+
+        @if (_isSubmitting)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+        }
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Class="my-4">@_errorMessage</MudAlert>
+        }
+
+        <MudGrid Class="mt-4">
+            <MudItem xs="12" Class="d-flex justify-end gap-4">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.Save"
+                           OnClick="@HandleValidSubmit"
+                           Disabled="@(!_isValid || _isSubmitting)">
+                    @if (_isSubmitting)
+                    {
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="ms-1" />
+                    }
+                    else
+                    {
+                        <span>Создать пациента</span>
+                    }
+                </MudButton>
+
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.Cancel"
+                           OnClick="@Cancel"
+                           Disabled="_isSubmitting">
+                    Отмена
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudForm>
+</MudPaper>

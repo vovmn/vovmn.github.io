@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager NavigationManager
+
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="MainTheme"
+                  @bind-IsDarkMode="_darkMode"/>
+
+@Body
+
+@* Required *@
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+@code {
+    bool _darkMode;
+    MudTheme MainTheme = new MudTheme()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = Colors.Blue.Darken2,
+            Secondary = Colors.Green.Accent3,
+            Background = Colors.Gray.Lighten5,
+            AppbarBackground = Colors.Blue.Darken3,
+            Surface = Colors.Shades.White
+        },
+
+        PaletteDark = new PaletteDark()
+        {
+            Primary = Colors.Blue.Lighten1,
+            Secondary = Colors.Green.Accent2,
+            Background = Colors.Gray.Darken3,
+            Surface = Colors.Gray.Darken2,
+            DrawerText = Colors.Shades.White
+        }
+    };
+
+    void ToggleTheme()
+    {
+        _darkMode = !_darkMode;
+    }
+}

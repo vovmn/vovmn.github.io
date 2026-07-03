@@ -1,0 +1,121 @@
+﻿@if (Model == null || Model.Rows.Count == 0)
+{
+    <MudAlert Severity="Severity.Info">
+        Нет доступных данных для отображения сравнительного анализа. Убедитесь, что эталон и антиген содержат одинаковое количество фракций.
+    </MudAlert>
+}
+else
+{
+    <MudTable Items="@Model.Rows" 
+              Hover="true" 
+              Bordered="true" 
+              Striped="false" 
+              Dense="true" 
+              Elevation="2">
+        
+        <HeaderContent>
+            <MudTh Style="font-weight: bold;">Подфракция</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Изм. x</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Вес (аг.) / Вес (эт.)</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">x (эт.)</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">x (аг)</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Дисп. (эт.)</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Дисп. (аг.)</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Вес (эт.) %</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Вес (аг.) %</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Изм. веса %</MudTh>
+            <MudTh Style="font-weight: bold; text-align: right;">Импульс реакции</MudTh>
+        </HeaderContent>
+        
+        <RowTemplate>
+            @* 0. Подфракция *@
+            <MudTd DataLabel="Подфракция" Style="font-weight: 500;">
+                @context.Fraction
+            </MudTd>
+
+            @* 1. Изм. x (diff_mu) — с мягким градиентом *@
+            <MudTd DataLabel="Изм. x" Style="@(GetTrendStyle(context.DiffMu) + "text-align: right; font-weight: 500;")">
+                @context.DiffMu.ToString("+0.0;-0.0;0.0")
+            </MudTd>
+
+            @* 2. Вес (аг.) / Вес (эт.) (ratio_weights) — с фоновой подсветкой *@
+            <MudTd DataLabel="Вес (аг.) / Вес (эт.)" Style="@(GetRowStyle(context) + "text-align: right; font-weight: bold;")">
+                @context.RatioWeights.ToString("F1")
+            </MudTd>
+
+            @* 3. x (эт.) *@
+            <MudTd DataLabel="x (эт.)" Style="text-align: right;">
+                @context.MuEt.ToString("F1")
+            </MudTd>
+
+            @* 4. x (аг) *@
+            <MudTd DataLabel="x (аг)" Style="text-align: right;">
+                @context.MuAg.ToString("F1")
+            </MudTd>
+
+            @* 5. Дисп. (эт.) *@
+            <MudTd DataLabel="Дисп. (эт.)" Style="text-align: right;">
+                @context.SigmaEt.ToString("F1")
+            </MudTd>
+
+            @* 6. Дисп. (аг.) *@
+            <MudTd DataLabel="Дисп. (аг.)" Style="text-align: right;">
+                @context.SigmaAg.ToString("F1")
+            </MudTd>
+
+            @* 7. Вес (эт.) % *@
+            <MudTd DataLabel="Вес (эт.) %" Style="text-align: right;">
+                @context.PercentEt.ToString("F1")%
+            </MudTd>
+
+            @* 8. Вес (аг.) % *@
+            <MudTd DataLabel="Вес (аг.) %" Style="text-align: right;">
+                @context.PercentAg.ToString("F1")%
+            </MudTd>
+
+            @* 9. Изм. веса % *@
+            <MudTd DataLabel="Изм. веса %" Style="@(GetTrendStyle(context.DiffPercent) + "text-align: right;")">
+                @context.DiffPercent.ToString("+0.00;-0.00;0.00")%
+            </MudTd>
+
+            @* 10. Импульс реакции (weight_mu_product) *@
+            <MudTd DataLabel="Импульс реакции" Style="text-align: right; font-weight: 500;">
+                @context.WeightMuProduct.ToString("+0.0;-0.0;0.0")
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+@code {
+    [Parameter]
+    public GmmComparisonResult? Model { get; set; }
+
+    /// <summary>
+    /// Возвращает инлайн-стиль для ячейки отношения весов на основе рассчитанного на сервере градиента
+    /// </summary>
+    private string GetRowStyle(GmmComparisonRow row)
+    {
+        if (string.IsNullOrEmpty(row.GradientBg))
+        {
+            return string.Empty;
+        }
+        
+        return $"background-color: {row.GradientBg}; transition: background-color 0.3s ease;";
+    }
+
+    /// <summary>
+    /// Вспомогательный метод для подкраски текста трендов (изменение x и изменение веса)
+    /// </summary>
+    private string GetTrendStyle(double value)
+    {
+        if (value > 0.01)
+        {
+            return "color: #2e7d32; "; // Темно-зеленый текст для роста
+        }
+        if (value < -0.01)
+        {
+            return "color: #c62828; "; // Темно-красный текст для падения
+        }
+        return string.Empty;
+    }
+}

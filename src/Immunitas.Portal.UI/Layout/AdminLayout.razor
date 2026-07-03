@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Immunitas.Portal.UI.ApiProxies.Contracts.Enums
+
+@inherits LayoutComponentBase
+@layout AuthorizedLayout
+@inject NavigationManager Navigation
+
+<AuthorizeView Roles="@nameof(UserRole.Admin)">
+	<Authorized>
+		@Body
+	</Authorized>
+	<NotAuthorized>
+		@{
+			Navigation.NavigateTo("/");
+		}
+	</NotAuthorized>
+</AuthorizeView>

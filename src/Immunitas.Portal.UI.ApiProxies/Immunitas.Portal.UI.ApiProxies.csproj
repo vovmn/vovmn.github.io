@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Flurl.Http" Version="4.0.2" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Immunitas.Application\Immunitas.Application.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Immunitas.Domain\Immunitas.Domain.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Immunitas.Generators\Immunitas.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ApiServices\Surveys\" />
+  </ItemGroup>
+
+</Project>

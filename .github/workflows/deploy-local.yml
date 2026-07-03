@@ -1,0 +1,23 @@
+name: Deploy local VM
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: immunitas-local-vm
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy with Docker Compose
+    runs-on:
+      - self-hosted
+      - Linux
+      - X64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        run: bash scripts/deploy-local.sh

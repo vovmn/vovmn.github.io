@@ -1,0 +1,135 @@
+﻿@using Immunitas.Portal.UI.ApiProxies.Contracts
+
+<MudGrid Class="mb-4">
+    <MudItem xs="4">
+        <MudPaper Class="pa-4">
+            <MudStack>
+                <MudText Typo="Typo.h6">Выбор данных</MudText>
+                <MudAutocomplete T="PatientDto" 
+                                 Label="Пациент"
+                                 Value="_selectedPatient"
+                                 ValueChanged="OnPatientChanged" 
+                                 SearchFunc="SearchPatient"
+                                 ToStringFunc="@(p => p.FullName)" 
+                                 ShowProgressIndicator/>
+                <MudSelect T="SurveyDto" 
+                           Label="Обследование"
+                           Value="_selectedSurvey"
+                           ValueChanged="OnSurveyChanged">
+                    @foreach (var survey in _surveys)
+                    {
+                        <MudSelectItem T="SurveyDto" Value="@survey">
+                            @($"Обследование #{survey.Id} ({survey.CreatedAt.ToLocalTime():dd.MM.yyyy HH:mm})")
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSelect T="CytometerMeasurementDto"
+                           Label="Эталон" 
+                           Value="_selectedEthaloneMeasurement"
+                           ValueChanged="OnEthaloneMeasurementChanged">
+                    @foreach (var measurement in ExlcudeSelectedMeasurement(_cytometerMeasurements, _selectedAntigenMeasurement))
+                    {
+                        <MudSelectItem T="CytometerMeasurementDto" Value="@measurement">
+                            @($"#{measurement.Id} - {measurement.AntigenName ?? "Эталон"} ({measurement.ProccessedAt.ToLocalTime():dd.MM.yyyy HH:mm})")
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSelect T="CytometerMeasurementDto"
+                           Label="Антиген" 
+                           Value="_selectedAntigenMeasurement"
+                           ValueChanged="OnAntigenMeasurementChanged">
+                    @foreach (var measurement in ExlcudeSelectedMeasurement(_cytometerMeasurements, _selectedEthaloneMeasurement))
+                    {
+                        <MudSelectItem T="CytometerMeasurementDto" Value="@measurement">
+                            @($"#{measurement.Id} - {measurement.AntigenName ?? "Эталон"} ({measurement.ProccessedAt.ToLocalTime():dd.MM.yyyy HH:mm})")
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>            
+        </MudPaper>
+        <MudPaper Class="mt-4 pa-4">
+            <MudText Typo="Typo.h6">Нейтрофильно-лимфоцитарный индекс</MudText>
+            <MudText>Эталон = 1.67 | Антиген = 1.31</MudText>
+        </MudPaper>
+        <MudPaper Class="mt-4 pa-4">
+            <MudSimpleTable Elevation="0">
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Эталон</th>
+                        <th>Антиген</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Подфракции</td>
+                        <td>@(_gmmEthaloneOptions?.ClusterCurves.Count ?? 0)</td>
+                        <td>@(_gmmAntigenOptions?.ClusterCurves.Count ?? 0)</td>
+                    </tr>
+                    <tr>
+                        <td>Мон. яма</td>
+                        <td>Не уст.</td>
+                        <td>Не уст.</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+        </MudPaper>
+        <MudPaper Class="mt-4 pa-4">
+            <MudStack>
+                <MudCheckBox Label="Использовать границы" Value="true"/>
+                <MudNumericField Label="Левая граница" Value="0"/>
+                <MudNumericField Label="Правая граница" Value="250"/>
+            </MudStack>
+        </MudPaper>
+        <MudPaper Class="mt-4 pa-4">
+            <MudStack>
+                <MudButton Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Disabled>
+                    Настройки GMM
+                </MudButton>
+                <MudStack Row Spacing="2">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Style="flex: 1;"
+                               OnClick="ResetEthalone"
+                               Disabled="@(_gmmEthaloneOptions is null)">
+                        Сбросить эталон
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Style="flex: 1;"
+                               OnClick="ResetAntigen"
+                               Disabled="@(_gmmAntigenOptions is null)">
+                        Сбросить антиген
+                    </MudButton>
+                </MudStack>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           OnClick="RunGmmAnalysis"
+                           Disabled=@(_selectedAntigenMeasurement is null && _selectedEthaloneMeasurement is null)>
+                    Запустить анализ
+                </MudButton>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="8">
+        <MudPaper Class="pa-4" Style="height: 100%;">
+            <MudStack>
+                <HistogramPlot @ref="_ethaloneHistogramRef"
+                               @bind-SelectedPoints="_selectedEthalonePoints"
+                               Values="@(_selectedEthaloneMeasurement?.WbcDistribution ?? [])"
+                               GmmOptions="_gmmEthaloneOptions"
+                               Color="skyblue"/>
+                <HistogramPlot @ref="_antigenHistogramRef"
+                               @bind-SelectedPoints="_selectedAntigenPoints"
+                               Values="@(_selectedAntigenMeasurement?.WbcDistribution ?? [])"
+                               GmmOptions="_gmmAntigenOptions" 
+                               Color="#FFB6C1"/>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs=12>
+        <GmmComparisonTable Model="GmmComparisonModel" />
+    </MudItem>
+</MudGrid>

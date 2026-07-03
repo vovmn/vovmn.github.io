@@ -1,0 +1,79 @@
+﻿@using Immunitas.Portal.UI.ApiProxies.ApiServices.Auth
+@using Immunitas.Portal.UI.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+
+@layout MainLayout
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <Authorized>
+        <MudLayout>
+            @* Шапка *@
+            <MudAppBar Elevation="1">
+                @* Кнопка активации левого меню *@
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" 
+                                Color="Color.Inherit"
+                                Edge="Edge.Start"
+                                OnClick="@((e) => DrawerToggle())" />
+
+                @* Название портала *@
+                <MudText Typo="Typo.h5"
+                            Class="ml-3">
+                    Иммунолаб
+                </MudText>
+
+                <MudSpacer />
+
+                @* Правое меню *@
+                <MudMenu>
+                    <ActivatorContent>
+                        <MudIconButton Icon="@Icons.Material.Filled.MoreVert"
+                                        Style="color: #ffffff;"/>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem Icon="@Icons.Material.Filled.Logout"
+                                     OnClick="HandleLogout">
+                            Выйти
+                        </MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
+            </MudAppBar>
+
+            @* Выдвижное меню *@
+            <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+                <NavMenu />
+            </MudDrawer>
+
+            @* Основной контент страницы *@
+            <MudMainContent Class="px-3 mt-2">
+                @Body
+            </MudMainContent>
+        </MudLayout>
+    </Authorized>
+    <NotAuthorized>
+        @{
+			NavigationManager.NavigateTo($"/login?returnUrl={NavigationManager.Uri}");
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject] private JwtAuthStateProvider JwtAuthStateProvider { get; set; } = default!;
+	[Inject] private NavigationManager Navigation { get; set; } = default!;
+	[Inject] private IAuthApiService AuthApiService { get; set; } = default!;
+
+    bool _drawerOpen = true;
+
+    private async Task HandleLogout()
+    {
+        await AuthApiService.Logout();
+        JwtAuthStateProvider.NotifyUserChanged();
+        Navigation.NavigateTo("/login");
+	}
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

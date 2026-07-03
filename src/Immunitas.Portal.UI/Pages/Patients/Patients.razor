@@ -1,0 +1,72 @@
+﻿@page "/"
+@page "/patients"
+@layout AuthorizedLayout
+
+@using Immunitas.Portal.UI.ApiProxies.Contracts
+@using Immunitas.Portal.UI.ApiProxies.Contracts.Enums
+
+@* Название вкладки в браузере *@
+<PageTitle>Пациенты</PageTitle>
+
+@* Заголовок страницы *@
+<PageHeader>Пациенты</PageHeader>
+
+@* Кнопка над таблицей *@
+<MudButton Variant="Variant.Filled"
+           Color="Color.Primary"
+           Class="mb-3"
+           StartIcon="@Icons.Material.Filled.Add"
+           OnClick="@GoToCreatePatient">
+    Добавить
+</MudButton>
+
+@* Таблица с пациентами *@
+<MudDataGrid @ref="_patientsDataGrid"
+             T="PatientDto" 
+             ServerData="ServerReload" 
+             Filterable="false"
+             Loading="_isLoading">
+
+    @* Панель инструментов таблицы *@
+    <ToolBarContent>
+
+        @* Поисковая строка *@
+        <MudTextField T="string" 
+                      ValueChanged="@(s => OnSearch(s))" 
+                      Placeholder="Поиск"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Immediate
+                      Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        @* Id *@
+        <PropertyColumn Property="@(p => p.Id)" Title="ID" />
+
+        @* ФИО *@
+        <PropertyColumn Property="@(p => p.FullName)" Title="ФИО" />
+
+        @* Пол *@
+		<PropertyColumn Property="@(p => p.Gender)" Title="Пол" >
+            <CellTemplate>
+                <MudText>
+                    @context.Item.Gender.ToFriendlyString()
+                </MudText>
+            </CellTemplate>
+        </PropertyColumn>
+
+        @* Дата рождения *@
+        <PropertyColumn Property="@(p => p.BirthDate)" 
+                        Title="Дата рождения"
+                        Format="dd.MM.yyyy" />
+    </Columns>
+
+    @* Пагинатор *@
+    <PagerContent>
+        <MudDataGridPager T="PatientDto" 
+                          RowsPerPageString="Показывать на странице:"/>
+    </PagerContent>
+</MudDataGrid>

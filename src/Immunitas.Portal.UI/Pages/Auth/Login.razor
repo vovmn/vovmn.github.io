@@ -1,0 +1,57 @@
+﻿@page "/login"
+@layout LoginLayout
+
+<MudStack AlignItems="AlignItems.Center">
+	<MudPaper Class="pa-3 mt-5"
+			  Style="width: 400px;">
+		<MudText Typo="Typo.h4"
+				 Align="Align.Center">
+			Иммунолаб
+		</MudText>
+		<MudText Typo="Typo.subtitle1"
+				 Align="Align.Center">
+			Вход в систему
+		</MudText>
+		<MudForm @bind-IsValid="_isFormValid">
+			<MudTextField @bind-Value="_email"
+						  Label="E-mail"
+						  Immediate
+						  Required
+						  RequiredError="Это поле обязательно"
+						  Disabled="_isLoading"
+						  Class="mt-1"/>
+			<MudTextField @bind-Value="_password"
+						  Label="Пароль"
+						  InputType="InputType.Password"
+						  Immediate
+						  Required
+						  RequiredError="Это поле обязательно"
+						  Disabled="_isLoading"
+						  Class="mt-1"/>
+			@if (_isLoading)
+			{
+				<MudProgressCircular Indeterminate="true"
+									 Color="Color.Primary"
+									 Class="my-4 align-self-center"/>
+			}
+			else
+			{
+				<MudButton Variant="Variant.Filled"
+						   Color="Color.Primary"
+						   OnClick="HandleLogin"
+						   Class="mt-3"
+						   Disabled="@(!_isFormValid)">
+					Вход
+				</MudButton>
+			}
+			@if (_isLoginInvalid)
+			{
+				<MudAlert Severity="Severity.Error"
+						  Variant="Variant.Text"
+						  Class="mt-3">
+					Пожалуйста, проверьте введенные данные и попробуйте снова.
+				</MudAlert>
+			}
+		</MudForm>
+	</MudPaper>
+</MudStack>

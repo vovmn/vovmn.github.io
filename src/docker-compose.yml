@@ -1,0 +1,48 @@
+services:
+  # ASP.NET Core приложение
+  web:
+    build:
+      context: .
+      dockerfile: Immunitas.Portal.Bff/Dockerfile
+    expose:
+      - "8080"
+      - "8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=Immunitas_Dev;User Id=postgres;Password=postgres;
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # Reverse proxy
+  reverse-proxy:
+    image: caddy:2.8-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  # PostgreSQL
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: Immunitas_Dev
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,13 @@
+﻿@* Компонент для заголовка страницы *@
+<MudPaper Class="mb-3 pa-2">
+    <MudText Typo="Typo.h4">
+        @ChildContent
+    </MudText>
+</MudPaper>
+
+@code {
+    /// <summary>
+    /// Контент, который отрисовывается внутри заголовка
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

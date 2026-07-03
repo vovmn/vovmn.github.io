@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Immunitas.Portal.UI.ApiProxies.Contracts.Enums
+
+@* Меню навигации *@
+<MudNavMenu>
+    @* Пациенты *@
+    <MudNavLink Href="/patients"
+                Icon="@Icons.Material.Filled.PeopleAlt">
+        Пациенты
+    </MudNavLink>
+
+    <MudNavLink Href="/analysis"
+                Icon="@Icons.Material.Filled.Analytics">
+        Анализ
+    </MudNavLink>
+
+    <AuthorizeView Roles="@nameof(UserRole.Admin)">
+        @* Пользователи *@
+        <MudNavLink Href="/admin/users"
+                    Icon="@Icons.Material.Filled.People">
+            Пользователи
+        </MudNavLink>
+    </AuthorizeView>
+</MudNavMenu>

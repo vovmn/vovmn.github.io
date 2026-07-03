@@ -60,7 +60,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import Header from '../components/header.vue'
+import Header from '../components/Header.vue'
 import DocumentCard from '../components/DocumentCard.vue'
 
 const searchQuery = ref('')

@@ -1,60 +1,66 @@
 <template>
-  <div class="container">
-    <form class="auth_form" @submit.prevent="onSubmit" novalidate>
-      <h2 class="form_title">Авторизация</h2>
-
-      <div class="data">
-        <label for="username">Имя пользователя</label>
-        <input
-          id="username"
-          v-model.trim="form.username"
-          class="form_input"
-          type="text"
-          autocomplete="username"
-          :aria-invalid="!!errors.username"
-          required
-        />
-        <p v-if="errors.username" class="error">{{ errors.username }}</p>
+  <main class="auth-page">
+    <section class="auth-shell">
+      <div class="auth-intro">
+        <span class="brand-mark">IM</span>
+        <h1>Имулаб</h1>
+        <p>Личный кабинет для медицинских анкет и данных пациента.</p>
       </div>
 
-      <div class="data">
-        <label for="password">Пароль</label>
-        <input
-          id="password"
-          v-model="form.password"
-          class="form_input"
-          type="password"
-          autocomplete="current-password"
-          :aria-invalid="!!errors.password"
-          required
-          minlength="6"
-        />
-        <p v-if="errors.password" class="error">{{ errors.password }}</p>
-      </div>
+      <form class="auth-form" @submit.prevent="onSubmit" novalidate>
+        <div class="form-head">
+          <p>Добро пожаловать</p>
+          <h2>Вход в аккаунт</h2>
+        </div>
 
-      <button class="submit_btn" type="submit" :disabled="loading">
-        {{ loading ? 'Входим…' : 'Войти' }}
-      </button>
+        <label class="field" for="username">
+          <span>Имя пользователя</span>
+          <input
+            id="username"
+            v-model.trim="form.username"
+            type="text"
+            autocomplete="username"
+            :aria-invalid="!!errors.username"
+            required
+          />
+          <small v-if="errors.username">{{ errors.username }}</small>
+        </label>
 
-      <p v-if="errors.common" class="error common">{{ errors.common }}</p>
+        <label class="field" for="password">
+          <span>Пароль</span>
+          <input
+            id="password"
+            v-model="form.password"
+            type="password"
+            autocomplete="current-password"
+            :aria-invalid="!!errors.password"
+            required
+          />
+          <small v-if="errors.password">{{ errors.password }}</small>
+        </label>
 
-      <div class="form_footer">
-        <router-link to="/forgot">забыли пароль?</router-link>
-        <p class="register_text">
+        <p v-if="errors.common" class="common-error">{{ errors.common }}</p>
+
+        <button class="submit-btn" type="submit" :disabled="loading">
+          {{ loading ? 'Входим...' : 'Войти' }}
+        </button>
+
+        <p class="switch-link">
           Нет аккаунта?
           <router-link to="/register">Зарегистрироваться</router-link>
         </p>
-      </div>
-    </form>
-  </div>
+      </form>
+    </section>
+  </main>
 </template>
 
 <script setup>
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { authApi } from '@/services/authApi'
 import { useAuthStore } from '@/stores/auth'
 
+const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 
@@ -93,206 +99,166 @@ async function onSubmit() {
       password: form.password,
     })
 
-    // если сервер возвращает access_token:
     auth.setAccessToken(res.access_token)
-    await auth.fetchMe() // /me
-
-    router.replace('/home')
+    await auth.fetchMe()
+    router.replace(typeof route.query.redirect === 'string' ? route.query.redirect : '/info')
   } catch (e) {
-    // аккуратное извлечение текста ошибки:
     errors.common =
+      e?.response?.data?.error ||
       e?.response?.data?.message ||
       e?.message ||
-      'Не удалось войти. Проверь данные и попробуй ещё раз.'
+      'Не удалось войти. Проверьте данные и попробуйте еще раз.'
   } finally {
     loading.value = false
   }
 }
 </script>
+
 <style scoped>
-.error {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  color: #e74c3c;
-}
-.common {
-  text-align: center;
-  margin-top: 1rem;
+.auth-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 1rem;
 }
 
-.container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.auth-shell {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1fr);
+  width: min(960px, 100%);
+  overflow: hidden;
+  border: 1px solid #dce8ea;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(25, 45, 65, 0.12);
+}
+
+.auth-intro {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
-  margin: 0;
-  box-sizing: border-box;
-  overflow: auto;
+  min-height: 520px;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  background:
+    linear-gradient(180deg, rgba(31, 132, 127, 0.9), rgba(18, 99, 95, 0.96)),
+    #1f847f;
+  color: #fff;
 }
 
-.auth_form {
-  background: white;
-  padding: 1.75rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  width: 100%;
-  max-width: 480px;
-  max-height: calc(100vh - 80px);
-  overflow: auto;
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.form_title {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #333;
-  font-size: 1.8rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #324ece 0%, #2563eb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.data {
-  margin-bottom: 1.5rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-.form_input {
-  width: 100%;
-  padding: 0.6rem 0.9rem;
-  border: 1.5px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 0.98rem;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease;
-  background: #fbfdff;
-  box-sizing: border-box;
-}
-
-.form_input:focus {
-  outline: none;
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  transform: translateY(-2px);
-}
-
-.form_input::placeholder {
-  color: #a0a4a8;
-}
-
-.submit_btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #324ece 0%, #2563eb 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-
-  margin-top: 0.5rem;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.submit_btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.submit_btn:active {
-  transform: translateY(0);
-}
-
-.submit_btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
-}
-
-.form_footer {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-.forgot_link {
-  display: block;
-  color: #667eea;
-  text-decoration: none;
-  font-size: 0.9rem;
+.brand-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
   margin-bottom: 1rem;
-  transition: color 0.3s ease;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 900;
 }
 
-.forgot_link:hover {
-  color: #764ba2;
-  text-decoration: underline;
+.auth-intro h1 {
+  margin: 0 0 0.7rem;
+  font-size: 2.4rem;
 }
 
-.register_text {
-  color: #666;
-  font-size: 0.9rem;
+.auth-intro p {
+  max-width: 360px;
   margin: 0;
-  padding-top: 1rem;
-  border-top: 1px solid #e1e5e9;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
 }
 
-.register_link {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.auth-form {
+  padding: 2rem;
 }
 
-.register_link:hover {
-  color: #764ba2;
-  text-decoration: underline;
+.form-head p {
+  margin: 0 0 0.35rem;
+  color: #1f847f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-/* Анимации */
-.auth_form {
-  animation: slideUp 0.5s ease-out;
+.form-head h2 {
+  margin: 0 0 1.5rem;
+  color: #172338;
+  font-size: 1.8rem;
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+.field {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.field span {
+  color: #34475c;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 0.85rem;
+  border: 1px solid #d4e0e3;
+  border-radius: 8px;
+  background: #fbfdfd;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: #1f847f;
+  box-shadow: 0 0 0 3px rgba(31, 132, 127, 0.12);
+}
+
+.field small,
+.common-error {
+  color: #b42318;
+  font-size: 0.84rem;
+}
+
+.common-error {
+  margin: 0.2rem 0 1rem;
+}
+
+.submit-btn {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 8px;
+  background: #1f847f;
+  color: #fff;
+  font-weight: 800;
+}
+
+.submit-btn:hover {
+  background: #176b67;
+}
+
+.submit-btn:disabled {
+  background: #9ab6b4;
+}
+
+.switch-link {
+  margin: 1.2rem 0 0;
+  color: #607184;
+  text-align: center;
+}
+
+.switch-link a {
+  color: #12635f;
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .auth-intro {
+    min-height: auto;
   }
-}
-
-/* Адаптивность */
-@media (max-width: 480px) {
-  .container { padding: 8px; }
-  .auth_form { padding: 1rem; max-width: 100%; border-radius: 10px; }
-  .form_title { font-size: 1.4rem; }
-  .form_input { font-size: 0.95rem; padding: 0.55rem 0.8rem }
-}
-
-/* Дополнительные эффекты при валидации */
-.form_input:invalid:not(:focus):not(:placeholder-shown) {
-  border-color: #e74c3c;
-}
-
-.form_input:valid:not(:focus):not(:placeholder-shown) {
-  border-color: #2ecc71;
 }
 </style>

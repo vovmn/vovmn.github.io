@@ -1,0 +1,7 @@
+node_modules
+.npm-cache
+.env
+*.log
+server*.log
+build*.log
+up*.log

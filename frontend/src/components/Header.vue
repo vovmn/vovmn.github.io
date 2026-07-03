@@ -1,39 +1,23 @@
 <template>
   <header class="header">
-    <h1 class="logo">Имулаб</h1>
+    <router-link class="brand" to="/info" aria-label="Имулаб">
+      <span class="brand-mark">IM</span>
+      <span class="brand-text">Имулаб</span>
+    </router-link>
 
-    <nav class="nav">
-      <router-link to="/home">
-        <ul class="side">
-          <b>Главная</b>
-        </ul>
-      </router-link>
-
-      <router-link to="/info">
-        <ul class="side">
-          <b>Мои данные</b>
-        </ul>
-      </router-link>
-
-      <router-link to="/documents">
-        <ul class="side">
-          <b>Анализы и выписки</b>
-        </ul>
-      </router-link>
-
-      <router-link to="/record">
-        <ul class="side">
-          <b>Запись на прием</b>
-        </ul>
-      </router-link>
+    <nav class="nav" aria-label="Основная навигация">
+      <router-link to="/info">Опросники</router-link>
+      <router-link to="/contacts">Контакты</router-link>
+      <router-link to="/documents">Документы</router-link>
+      <router-link to="/record">Запись</router-link>
     </nav>
 
-    <div class="usermenu">
-      <span>
-        <router-link v-if="!auth.user" to="/login">Войти</router-link>
-        <span v-else>{{ auth.user.username }}</span>
-      </span>
-      <b v-if="auth.user" @click="logout">Выйти</b>
+    <div class="user-menu">
+      <router-link v-if="!auth.user" class="login-link" to="/login">Войти</router-link>
+      <template v-else>
+        <span class="user-chip">{{ auth.user.username }}</span>
+        <button class="logout-btn" type="button" @click="logout">Выйти</button>
+      </template>
     </div>
   </header>
 </template>
@@ -45,56 +29,123 @@ import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
 const router = useRouter()
 
-function logout() {
-  auth.logout()
+async function logout() {
+  await auth.logout()
   router.replace('/login')
 }
 </script>
 
 <style scoped>
-.usermenu {
-  display: flex;
-  gap: 1rem;
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 72px;
+  padding: 0 2rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #dfe8ea;
+  backdrop-filter: blur(14px);
 }
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  color: #162337;
+}
+
+.brand-mark {
+  display: inline-grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 8px;
+  background: #1f847f;
+  color: #fff;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+}
+
+.brand-text {
+  font-size: 1.08rem;
+}
+
 .nav {
   display: flex;
-  gap: 2rem;
+  justify-content: center;
+  gap: 0.4rem;
 }
 
-.logo {
-  font-weight: bold;
-  color: #2563eb;
-  font-size: 200%;
+.nav a {
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  color: #5f6f7f;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
-.header {
-  background: white;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
+.nav a:hover,
+.nav .router-link-active {
+  background: #edf7f6;
+  color: #12635f;
+}
+
+.user-menu {
+  display: inline-flex;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  justify-content: flex-end;
+  gap: 0.75rem;
 }
 
-.side {
-  font-size: larger;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.user-chip {
+  max-width: 180px;
+  overflow: hidden;
+  color: #243244;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.side:hover {
-  color: #2563eb;
-  cursor: pointer;
+.login-link,
+.logout-btn {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  padding: 0 0.95rem;
+  border: 1px solid #c9d7da;
+  border-radius: 8px;
+  background: #fff;
+  color: #203042;
+  font-weight: 700;
 }
 
-/* Стили для router-link */
-a {
-  text-decoration: none;
-  color: inherit;
+.logout-btn:hover,
+.login-link:hover {
+  border-color: #1f847f;
+  color: #12635f;
 }
 
-.router-link-active .side {
-  color: #2563eb;
+@media (max-width: 820px) {
+  .header {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+
+  .nav {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.1rem;
+  }
+
+  .user-menu {
+    justify-content: flex-start;
+  }
 }
 </style>

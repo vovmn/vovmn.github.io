@@ -18,10 +18,21 @@ function saveUser(user) {
   } catch (e) {}
 }
 
+function loadUser() {
+  if (typeof localStorage === 'undefined') return null
+
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_USER_KEY) || 'null')
+  } catch (e) {
+    localStorage.removeItem(STORAGE_USER_KEY)
+    return null
+  }
+}
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     accessToken: (typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_TOKEN_KEY)) || '',
-    user: (typeof localStorage !== 'undefined' && JSON.parse(localStorage.getItem(STORAGE_USER_KEY) || 'null')) || null,
+    user: loadUser(),
   }),
   actions: {
     setAccessToken(token) {

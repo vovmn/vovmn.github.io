@@ -1,53 +1,68 @@
-version: '3.9'
-
 services:
   db:
     image: postgres:16
-    restart: always
+    container_name: imulab_db
+    restart: unless-stopped
     environment:
       POSTGRES_DB: auth_db
       POSTGRES_USER: auth_user
       POSTGRES_PASSWORD: superpassword
+    ports:
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks:
-      - myapp-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auth_user -d auth_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  init-db:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: imulab_init_db
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://auth_user:superpassword@db:5432/auth_db
+      QUESTIONNAIRE_PATH: /usr/src/app/questionnaire.json
+    volumes:
+      - ./python/questionnaire.json:/usr/src/app/questionnaire.json:ro
+    command: ["node", "scripts/init-db.js"]
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: server_js
-    restart: always
+    container_name: imulab_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
+    environment:
+      PORT: 5000
+      DATABASE_URL: postgres://auth_user:superpassword@db:5432/auth_db
+      JWT_ACCESS_SECRET: supersecret1
+      JWT_REFRESH_SECRET: supersecret2
+      CLIENT_ORIGIN: http://localhost:5173,http://localhost
     ports:
       - "5000:5000"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgres://auth_user:superpassword@db:5432/auth_db
-    env_file:
-      - ./backend/.env
-    networks:
-      - myapp-network
 
   frontend:
-    image: node:20-slim
-    container_name: frontend
-    working_dir: /app
-    volumes:
-      - ./:/app:cached
-    ports:
-      - "5173:5173"
-    command: sh -c "./scripts/start-frontend.sh"
+    build:
+      context: .
+      dockerfile: deployment/frontend.Dockerfile
+    container_name: imulab_frontend
+    restart: unless-stopped
     depends_on:
       - backend
-    networks:
-      - myapp-network
+    ports:
+      - "5173:80"
 
 volumes:
   pgdata:
-  frontend_dist:
-
-networks:
-  myapp-network:
-    external: true

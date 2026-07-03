@@ -1,110 +1,108 @@
 <template>
-  <div class="container">
-    <form @submit.prevent="onSubmit" class="auth_form">
-      <h2 class="form_title">Регистрация</h2>
-
-      <div class="data">
-        <label for="username">Имя пользователя:</label>
-        <input
-          type="text"
-          id="username"
-          v-model.trim="form.username"
-          placeholder="Введите имя пользователя"
-          class="form_input"
-        />
-        <p v-if="errors.username" class="error">{{ errors.username }}</p>
+  <main class="auth-page">
+    <section class="auth-shell">
+      <div class="auth-intro">
+        <span class="brand-mark">IM</span>
+        <h1>Имулаб</h1>
+        <p>Создайте профиль пациента, чтобы проходить медицинские анкеты и сохранять ответы.</p>
       </div>
 
-      <div class="data">
-        <label for="email">Почта:</label>
-        <input
-          type="email"
-          id="email"
-          v-model.trim="form.email"
-          placeholder="Введите почту"
-          class="form_input"
-        />
-        <p v-if="errors.email" class="error">{{ errors.email }}</p>
-      </div>
+      <form class="auth-form" @submit.prevent="onSubmit" novalidate>
+        <div class="form-head">
+          <p>Новый профиль</p>
+          <h2>Регистрация</h2>
+        </div>
 
-      <div class="data">
-        <label for="phone">Телефон:</label>
-        <input
-          type="tel"
-          id="phone"
-          v-model="form.phone"
-          @input="onPhoneInput"
-          placeholder="+7 (999) 999-99-99"
-          class="form_input"
-        />
-        <p v-if="errors.phone" class="error">{{ errors.phone }}</p>
-      </div>
+        <div class="fields-grid">
+          <label class="field" for="username">
+            <span>Имя пользователя</span>
+            <input id="username" v-model.trim="form.username" type="text" autocomplete="username" />
+            <small v-if="errors.username">{{ errors.username }}</small>
+          </label>
 
-      <div class="data">
-        <label for="birth">Дата рождения:</label>
-        <input
-          type="date"
-          id="birth"
-          v-model="form.birth_date"
-          class="form_input"
-        />
-        <p v-if="errors.birth_date" class="error">{{ errors.birth_date }}</p>
-      </div>
+          <label class="field" for="email">
+            <span>Почта</span>
+            <input id="email" v-model.trim="form.email" type="email" autocomplete="email" />
+            <small v-if="errors.email">{{ errors.email }}</small>
+          </label>
 
-      <div class="data">
-        <label for="residence">Место проживания:</label>
-        <input
-          type="text"
-          id="residence"
-          v-model.trim="form.residence"
-          placeholder="Город, адрес"
-          class="form_input"
-        />
-      </div>
+          <label class="field" for="phone">
+            <span>Телефон</span>
+            <input
+              id="phone"
+              v-model="form.phone"
+              type="tel"
+              autocomplete="tel"
+              placeholder="+7 (999) 999-99-99"
+              @input="onPhoneInput"
+            />
+            <small v-if="errors.phone">{{ errors.phone }}</small>
+          </label>
 
-      <div class="data">
-        <label for="password">Пароль:</label>
-        <input
-          type="password"
-          id="password"
-          v-model="form.password"
-          placeholder="Введите пароль"
-          class="form_input"
-        />
-        <p v-if="errors.password" class="error">{{ errors.password }}</p>
-      </div>
+          <label class="field" for="birth">
+            <span>Дата рождения</span>
+            <input id="birth" v-model="form.birth_date" type="date" />
+            <small v-if="errors.birth_date">{{ errors.birth_date }}</small>
+          </label>
 
-      <div class="data">
-        <label for="repassword">Повторите пароль:</label>
-        <input
-          type="password"
-          id="repassword"
-          v-model="form.repassword"
-          placeholder="Введите пароль еще раз"
-          class="form_input"
-        />
-        <p v-if="errors.repassword" class="error">{{ errors.repassword }}</p>
-      </div>
+          <label class="field" for="gender">
+            <span>Пол</span>
+            <select id="gender" v-model="form.gender">
+              <option value="">Не указан</option>
+              <option value="F">Женский</option>
+              <option value="M">Мужской</option>
+            </select>
+            <small v-if="errors.gender">{{ errors.gender }}</small>
+          </label>
 
-      <p v-if="errors.common" class="error common">{{ errors.common }}</p>
+          <label class="field" for="residence">
+            <span>Место проживания</span>
+            <input id="residence" v-model.trim="form.residence" type="text" placeholder="Город" />
+          </label>
 
-      <button type="submit" class="submit_btn" :disabled="loading">{{ loading ? 'Регистрация…' : 'Зарегистрироваться' }}</button>
+          <label class="field" for="password">
+            <span>Пароль</span>
+            <input id="password" v-model="form.password" type="password" autocomplete="new-password" />
+            <small v-if="errors.password">{{ errors.password }}</small>
+          </label>
 
-      <div class="form_footer">
-        <router-link to="/forgot">забыли пароль?</router-link>
-        <p class="register_text">Уже есть аккаунт?<router-link to="/login">Войти</router-link></p>
-      </div>
-    </form>
-  </div>
+          <label class="field" for="repassword">
+            <span>Повторите пароль</span>
+            <input id="repassword" v-model="form.repassword" type="password" autocomplete="new-password" />
+            <small v-if="errors.repassword">{{ errors.repassword }}</small>
+          </label>
+        </div>
+
+        <p v-if="errors.common" class="common-error">{{ errors.common }}</p>
+
+        <button type="submit" class="submit-btn" :disabled="loading">
+          {{ loading ? 'Создаем профиль...' : 'Зарегистрироваться' }}
+        </button>
+
+        <p class="switch-link">
+          Уже есть аккаунт?
+          <router-link to="/login">Войти</router-link>
+        </p>
+      </form>
+    </section>
+  </main>
 </template>
 
 <script setup>
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { authApi } from '@/services/authApi'
 import { useAuthStore } from '@/stores/auth'
+import {
+  validateBirthDate,
+  validateEmail,
+  validatePassword,
+  validatePhone,
+  validateUsername,
+} from '@/utils/validators'
 
 const router = useRouter()
+const route = useRoute()
 const auth = useAuthStore()
 
 const form = reactive({
@@ -112,67 +110,78 @@ const form = reactive({
   email: '',
   phone: '',
   birth_date: '',
+  gender: '',
   residence: '',
   password: '',
   repassword: '',
 })
 
-import { validateUsername, validateEmail, validatePassword, validatePhone, validateBirthDate } from '@/utils/validators'
+const errors = reactive({
+  username: '',
+  email: '',
+  phone: '',
+  birth_date: '',
+  gender: '',
+  password: '',
+  repassword: '',
+  common: '',
+})
 
-const errors = reactive({ username: '', email: '', phone: '', birth_date: '', password: '', repassword: '', common: '' })
 const loading = ref(false)
 
 function formatPhone(digits) {
-  // digits: only digits, possibly leading country code
   if (!digits) return ''
-  // if starts with 8 -> convert to 7
-  if (digits.length && digits[0] === '8') digits = '7' + digits.slice(1)
-  // ensure leading +
-  if (digits.length && digits[0] !== '+') digits = '+' + digits
-  // remove non digits except leading +
-  digits = digits.replace(/[^+0-9]/g, '')
-  const num = digits.replace(/[^0-9]/g, '')
-  // format as +X (XXX) XXX-XX-XX for up to 11-12 digits
-  let out = digits[0] === '+' ? '+' : ''
-  let rest = num
+  if (digits[0] === '8') digits = '7' + digits.slice(1)
+
+  let rest = digits
+  let out = '+'
   if (rest.length > 0) {
-    const cc = rest.slice(0, 1); rest = rest.slice(1); out += cc
+    out += rest.slice(0, 1)
+    rest = rest.slice(1)
   }
   if (rest.length > 0) {
-    const part = rest.slice(0, 3); rest = rest.slice(3); out += ' (' + part + ')'
+    out += ` (${rest.slice(0, 3)}`
+    rest = rest.slice(3)
+    if (out.includes('(') && out.length >= 6) out += ')'
   }
   if (rest.length > 0) {
-    const part = rest.slice(0, 3); rest = rest.slice(3); out += ' ' + part
+    out += ` ${rest.slice(0, 3)}`
+    rest = rest.slice(3)
   }
   if (rest.length > 0) {
-    const part = rest.slice(0, 2); rest = rest.slice(2); out += '-' + part
+    out += `-${rest.slice(0, 2)}`
+    rest = rest.slice(2)
   }
   if (rest.length > 0) {
-    const part = rest.slice(0, 2); rest = rest.slice(2); out += '-' + part
+    out += `-${rest.slice(0, 2)}`
   }
   return out.trim()
 }
 
 function onPhoneInput(e) {
-  const raw = e.target.value || ''
-  const digits = raw.replace(/[^0-9]/g, '')
-  // build formatted string
-  const formatted = formatPhone(digits)
-  form.phone = formatted
+  const digits = (e.target.value || '').replace(/[^0-9]/g, '')
+  form.phone = formatPhone(digits)
 }
 
 function validate() {
   errors.common = ''
-  // field-level validation using centralized validators
   errors.username = validateUsername(form.username)
   errors.email = validateEmail(form.email)
   errors.password = validatePassword(form.password)
   errors.repassword = form.password !== form.repassword ? 'Пароли не совпадают' : ''
   errors.phone = validatePhone(form.phone)
   errors.birth_date = validateBirthDate(form.birth_date)
+  errors.gender = form.gender && !['M', 'F'].includes(form.gender) ? 'Выберите пол из списка' : ''
 
-  // overall required fields
-  if (errors.username || errors.email || errors.password || errors.repassword || errors.phone || errors.birth_date) {
+  if (
+    errors.username ||
+    errors.email ||
+    errors.password ||
+    errors.repassword ||
+    errors.phone ||
+    errors.birth_date ||
+    errors.gender
+  ) {
     errors.common = 'Проверьте поля и исправьте ошибки'
     return false
   }
@@ -181,6 +190,7 @@ function validate() {
 
 async function onSubmit() {
   if (!validate()) return
+
   loading.value = true
   try {
     const payload = {
@@ -190,22 +200,21 @@ async function onSubmit() {
       phone: form.phone || null,
       birth_date: form.birth_date || null,
       residence: form.residence || null,
+      gender: form.gender || null,
     }
 
     const res = await authApi.register(payload)
-
-    // if backend returned access_token, use it and fetch /me
     if (res?.access_token) {
       auth.setAccessToken(res.access_token)
       await auth.fetchMe()
-      router.replace('/home')
+      router.replace(typeof route.query.redirect === 'string' ? route.query.redirect : '/info')
       return
     }
 
-    // fallback: try login then fetchMe
-    await authApi.login({ username: form.username, password: form.password })
+    const login = await authApi.login({ username: form.username, password: form.password })
+    auth.setAccessToken(login.access_token)
     await auth.fetchMe()
-    router.replace('/home')
+    router.replace(typeof route.query.redirect === 'string' ? route.query.redirect : '/info')
   } catch (e) {
     errors.common = e?.response?.data?.error || e?.message || 'Ошибка регистрации'
   } finally {
@@ -215,179 +224,170 @@ async function onSubmit() {
 </script>
 
 <style scoped>
-.container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.auth-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 1rem;
+}
+
+.auth-shell {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(360px, 1.22fr);
+  width: min(1080px, 100%);
+  overflow: hidden;
+  border: 1px solid #dce8ea;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(25, 45, 65, 0.12);
+}
+
+.auth-intro {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
-  margin: 0;
-  box-sizing: border-box;
-  overflow: auto;
+  min-height: 620px;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  background:
+    linear-gradient(180deg, rgba(31, 132, 127, 0.9), rgba(18, 99, 95, 0.96)),
+    #1f847f;
+  color: #fff;
 }
 
-.auth_form {
-  background: white;
-  padding: 1.75rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  width: 100%;
-  max-width: 480px;
-  max-height: calc(100vh - 80px);
-  overflow: auto;
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.form_title {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #333;
-  font-size: 1.8rem;
-  font-weight: 600;
-  background: linear-gradient(135deg,#324ece 0%, #2563eb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.data {
-  margin-bottom: 1.5rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-.form_input {
-  width: 100%;
-  padding: 0.6rem 0.9rem;
-  border: 1.5px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 0.98rem;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease;
-  background: #fbfdff;
-  box-sizing: border-box;
-}
-
-.form_input:focus {
-  outline: none;
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  transform: translateY(-2px);
-}
-
-.form_input::placeholder {
-  color: #a0a4a8;
-}
-
-.submit_btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #324ece 0%, #2563eb 100%);;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-
-  margin-top: 0.5rem;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.submit_btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.submit_btn:active {
-  transform: translateY(0);
-}
-
-.submit_btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
-}
-
-.form_footer {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-.forgot_link {
-  display: block;
-  color: #667eea;
-  text-decoration: none;
-  font-size: 0.9rem;
+.brand-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
   margin-bottom: 1rem;
-  transition: color 0.3s ease;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 900;
 }
 
-.forgot_link:hover {
-  color: #764ba2;
-  text-decoration: underline;
+.auth-intro h1 {
+  margin: 0 0 0.7rem;
+  font-size: 2.4rem;
 }
 
-.register_text {
-  color: #666;
-  font-size: 0.9rem;
+.auth-intro p {
+  max-width: 360px;
   margin: 0;
-  padding-top: 1rem;
-  border-top: 1px solid #e1e5e9;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
 }
 
-.register_link {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.auth-form {
+  padding: 2rem;
 }
 
-.register_link:hover {
-  color: #764ba2;
-  text-decoration: underline;
+.form-head p {
+  margin: 0 0 0.35rem;
+  color: #1f847f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-/* Анимации */
-.auth_form {
-  animation: slideUp 0.5s ease-out;
+.form-head h2 {
+  margin: 0 0 1.5rem;
+  color: #172338;
+  font-size: 1.8rem;
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field span {
+  color: #34475c;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 0.85rem;
+  border: 1px solid #d4e0e3;
+  border-radius: 8px;
+  background: #fbfdfd;
+  color: #172338;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #1f847f;
+  box-shadow: 0 0 0 3px rgba(31, 132, 127, 0.12);
+}
+
+.field small,
+.common-error {
+  color: #b42318;
+  font-size: 0.84rem;
+}
+
+.common-error {
+  margin: 1rem 0 0;
+}
+
+.submit-btn {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 1.1rem;
+  border: 0;
+  border-radius: 8px;
+  background: #1f847f;
+  color: #fff;
+  font-weight: 800;
+}
+
+.submit-btn:hover {
+  background: #176b67;
+}
+
+.submit-btn:disabled {
+  background: #9ab6b4;
+}
+
+.switch-link {
+  margin: 1.2rem 0 0;
+  color: #607184;
+  text-align: center;
+}
+
+.switch-link a {
+  color: #12635f;
+  font-weight: 800;
+}
+
+@media (max-width: 820px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .auth-intro {
+    min-height: auto;
   }
 }
 
-/* Адаптивность */
-@media (max-width: 480px) {
-  .container { padding: 8px; }
-  .auth_form { padding: 1rem; max-width: 100%; border-radius: 10px; }
-  .form_title { font-size: 1.4rem; }
-  .form_input { font-size: 0.95rem; padding: 0.55rem 0.8rem }
-}
+@media (max-width: 560px) {
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
 
-/* Дополнительные эффекты при валидации */
-.form_input:invalid:not(:focus):not(:placeholder-shown) {
-  border-color: #e74c3c;
-}
-
-.form_input:valid:not(:focus):not(:placeholder-shown) {
-  border-color: #2ecc71;
+  .auth-form,
+  .auth-intro {
+    padding: 1.25rem;
+  }
 }
 </style>

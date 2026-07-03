@@ -3,29 +3,31 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 
-// pages
+import Documents from './pages/documents.vue'
+import Contacts from './pages/home.vue'
 import Info from './pages/Info.vue'
-import Home from './pages/Home.vue'
-import Register from './pages/Register.vue'
-import Documents from './pages/Documents.vue'
-import Record from './pages/Record.vue'
-import Login from './pages/Login.vue'
-import QuestionnaireView from './pages/QuestionnaireView.vue'   // <-- добавлен импорт
+import Login from './pages/login.vue'
+import QuestionnaireView from './pages/QuestionnaireView.vue'
+import Record from './pages/record.vue'
+import Register from './pages/register.vue'
+import { useAuthStore } from './stores/auth'
 
 const routes = [
-  { path: '/', redirect: '/login' },
-  { path: '/home', component: Home, name: 'Home' },
-  { path: '/login', component: Login, name: 'Login' },
-  { path: '/register', component: Register, name: 'Register' },
-  { path: '/documents', component: Documents, name: 'Documents' },
-  { path: '/record', component: Record, name: 'Record' },
-  { path: '/info', component: Info, name: 'Info' },
-  // новый маршрут для опросника
+  { path: '/', redirect: '/info' },
+  { path: '/home', redirect: '/contacts' },
+  { path: '/contacts', component: Contacts, name: 'Contacts', meta: { requiresAuth: true } },
+  { path: '/login', component: Login, name: 'Login', meta: { publicOnly: true } },
+  { path: '/register', component: Register, name: 'Register', meta: { publicOnly: true } },
+  { path: '/documents', component: Documents, name: 'Documents', meta: { requiresAuth: true } },
+  { path: '/record', component: Record, name: 'Record', meta: { requiresAuth: true } },
+  { path: '/info', component: Info, name: 'Info', meta: { requiresAuth: true } },
   {
     path: '/questionnaire/:systemCode',
     component: QuestionnaireView,
     name: 'Questionnaire',
+    meta: { requiresAuth: true },
   },
+  { path: '/:pathMatch(.*)*', redirect: '/info' },
 ]
 
 const router = createRouter({
@@ -34,25 +36,39 @@ const router = createRouter({
 })
 
 const app = createApp(App)
-
 const pinia = createPinia()
+
 app.use(pinia)
 app.use(router)
 
-// Route guard
-import { useAuthStore } from './stores/auth'
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to) => {
   const auth = useAuthStore()
-  const publicNames = ['Login', 'Register']
-  if (publicNames.includes(to.name)) {
-    if (auth.user || auth.accessToken) return next({ name: 'Home' })
-    return next()
+
+  if (to.meta.publicOnly) {
+    if (!auth.accessToken) return true
+
+    if (!auth.user) {
+      const user = await auth.fetchMe()
+      if (!user) return true
+    }
+
+    return { name: 'Info' }
   }
 
-  if (!auth.user && !auth.accessToken) {
-    return next({ name: 'Login' })
+  if (to.meta.requiresAuth) {
+    if (!auth.accessToken) {
+      return { name: 'Login', query: { redirect: to.fullPath } }
+    }
+
+    if (!auth.user) {
+      const user = await auth.fetchMe()
+      if (!user) {
+        return { name: 'Login', query: { redirect: to.fullPath } }
+      }
+    }
   }
-  return next()
+
+  return true
 })
 
 app.mount('#app')

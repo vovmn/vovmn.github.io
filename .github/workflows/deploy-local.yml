@@ -5,15 +5,44 @@ on:
 
 permissions:
   contents: read
-  packages: read
 
 concurrency:
   group: immunitas-local-vm
   cancel-in-progress: true
 
 jobs:
+  publish:
+    name: Publish application
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore Immunitas.sln
+
+      - name: Publish
+        run: dotnet publish Immunitas.Portal.Bff/Immunitas.Portal.Bff.csproj --configuration Release --no-restore --output ../publish /p:UseAppHost=false
+
+      - name: Upload publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: immunitas-publish
+          path: publish
+
   deploy:
     name: Deploy with Docker Compose
+    needs: publish
     runs-on:
       - self-hosted
       - Linux
@@ -23,12 +52,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Login to GHCR
-        uses: docker/login-action@v3
+      - name: Download publish artifact
+        uses: actions/download-artifact@v4
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          name: immunitas-publish
+          path: publish
 
       - name: Deploy
         run: bash scripts/deploy-local.sh

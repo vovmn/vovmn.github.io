@@ -6,10 +6,13 @@ COMPOSE_DIR="$ROOT_DIR/src"
 
 cd "$COMPOSE_DIR"
 
+export IMMUNITAS_WEB_IMAGE="${IMMUNITAS_WEB_IMAGE:-ghcr.io/vovmn/vovmn.github.io:${GITHUB_REF_NAME:-immunations}}"
+
 docker compose version
+docker compose pull web
 docker compose pull db || true
 docker compose pull reverse-proxy || true
-docker compose up -d --build --remove-orphans
+docker compose up -d --remove-orphans
 docker compose ps
 
 for attempt in {1..30}; do

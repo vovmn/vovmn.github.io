@@ -1,9 +1,7 @@
 services:
   # ASP.NET Core приложение
   web:
-    build:
-      context: .
-      dockerfile: Immunitas.Portal.Bff/Dockerfile
+    image: ${IMMUNITAS_WEB_IMAGE:-ghcr.io/vovmn/vovmn.github.io:immunations}
     expose:
       - "8080"
       - "8081"

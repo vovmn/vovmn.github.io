@@ -2,6 +2,9 @@ name: Deploy local VM
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - immunations
 
 permissions:
   contents: read

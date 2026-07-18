@@ -1,6 +1,6 @@
 <template> 
     <header class="header">
-        <h1 class="logo">Имулаб</h1>
+        <h1 class="logo">Иммунолаб</h1>
 
         <nav class="nav">
             <router-link to="/home">

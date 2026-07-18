@@ -93,6 +93,17 @@ async function createSchema(client) {
       UNIQUE (user_id, question_id, selected_option_id)
     );
 
+    CREATE TABLE IF NOT EXISTS appointments (
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      scheduled_at TIMESTAMP NOT NULL,
+      specialist VARCHAR(255),
+      doctor VARCHAR(255),
+      status VARCHAR(20) DEFAULT 'scheduled' CHECK (status IN ('scheduled','completed','cancelled')),
+      comment TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE INDEX IF NOT EXISTS idx_questions_system ON questions(system_id);
     CREATE INDEX IF NOT EXISTS idx_answer_options_question ON answer_options(question_id);
     CREATE INDEX IF NOT EXISTS idx_assignments_user ON user_questionnaire_assignments(user_id);
@@ -100,6 +111,8 @@ async function createSchema(client) {
     CREATE INDEX IF NOT EXISTS idx_user_answers_user ON user_answers(user_id);
     CREATE INDEX IF NOT EXISTS idx_user_answers_question ON user_answers(question_id);
     CREATE INDEX IF NOT EXISTS idx_user_answers_assignment ON user_answers(assignment_id);
+    CREATE INDEX IF NOT EXISTS idx_appointments_user ON appointments(user_id);
+    CREATE INDEX IF NOT EXISTS idx_appointments_scheduled_at ON appointments(scheduled_at);
   `);
 }
 

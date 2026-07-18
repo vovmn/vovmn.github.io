@@ -1,2 +1,6 @@
 node_modules/
 backend/.env
+backend/node_modules/
+backend/.npm-cache/
+frontend/node_modules/
+frontend/.npm-cache/

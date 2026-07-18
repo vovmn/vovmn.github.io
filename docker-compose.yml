@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:16
-    container_name: imulab_db
+    container_name: immunolab_db
     restart: unless-stopped
     environment:
       POSTGRES_DB: auth_db
@@ -21,7 +21,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: imulab_init_db
+    container_name: immunolab_init_db
     restart: "no"
     depends_on:
       db:
@@ -37,7 +37,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: imulab_backend
+    container_name: immunolab_backend
     restart: unless-stopped
     depends_on:
       db:
@@ -57,7 +57,7 @@ services:
     build:
       context: .
       dockerfile: deployment/frontend.Dockerfile
-    container_name: imulab_frontend
+    container_name: immunolab_frontend
     restart: unless-stopped
     depends_on:
       - backend

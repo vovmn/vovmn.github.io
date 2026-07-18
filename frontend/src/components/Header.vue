@@ -1,12 +1,13 @@
 <template>
   <header class="header">
-    <router-link class="brand" to="/info" aria-label="Имулаб">
+    <router-link class="brand" to="/info" aria-label="Иммунолаб">
       <span class="brand-mark">IM</span>
-      <span class="brand-text">Имулаб</span>
+      <span class="brand-text">Иммунолаб</span>
     </router-link>
 
     <nav class="nav" aria-label="Основная навигация">
       <router-link to="/info">Опросники</router-link>
+      <router-link v-if="auth.user?.role === 'admin'" to="/admin">Админка</router-link>
       <router-link to="/contacts">Контакты</router-link>
       <router-link to="/documents">Документы</router-link>
       <router-link to="/record">Запись</router-link>

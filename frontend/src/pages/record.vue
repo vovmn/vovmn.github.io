@@ -1,242 +1,201 @@
-<script>
-import Header from '../components/Header.vue'
-</script>
-
 <template>
-  <body class="body">
+  <div class="page">
     <Header />
-    
-    <div class="container">
- 
-      <div class="page-header">
-        <h1 class="page-title">Запись на прием</h1>
-      </div>
 
-      <div class="appointment-content">
-        <div class="appointment-form">
-          <div class="form-section">
-            <h2 class="section-title">Выбор специалиста</h2>
-            <div class="form-group">
-              <label class="form-label">Специальность врача</label>
-              <select class="form-select">
-                <option value="">Выберите специальность</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Врач</label>
-              <select class="form-select">
-                <option value="">Выберите врача</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h2 class="section-title">Выбор даты и времени</h2>
-            <div class="form-group">
-              <label class="form-label">Дата приема</label>
-              <input type="date" class="form-input">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Время приема</label>
-              <select class="form-select">
-                <option value="">Выберите время</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h2 class="section-title">Дополнительная информация</h2>
-            <div class="form-group">
-              <label class="form-label">Жалобы и симптомы</label>
-              <textarea class="form-textarea" placeholder="Опишите ваши жалобы..."></textarea>
-            </div>
-          </div>
-
-          <button class="submit-btn">Записаться на прием</button>
+    <main class="appointments">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Запись на прием</p>
+          <h1>Назначенные приемы</h1>
+          <p>Здесь отображается время приема, которое назначил администратор.</p>
         </div>
+      </section>
 
-        <div class="appointment-info">
-          <div class="info-card">
-            <h3 class="info-title">Информация о записи</h3>
-            <div class="info-item">
-              <span class="info-label">Специалист:</span>
-              <span class="info-value">Не выбран</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Дата:</span>
-              <span class="info-value">Не выбрана</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Время:</span>
-              <span class="info-value">Не выбрано</span>
-            </div>
+      <div v-if="loading" class="state">Загрузка записей...</div>
+      <div v-else-if="error" class="state state-error">{{ error }}</div>
+
+      <section v-else-if="appointments.length === 0" class="empty">
+        <h2>Пока нет назначенных приемов</h2>
+        <p>Когда администратор назначит дату и время, запись появится здесь.</p>
+      </section>
+
+      <section v-else class="appointments-list">
+        <article v-for="appointment in appointments" :key="appointment.id" class="appointment-card">
+          <div>
+            <span class="status">{{ statusLabel(appointment.status) }}</span>
+            <h2>{{ formatDateTime(appointment.scheduled_at) }}</h2>
+            <p>{{ appointment.specialist || 'Прием' }}</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </body>
+
+          <dl>
+            <div>
+              <dt>Врач</dt>
+              <dd>{{ appointment.doctor || 'Не указан' }}</dd>
+            </div>
+            <div>
+              <dt>Комментарий</dt>
+              <dd>{{ appointment.comment || 'Нет комментария' }}</dd>
+            </div>
+          </dl>
+        </article>
+      </section>
+    </main>
+  </div>
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
+import api from '@/api/axios'
 import Header from '../components/Header.vue'
+
+const appointments = ref([])
+const loading = ref(true)
+const error = ref('')
+
+onMounted(async () => {
+  try {
+    const { data } = await api.get('/api/appointments/my')
+    appointments.value = data
+  } catch (e) {
+    error.value = e?.response?.data?.error || 'Не удалось загрузить записи'
+  } finally {
+    loading.value = false
+  }
+})
+
+function statusLabel(status) {
+  if (status === 'completed') return 'Завершен'
+  if (status === 'cancelled') return 'Отменен'
+  return 'Запланирован'
+}
+
+function formatDateTime(value) {
+  if (!value) return 'Нет даты'
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(value))
+}
 </script>
 
-<style>
-  .body{
-    background-color: #f5f7fa;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+<style scoped>
+.page {
+  min-height: 100vh;
+}
 
-  .container{
-    min-height: calc(100vh - 80px);
-    gap: 1.5rem;
-    padding: 2rem;
-  }
+.appointments {
+  width: min(980px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
 
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
+.hero,
+.appointment-card,
+.empty,
+.state {
+  border: 1px solid #dce8ea;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(25, 45, 65, 0.07);
+}
 
-  .page-title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin: 0;
-  }
+.hero {
+  margin-bottom: 1rem;
+  padding: 2rem;
+}
 
-  .appointment-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-  }
+.eyebrow {
+  margin: 0 0 0.7rem;
+  color: #1f847f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
 
-  .appointment-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
+h1,
+h2,
+p {
+  margin-top: 0;
+}
 
-  .form-section {
-    margin-bottom: 2rem;
-  }
+h1 {
+  margin-bottom: 0.7rem;
+  color: #152236;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
 
-  .section-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-  }
+.hero p,
+.empty p,
+.appointment-card p,
+dt {
+  color: #637284;
+}
 
-  .form-group {
-    margin-bottom: 1rem;
-  }
+.appointments-list {
+  display: grid;
+  gap: 1rem;
+}
 
-  .form-label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 0.5rem;
-  }
+.appointment-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.6fr);
+  gap: 1rem;
+  padding: 1.3rem;
+}
 
-  .form-select,
-  .form-input,
-  .form-textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    background-color: #fafafa;
-    transition: border-color 0.3s;
-    box-sizing: border-box;
-  }
+.status {
+  display: inline-flex;
+  margin-bottom: 0.8rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: #edf7f6;
+  color: #12635f;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
 
-  .form-textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
+.appointment-card h2 {
+  margin-bottom: 0.35rem;
+  color: #1d2b40;
+}
 
-  .form-select:focus,
-  .form-input:focus,
-  .form-textarea:focus {
-    outline: none;
-    border-color: #3498db;
-  }
+.appointment-card p {
+  margin-bottom: 0;
+}
 
-  .submit-btn {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
-    font-size: 1rem;
-  }
+dl {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+}
 
-  .submit-btn:hover {
-    background-color: #2980b9;
-  }
+dt {
+  margin-bottom: 0.2rem;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
 
-  .appointment-info {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    height: fit-content;
-  }
+dd {
+  margin: 0;
+  color: #203044;
+}
 
-  .info-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+.empty,
+.state {
+  padding: 2rem;
+  text-align: center;
+}
 
-  .info-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin: 0;
-  }
+.state-error {
+  color: #b42318;
+}
 
-  .info-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
+@media (max-width: 720px) {
+  .appointment-card {
+    grid-template-columns: 1fr;
   }
-
-  .info-label {
-    font-weight: 500;
-    color: #555;
-  }
-
-  .info-value {
-    color: #333;
-    font-weight: 500;
-  }
-
-  /* Адаптивность */
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-    
-    .appointment-content {
-      grid-template-columns: 1fr;
-    }
-  }
+}
 </style>

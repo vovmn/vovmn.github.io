@@ -63,7 +63,7 @@
           <p class="address">г. Москва, ул. Примерная, 10, офис 25</p>
 
           <h2>Почта</h2>
-          <a class="mail-link" href="mailto:info@imulab.ru">info@imulab.ru</a>
+          <a class="mail-link" href="mailto:info@immunolab.ru">info@immunolab.ru</a>
         </aside>
       </section>
 

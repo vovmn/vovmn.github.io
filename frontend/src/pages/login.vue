@@ -3,7 +3,7 @@
     <section class="auth-shell">
       <div class="auth-intro">
         <span class="brand-mark">IM</span>
-        <h1>Имулаб</h1>
+        <h1>Иммунолаб</h1>
         <p>Личный кабинет для медицинских анкет и данных пациента.</p>
       </div>
 

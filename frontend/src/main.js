@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 
+import Admin from './pages/Admin.vue'
 import Documents from './pages/documents.vue'
 import Contacts from './pages/home.vue'
 import Info from './pages/Info.vue'
@@ -15,6 +16,7 @@ import { useAuthStore } from './stores/auth'
 const routes = [
   { path: '/', redirect: '/info' },
   { path: '/home', redirect: '/contacts' },
+  { path: '/admin', component: Admin, name: 'Admin', meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/contacts', component: Contacts, name: 'Contacts', meta: { requiresAuth: true } },
   { path: '/login', component: Login, name: 'Login', meta: { publicOnly: true } },
   { path: '/register', component: Register, name: 'Register', meta: { publicOnly: true } },
@@ -65,6 +67,10 @@ router.beforeEach(async (to) => {
       if (!user) {
         return { name: 'Login', query: { redirect: to.fullPath } }
       }
+    }
+
+    if (to.meta.requiresAdmin && auth.user?.role !== 'admin') {
+      return { name: 'Info' }
     }
   }
 

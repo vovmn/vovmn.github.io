@@ -1,9 +1,8 @@
 services:
-  # ASP.NET Core приложение
   web:
     build:
-      context: ..
-      dockerfile: src/Immunitas.Portal.Bff/Dockerfile.runtime
+      context: .
+      dockerfile: Immunitas.Portal.Bff/Dockerfile
     image: immunitas-web:local
     expose:
       - "8080"
@@ -15,7 +14,6 @@ services:
       - db
     restart: unless-stopped
 
-  # Reverse proxy
   reverse-proxy:
     image: caddy:2.8-alpine
     ports:
@@ -28,7 +26,6 @@ services:
       - web
     restart: unless-stopped
 
-  # PostgreSQL
   db:
     image: postgres:17
     environment:

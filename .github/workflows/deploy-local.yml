@@ -1,4 +1,4 @@
-name: Deploy local VM
+name: Deploy immunolab
 
 on:
   workflow_dispatch:
@@ -10,82 +10,21 @@ permissions:
   contents: read
 
 concurrency:
-  group: immunitas-local-vm
+  group: immunolab
   cancel-in-progress: true
 
 jobs:
-  publish:
-    name: Publish application
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: src
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Restore
-        run: dotnet restore Immunitas.sln
-
-      - name: Publish
-        run: dotnet publish Immunitas.Portal.Bff/Immunitas.Portal.Bff.csproj --configuration Release --no-restore --output ../publish /p:UseAppHost=false
-
-      - name: Upload publish artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: immunitas-publish
-          path: publish
-
   deploy:
     name: Deploy with Docker Compose
-    needs: publish
     runs-on:
       - self-hosted
       - Linux
       - X64
+      - immunolab
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Download publish artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          artifacts_json="$(curl -fsSL \
-            --retry 8 \
-            --retry-delay 10 \
-            --connect-timeout 30 \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts")"
-
-          artifact_url="$(printf '%s' "$artifacts_json" | python3 -c 'import json,sys; data=json.load(sys.stdin); matches=[a["archive_download_url"] for a in data["artifacts"] if a["name"]=="immunitas-publish"]; print(matches[0] if matches else "", end="")')"
-          test -n "$artifact_url"
-
-          rm -rf publish /tmp/immunitas-publish.zip
-          mkdir -p publish
-
-          curl -fL \
-            --retry 12 \
-            --retry-all-errors \
-            --retry-delay 15 \
-            --connect-timeout 30 \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "$artifact_url" \
-            -o /tmp/immunitas-publish.zip
-
-          unzip -q /tmp/immunitas-publish.zip -d publish
 
       - name: Deploy
         run: bash scripts/deploy-local.sh

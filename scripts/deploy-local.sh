@@ -14,7 +14,7 @@ docker compose up -d --remove-orphans
 docker compose ps
 
 for attempt in {1..30}; do
-  if curl -fsS http://localhost/openapi/v1.json >/dev/null; then
+  if curl -fsS http://localhost/ >/dev/null; then
     echo "Immunitas is available on http://localhost"
     exit 0
   fi

@@ -1,7 +1,9 @@
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
-console.log('CWD:', process.cwd())
-console.log('ENV DB_PASSWORD:', process.env.DB_PASSWORD)
+
+if (!process.env.JWT_ACCESS_SECRET || Buffer.byteLength(process.env.JWT_ACCESS_SECRET) < 32) {
+  throw new Error('JWT_ACCESS_SECRET must contain at least 32 bytes')
+}
 
 const app = require('./app')
 

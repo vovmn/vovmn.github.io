@@ -34,13 +34,14 @@ onMounted(async () => {
   }
 })
 
-function openQuestionnaire(code) {
-  router.push({ name: 'Questionnaire', params: { systemCode: code } })
+function openQuestionnaire(assignmentId) {
+  router.push({ name: 'Questionnaire', params: { assignmentId } })
 }
 
 function statusLabel(status) {
   if (status === 'completed') return 'Завершен'
   if (status === 'in_progress') return 'В процессе'
+  if (status === 'cancelled') return 'Отменён'
   return 'Ожидает'
 }
 
@@ -125,8 +126,12 @@ function formatDate(value) {
               <strong>{{ formatDate(assign.completed_at) }}</strong>
             </div>
 
-            <button type="button" @click="openQuestionnaire(assign.code)">
-              {{ assign.status === 'completed' ? 'Открыть снова' : 'Начать' }}
+            <button
+              type="button"
+              :disabled="assign.status === 'cancelled'"
+              @click="openQuestionnaire(assign.id)"
+            >
+              {{ assign.status === 'cancelled' ? 'Отменён' : assign.status === 'completed' ? 'Открыть снова' : 'Начать' }}
             </button>
           </article>
         </div>
@@ -295,6 +300,11 @@ h1 {
   color: #526575;
 }
 
+.status-cancelled {
+  background: #f2f3f5;
+  color: #7b8795;
+}
+
 .system-card h3 {
   margin-bottom: 0.35rem;
   color: #1d2b40;
@@ -336,6 +346,11 @@ h1 {
 
 .system-card button:hover {
   background: #176b67;
+}
+
+.system-card button:disabled {
+  background: #aab4bd;
+  cursor: not-allowed;
 }
 
 .state,

@@ -4,6 +4,8 @@ const pool = require('../src/db/pool');
 
 let accessToken;
 let assignmentId;
+let nervousAssignmentId;
+let reproductiveAssignmentId;
 
 beforeAll(async () => {
   // Регистрируем нового юзера с gender=F, чтобы проверить фильтрацию по полу
@@ -12,15 +14,31 @@ beforeAll(async () => {
     .send({
       username: 'qtest_female',
       email: 'qtest_f@example.com',
-      password: 'pass123456',
+      password: 'QuestionnairePass123',
       gender: 'F',
     });
 
   const loginRes = await request(app)
     .post('/auth/login')
-    .send({ username: 'qtest_female', password: 'pass123456' });
+    .send({ username: 'qtest_female', password: 'QuestionnairePass123' });
 
   accessToken = loginRes.body.access_token;
+
+  const user = await pool.query("SELECT id FROM users WHERE username = 'qtest_female'");
+  const system = await pool.query("SELECT id FROM body_systems WHERE code = 'nervous'");
+  const assignment = await pool.query(
+    `INSERT INTO user_questionnaire_assignments (user_id, system_id, status)
+     VALUES ($1, $2, 'pending') RETURNING id`,
+    [user.rows[0].id, system.rows[0].id]
+  );
+  nervousAssignmentId = assignment.rows[0].id;
+  const reproductive = await pool.query("SELECT id FROM body_systems WHERE code = 'reproductive'");
+  const reproductiveAssignment = await pool.query(
+    `INSERT INTO user_questionnaire_assignments (user_id, system_id, status)
+     VALUES ($1, $2, 'pending') RETURNING id`,
+    [user.rows[0].id, reproductive.rows[0].id]
+  );
+  reproductiveAssignmentId = reproductiveAssignment.rows[0].id;
 });
 
 afterAll(async () => {
@@ -46,7 +64,7 @@ describe('Questionnaire API', () => {
 
   test('POST /api/questionnaire/start/nervous - starts questionnaire', async () => {
     const res = await request(app)
-      .post('/api/questionnaire/start/nervous')
+      .post(`/api/questionnaire/assignments/${nervousAssignmentId}/start`)
       .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
 
@@ -61,26 +79,14 @@ describe('Questionnaire API', () => {
   });
 
   test('POST /api/questionnaire/submit/:id - submits answers', async () => {
-    // Для теста достаточно отправить ответ на первый boolean-вопрос
-    const answers = [
-      {
-        question_id: '',   // заполним динамически
-        value_boolean: true,
-      },
-    ];
-
-    // Получим вопросы из стартового запроса (не будем повторно дёргать, возьмём assignment)
+    // Backend требует ответы на все видимые обязательные вопросы.
     const startRes = await request(app)
-      .post('/api/questionnaire/start/nervous')
+      .post(`/api/questionnaire/assignments/${nervousAssignmentId}/start`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    const firstBoolQ = startRes.body.questions.find(q => q.question_type === 'boolean');
-    if (!firstBoolQ) {
-      console.warn('Нет boolean вопроса, пропускаем submit тест');
-      return;
-    }
-
-    answers[0].question_id = firstBoolQ.id;
+    const answers = startRes.body.questions
+      .filter((question) => !question.display_condition)
+      .map((question) => ({ question_id: question.id, value_boolean: false }));
 
     const submitRes = await request(app)
       .post(`/api/questionnaire/submit/${startRes.body.assignment_id}`)
@@ -93,7 +99,7 @@ describe('Questionnaire API', () => {
 
   test('POST /api/questionnaire/start/reproductive - filters by gender (female gets female questions only)', async () => {
     const res = await request(app)
-      .post('/api/questionnaire/start/reproductive')
+      .post(`/api/questionnaire/assignments/${reproductiveAssignmentId}/start`)
       .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
 

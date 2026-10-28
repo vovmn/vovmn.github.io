@@ -4,6 +4,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 
 import Admin from './pages/Admin.vue'
+import About from './pages/About.vue'
 import Documents from './pages/documents.vue'
 import Contacts from './pages/home.vue'
 import Info from './pages/Info.vue'
@@ -17,6 +18,7 @@ const routes = [
   { path: '/', redirect: '/info' },
   { path: '/home', redirect: '/contacts' },
   { path: '/admin', component: Admin, name: 'Admin', meta: { requiresAuth: true, requiresAdmin: true } },
+  { path: '/about', component: About, name: 'About', meta: { requiresAuth: true } },
   { path: '/contacts', component: Contacts, name: 'Contacts', meta: { requiresAuth: true } },
   { path: '/login', component: Login, name: 'Login', meta: { publicOnly: true } },
   { path: '/register', component: Register, name: 'Register', meta: { publicOnly: true } },
@@ -24,7 +26,7 @@ const routes = [
   { path: '/record', component: Record, name: 'Record', meta: { requiresAuth: true } },
   { path: '/info', component: Info, name: 'Info', meta: { requiresAuth: true } },
   {
-    path: '/questionnaire/:systemCode',
+    path: '/questionnaire/assignment/:assignmentId',
     component: QuestionnaireView,
     name: 'Questionnaire',
     meta: { requiresAuth: true },

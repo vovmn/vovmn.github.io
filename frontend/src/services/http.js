@@ -5,7 +5,6 @@ import { useAuthStore } from '@/stores/auth'
 // In development use VITE_API_URL or localhost:5000; in production default to
 // the relative `/api` path so nginx can proxy requests to the backend.
 const baseURL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5000')
-console.log('🌐 API baseURL:', baseURL)
 
 export const http = axios.create({
   baseURL, // например https://api.site.com
@@ -17,7 +16,6 @@ export const http = axios.create({
 http.interceptors.request.use((config) => {
   try {
     const auth = useAuthStore()
-    console.log('📋 Store state:', { accessToken: auth.accessToken ? 'exists' : 'empty', user: auth.user ? 'exists' : 'null' })
     
     if (!config.headers) {
       config.headers = {}
@@ -25,9 +23,6 @@ http.interceptors.request.use((config) => {
     
     if (auth.accessToken) {
       config.headers.Authorization = `Bearer ${auth.accessToken}`
-      console.log('🔐 Token added to request')
-    } else {
-      console.warn('⚠️ No token in store')
     }
   } catch (err) {
     console.error('❌ Error in request interceptor:', err)
@@ -64,11 +59,7 @@ http.interceptors.response.use(
 
       isRefreshing = true
       try {
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_API_URL}/auth/refresh`,
-          {},
-          { withCredentials: true },
-        )
+        const { data } = await axios.post(`${baseURL}/auth/refresh`, {}, { withCredentials: true })
         auth.setAccessToken(data.access_token)
         resolveQueue(null, data.access_token)
         return http(original)

@@ -1,21 +1,31 @@
 const authService = require('./auth.service');
 
+function sendError(res, err, fallback = 'Internal server error') {
+  const status = Number.isInteger(err.status) ? err.status : 500;
+  return res.status(status).json({
+    error: status >= 500 ? fallback : (err.message || fallback),
+  });
+}
+
+function setRefreshCookie(res, refreshToken) {
+  res.cookie('refresh_token', refreshToken, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  });
+}
+
 async function login(req, res) {
   try {
     const { username, password } = req.body || {};
-    if (!username || !password) {
+    if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
       return res.status(400).json({ error: 'username and password are required' });
     }
 
     const { accessToken, refreshToken, user } = await authService.login(username, password);
-
-    res.cookie('refresh_token', refreshToken, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/auth',
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
+    setRefreshCookie(res, refreshToken);
 
     return res.json({
       access_token: accessToken,
@@ -28,8 +38,7 @@ async function login(req, res) {
       },
     });
   } catch (err) {
-    const status = err.status || 500;
-    return res.status(status).json({ error: err.message || 'Internal server error' });
+    return sendError(res, err);
   }
 }
 
@@ -38,6 +47,15 @@ async function register(req, res) {
     let { username, email, password, phone, birth_date, residence, gender } = req.body || {};
     if (!username || !email || !password) {
       return res.status(400).json({ error: 'username, email and password are required' });
+    }
+    if (typeof password !== 'string' || password.length < 12 || password.length > 128) {
+      return res.status(400).json({ error: 'password must contain 12 to 128 characters' });
+    }
+    if (typeof username !== 'string' || username.length < 3 || username.length > 100) {
+      return res.status(400).json({ error: 'username must contain 3 to 100 characters' });
+    }
+    if (typeof email !== 'string' || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'valid email is required' });
     }
 
     // нормализация телефона
@@ -71,9 +89,10 @@ async function register(req, res) {
       return res.status(400).json({ error: 'gender must be M or F' });
     }
 
-    const { user, accessToken } = await authService.register(
+    const { user, accessToken, refreshToken } = await authService.register(
       username, email, password, phone, birth_date, residence, gender
     );
+    setRefreshCookie(res, refreshToken);
 
     return res.status(201).json({
       access_token: accessToken,
@@ -89,50 +108,14 @@ async function register(req, res) {
       },
     });
   } catch (err) {
-    const status = err.status || 500;
-    return res.status(status).json({ error: err.message || 'Internal server error' });
+    return sendError(res, err);
   }
 }
 
 async function me(req, res) {
   try {
-    const authorization = req.headers.authorization || '';
-    let token = authorization.replace(/^Bearer\s+/i, '');
-    if (!token && req.body && typeof req.body.token === 'string') {
-      token = req.body.token;
-    }
-    if (!token && req.cookies && req.cookies.access_token) {
-      token = req.cookies.access_token;
-    }
-
-    if (!token) {
-      return res.status(401).json({ error: 'Authorization token required' });
-    }
-
-    let payload;
-    try {
-      payload = await authService.verifyAccessToken(token);
-    } catch (err) {
-      console.warn('auth.me: access token verify failed', err.message);
-      return res.status(401).json({ error: 'Invalid or expired access token' });
-    }
-
-    console.log('auth.me token:', token);
-    console.log('auth.me payload:', payload);
-
-    const user = await authService.findUserById(payload.sub);
-    if (!user) {
-      if (payload.username) {
-        const alt = await authService.findUserByUsername?.(payload.username);
-        if (alt) {
-          return res.json({
-            id: alt.id, username: alt.username, email: alt.email, role: alt.role,
-            gender: alt.gender, phone: alt.phone, birth_date: alt.birth_date, residence: alt.residence
-          });
-        }
-      }
-      return res.status(404).json({ error: 'User not found' });
-    }
+    const user = await authService.findUserById(req.user.sub);
+    if (!user) return res.status(404).json({ error: 'User not found' });
 
     return res.json({
       id: user.id,
@@ -145,14 +128,18 @@ async function me(req, res) {
       gender: user.gender,               // ← добавлено
     });
   } catch (err) {
-    const status = err.status || 401;
-    return res.status(status).json({ error: err.message || 'Unauthorized' });
+    return sendError(res, err, 'Unauthorized');
   }
 }
 
 async function logout(req, res) {
-  res.clearCookie('refresh_token', { path: '/auth' });
-  return res.json({ success: true });
+  try {
+    await authService.revokeRefreshToken(req.cookies && req.cookies.refresh_token);
+    res.clearCookie('refresh_token', { path: '/' });
+    return res.json({ success: true });
+  } catch (err) {
+    return sendError(res, err);
+  }
 }
 
 async function refresh(req, res) {
@@ -160,18 +147,11 @@ async function refresh(req, res) {
     const token = req.cookies && req.cookies.refresh_token;
     if (!token) return res.status(401).json({ error: 'Refresh token required' });
 
-    const hash = require('crypto').createHash('sha256').update(token).digest('hex');
-    const session = await authService.findRefreshSession(hash);
-    if (!session) return res.status(401).json({ error: 'Invalid or expired refresh token' });
-
-    const user = await authService.findUserById(session.user_id);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-
-    const accessToken = authService.signAccessToken(user);
+    const { accessToken, refreshToken } = await authService.rotateRefreshToken(token);
+    setRefreshCookie(res, refreshToken);
     return res.json({ access_token: accessToken });
   } catch (err) {
-    const status = err.status || 401;
-    return res.status(status).json({ error: err.message || 'Unauthorized' });
+    return sendError(res, err, 'Unauthorized');
   }
 }
 

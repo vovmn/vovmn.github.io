@@ -1,474 +1,56 @@
 <template>
-  <div class="page">
-    <Header />
-
-    <main class="admin">
-      <section class="hero">
-        <div>
-          <p class="eyebrow">Панель администратора</p>
-          <h1>Назначения и приемы</h1>
-          <p>Выберите пациента, назначьте ему опросник или создайте время приема.</p>
-        </div>
+  <div class="page"><Header /><main class="admin">
+    <section class="hero"><div><p class="eyebrow">Панель администратора</p><h1>Пациенты и назначения</h1><p>Создавайте отдельные назначения с дедлайном и сохраняйте историю прохождений.</p></div>
+      <div class="stats"><div><strong>{{ users.length }}</strong><span>пациентов</span></div><div><strong>{{ activeCount }}</strong><span>активных</span></div><div><strong>{{ overdueCount }}</strong><span>просрочено</span></div><div><strong>{{ completedCount }}</strong><span>завершено</span></div></div>
+    </section>
+    <div v-if="loading" class="message">Загрузка...</div><div v-else-if="error" class="message error">{{ error }}</div>
+    <template v-else>
+      <section class="workspace">
+        <form class="panel" @submit.prevent="assignQuestionnaires"><header><h2>Новое назначение</h2><p>Можно выбрать несколько опросников.</p></header>
+          <label class="field"><span>Пациент</span><select v-model="assignmentForm.user_id" required><option value="">Выберите пациента</option><option v-for="u in users" :key="u.id" :value="u.id">{{ u.username }} · {{ u.email }}</option></select></label>
+          <fieldset class="picker"><legend>Опросники</legend><label v-for="s in systems" :key="s.id" class="check"><input v-model="assignmentForm.system_ids" type="checkbox" :value="s.id" /><span><strong>{{ s.name }}</strong><small>{{ s.question_count }} вопросов</small></span></label></fieldset>
+          <div class="row"><label class="field"><span>Срок</span><input v-model="assignmentForm.due_at" type="datetime-local" /></label><label class="field"><span>Приоритет</span><select v-model="assignmentForm.priority"><option value="low">Низкий</option><option value="normal">Обычный</option><option value="high">Высокий</option><option value="urgent">Срочный</option></select></label></div>
+          <label class="field"><span>Комментарий пациенту</span><textarea v-model.trim="assignmentForm.note" rows="3" placeholder="Цель назначения или инструкция"></textarea></label>
+          <button class="primary" :disabled="saving || !canAssign">{{ saving ? 'Назначаем...' : `Назначить (${assignmentForm.system_ids.length})` }}</button>
+        </form>
+        <form class="panel" @submit.prevent="createAppointment"><header><h2>Новый приём</h2><p>Дата, специалист и примечание.</p></header>
+          <label class="field"><span>Пациент</span><select v-model="appointmentForm.user_id" required><option value="">Выберите пациента</option><option v-for="u in users" :key="u.id" :value="u.id">{{ u.username }} · {{ u.email }}</option></select></label>
+          <div class="row"><label class="field"><span>Дата</span><input v-model="appointmentForm.date" type="date" required /></label><label class="field"><span>Время</span><input v-model="appointmentForm.time" type="time" required /></label></div>
+          <div class="row"><label class="field"><span>Специализация</span><input v-model.trim="appointmentForm.specialist" /></label><label class="field"><span>Врач</span><input v-model.trim="appointmentForm.doctor" /></label></div>
+          <label class="field"><span>Комментарий</span><textarea v-model.trim="appointmentForm.comment" rows="3"></textarea></label><button class="primary" :disabled="savingAppointment">Назначить приём</button>
+        </form>
       </section>
-
-      <div v-if="loading" class="state">Загрузка данных...</div>
-      <div v-else-if="error" class="state state-error">{{ error }}</div>
-
-      <template v-else>
-        <section class="forms-grid">
-          <form class="panel" @submit.prevent="assignQuestionnaire">
-            <div class="section-heading">
-              <h2>Назначить опросник</h2>
-              <p>Назначение появится в кабинете пациента.</p>
-            </div>
-
-            <label class="field">
-              <span>Пациент</span>
-              <select v-model="questionnaireForm.user_id" required>
-                <option value="">Выберите пациента</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                  {{ user.username }} · {{ user.email }}
-                </option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Опросник</span>
-              <select v-model="questionnaireForm.system_id" required>
-                <option value="">Выберите систему</option>
-                <option v-for="system in systems" :key="system.id" :value="system.id">
-                  {{ system.name }}
-                </option>
-              </select>
-            </label>
-
-            <button class="submit-btn" type="submit" :disabled="savingQuestionnaire">
-              {{ savingQuestionnaire ? 'Назначаем...' : 'Назначить опросник' }}
-            </button>
-          </form>
-
-          <form class="panel" @submit.prevent="createAppointment">
-            <div class="section-heading">
-              <h2>Назначить прием</h2>
-              <p>Создайте дату и время приема для пациента.</p>
-            </div>
-
-            <label class="field">
-              <span>Пациент</span>
-              <select v-model="appointmentForm.user_id" required>
-                <option value="">Выберите пациента</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                  {{ user.username }} · {{ user.email }}
-                </option>
-              </select>
-            </label>
-
-            <div class="row">
-              <label class="field">
-                <span>Дата</span>
-                <input v-model="appointmentForm.date" type="date" required />
-              </label>
-
-              <label class="field">
-                <span>Время</span>
-                <input v-model="appointmentForm.time" type="time" required />
-              </label>
-            </div>
-
-            <div class="row">
-              <label class="field">
-                <span>Специализация</span>
-                <input v-model.trim="appointmentForm.specialist" type="text" placeholder="Терапевт" />
-              </label>
-
-              <label class="field">
-                <span>Врач</span>
-                <input v-model.trim="appointmentForm.doctor" type="text" placeholder="Иванов И.И." />
-              </label>
-            </div>
-
-            <label class="field">
-              <span>Комментарий</span>
-              <textarea v-model.trim="appointmentForm.comment" rows="3" placeholder="Кабинет, детали приема"></textarea>
-            </label>
-
-            <button class="submit-btn" type="submit" :disabled="savingAppointment">
-              {{ savingAppointment ? 'Создаем...' : 'Назначить прием' }}
-            </button>
-          </form>
-        </section>
-
-        <p v-if="success" class="success">{{ success }}</p>
-
-        <section class="lists-grid">
-          <div class="panel">
-            <div class="section-heading">
-              <h2>Последние опросники</h2>
-              <p>{{ assignments.length }} назначений</p>
-            </div>
-
-            <div class="list">
-              <article v-for="assignment in assignments" :key="assignment.id" class="list-item">
-                <div>
-                  <strong>{{ assignment.username }}</strong>
-                  <p>{{ assignment.name }}</p>
-                </div>
-                <span class="status">{{ statusLabel(assignment.status) }}</span>
-              </article>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="section-heading">
-              <h2>Последние приемы</h2>
-              <p>{{ appointments.length }} записей</p>
-            </div>
-
-            <div class="list">
-              <article v-for="appointment in appointments" :key="appointment.id" class="list-item">
-                <div>
-                  <strong>{{ appointment.username }}</strong>
-                  <p>{{ formatDateTime(appointment.scheduled_at) }}</p>
-                </div>
-                <span class="status">{{ appointment.specialist || 'Прием' }}</span>
-              </article>
-            </div>
-          </div>
-        </section>
-      </template>
-    </main>
-  </div>
+      <p v-if="success" class="message success">{{ success }}</p>
+      <section class="panel assignments"><div class="toolbar"><header><h2>Назначения</h2><p>{{ filteredAssignments.length }} записей</p></header><input v-model.trim="search" type="search" placeholder="Пациент или опросник" /><select v-model="statusFilter"><option value="">Все статусы</option><option value="pending">Ожидает</option><option value="in_progress">В процессе</option><option value="completed">Завершён</option><option value="cancelled">Отменён</option></select></div>
+        <div class="list"><article v-for="a in filteredAssignments" :key="a.id" class="assignment"><div><strong>{{ a.username }}</strong><small>{{ a.email }}</small><p>{{ a.name }}</p></div><div class="meta"><span :class="['tag', `priority-${a.priority}`]">{{ priorityLabel(a.priority) }}</span><span>{{ a.due_at ? `до ${formatDate(a.due_at)}` : 'без срока' }}</span><span>{{ a.answer_count }} ответов · {{ a.skipped_count }} пропусков</span></div><div class="actions"><span :class="['tag', `status-${a.status}`]">{{ statusLabel(a.status) }}</span><button v-if="['pending','in_progress'].includes(a.status)" type="button" class="cancel" @click="cancelAssignment(a)">Отменить</button></div></article><p v-if="!filteredAssignments.length" class="empty">Назначений не найдено.</p></div>
+      </section>
+    </template>
+  </main></div>
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import api from '@/api/axios'
 import Header from '@/components/Header.vue'
-
-const users = ref([])
-const systems = ref([])
-const assignments = ref([])
-const appointments = ref([])
-const loading = ref(true)
-const error = ref('')
-const success = ref('')
-const savingQuestionnaire = ref(false)
-const savingAppointment = ref(false)
-
-const questionnaireForm = reactive({
-  user_id: '',
-  system_id: '',
-})
-
-const appointmentForm = reactive({
-  user_id: '',
-  date: '',
-  time: '',
-  specialist: '',
-  doctor: '',
-  comment: '',
-})
-
-onMounted(loadAdminData)
-
-async function loadAdminData() {
-  loading.value = true
-  error.value = ''
-
-  try {
-    const [usersRes, systemsRes, assignmentsRes, appointmentsRes] = await Promise.all([
-      api.get('/api/admin/users'),
-      api.get('/api/admin/systems'),
-      api.get('/api/admin/questionnaire-assignments'),
-      api.get('/api/admin/appointments'),
-    ])
-
-    users.value = usersRes.data
-    systems.value = systemsRes.data
-    assignments.value = assignmentsRes.data
-    appointments.value = appointmentsRes.data
-  } catch (e) {
-    error.value = e?.response?.data?.error || 'Не удалось загрузить админку'
-    console.error(e)
-  } finally {
-    loading.value = false
-  }
-}
-
-async function assignQuestionnaire() {
-  savingQuestionnaire.value = true
-  success.value = ''
-
-  try {
-    await api.post('/api/admin/questionnaire-assignments', questionnaireForm)
-    questionnaireForm.system_id = ''
-    success.value = 'Опросник назначен'
-    await refreshLists()
-  } catch (e) {
-    error.value = e?.response?.data?.error || 'Не удалось назначить опросник'
-  } finally {
-    savingQuestionnaire.value = false
-  }
-}
-
-async function createAppointment() {
-  savingAppointment.value = true
-  success.value = ''
-
-  try {
-    await api.post('/api/admin/appointments', {
-      user_id: appointmentForm.user_id,
-      scheduled_at: `${appointmentForm.date}T${appointmentForm.time}:00`,
-      specialist: appointmentForm.specialist || null,
-      doctor: appointmentForm.doctor || null,
-      comment: appointmentForm.comment || null,
-    })
-
-    appointmentForm.date = ''
-    appointmentForm.time = ''
-    appointmentForm.specialist = ''
-    appointmentForm.doctor = ''
-    appointmentForm.comment = ''
-    success.value = 'Прием назначен'
-    await refreshLists()
-  } catch (e) {
-    error.value = e?.response?.data?.error || 'Не удалось назначить прием'
-  } finally {
-    savingAppointment.value = false
-  }
-}
-
-async function refreshLists() {
-  const [assignmentsRes, appointmentsRes] = await Promise.all([
-    api.get('/api/admin/questionnaire-assignments'),
-    api.get('/api/admin/appointments'),
-  ])
-
-  assignments.value = assignmentsRes.data
-  appointments.value = appointmentsRes.data
-}
-
-function statusLabel(status) {
-  if (status === 'completed') return 'Завершен'
-  if (status === 'in_progress') return 'В процессе'
-  return 'Ожидает'
-}
-
-function formatDateTime(value) {
-  if (!value) return 'Нет даты'
-  return new Intl.DateTimeFormat('ru-RU', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value))
-}
+const users=ref([]),systems=ref([]),assignments=ref([]),loading=ref(true),error=ref(''),success=ref(''),saving=ref(false),savingAppointment=ref(false),search=ref(''),statusFilter=ref('')
+const assignmentForm=reactive({user_id:'',system_ids:[],due_at:'',priority:'normal',note:''})
+const appointmentForm=reactive({user_id:'',date:'',time:'',specialist:'',doctor:'',comment:''})
+const activeCount=computed(()=>assignments.value.filter(a=>['pending','in_progress'].includes(a.status)).length)
+const completedCount=computed(()=>assignments.value.filter(a=>a.status==='completed').length)
+const overdueCount=computed(()=>assignments.value.filter(a=>['pending','in_progress'].includes(a.status)&&a.due_at&&new Date(a.due_at)<new Date()).length)
+const canAssign=computed(()=>assignmentForm.user_id&&assignmentForm.system_ids.length)
+const filteredAssignments=computed(()=>assignments.value.filter(a=>(!statusFilter.value||a.status===statusFilter.value)&&(!search.value||`${a.username} ${a.email} ${a.name}`.toLowerCase().includes(search.value.toLowerCase()))))
+onMounted(load)
+async function load(){loading.value=true;error.value='';try{const [u,s,a]=await Promise.all([api.get('/api/admin/users'),api.get('/api/admin/systems'),api.get('/api/admin/questionnaire-assignments')]);users.value=u.data;systems.value=s.data;assignments.value=a.data}catch(e){error.value=e?.response?.data?.error||'Не удалось загрузить админку'}finally{loading.value=false}}
+async function refresh(){assignments.value=(await api.get('/api/admin/questionnaire-assignments')).data}
+async function assignQuestionnaires(){saving.value=true;error.value='';success.value='';try{const {data}=await api.post('/api/admin/questionnaire-assignments',{...assignmentForm,due_at:assignmentForm.due_at||null,note:assignmentForm.note||null});success.value=`Создано назначений: ${data.assignments.length}`;assignmentForm.system_ids=[];assignmentForm.note='';assignmentForm.due_at='';await refresh()}catch(e){error.value=e?.response?.data?.error||'Не удалось создать назначения'}finally{saving.value=false}}
+async function cancelAssignment(a){try{await api.patch(`/api/admin/questionnaire-assignments/${a.id}/cancel`);success.value='Назначение отменено';await refresh()}catch(e){error.value=e?.response?.data?.error||'Не удалось отменить назначение'}}
+async function createAppointment(){savingAppointment.value=true;try{await api.post('/api/admin/appointments',{user_id:appointmentForm.user_id,scheduled_at:`${appointmentForm.date}T${appointmentForm.time}:00`,specialist:appointmentForm.specialist||null,doctor:appointmentForm.doctor||null,comment:appointmentForm.comment||null});success.value='Приём назначен';Object.assign(appointmentForm,{user_id:appointmentForm.user_id,date:'',time:'',specialist:'',doctor:'',comment:''})}catch(e){error.value=e?.response?.data?.error||'Не удалось назначить приём'}finally{savingAppointment.value=false}}
+const statusLabel=v=>({pending:'Ожидает',in_progress:'В процессе',completed:'Завершён',cancelled:'Отменён'})[v]||v
+const priorityLabel=v=>({low:'Низкий',normal:'Обычный',high:'Высокий',urgent:'Срочный'})[v]||v
+const formatDate=v=>new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v))
 </script>
 
 <style scoped>
-.page {
-  min-height: 100vh;
-}
-
-.admin {
-  width: min(1180px, calc(100% - 2rem));
-  margin: 0 auto;
-  padding: 2rem 0 3rem;
-}
-
-.hero,
-.panel {
-  border: 1px solid #dce8ea;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 16px 40px rgba(25, 45, 65, 0.07);
-}
-
-.hero {
-  margin-bottom: 1rem;
-  padding: 2rem;
-}
-
-.eyebrow {
-  margin: 0 0 0.7rem;
-  color: #1f847f;
-  font-size: 0.82rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-h1,
-h2,
-p {
-  margin-top: 0;
-}
-
-h1 {
-  margin-bottom: 0.7rem;
-  color: #152236;
-  font-size: clamp(2rem, 4vw, 3rem);
-}
-
-.hero p,
-.section-heading p,
-.list-item p {
-  color: #637284;
-  line-height: 1.55;
-}
-
-.forms-grid,
-.lists-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.lists-grid {
-  margin-top: 1rem;
-}
-
-.panel {
-  padding: 1.4rem;
-}
-
-.section-heading {
-  margin-bottom: 1rem;
-}
-
-.section-heading h2 {
-  margin-bottom: 0.3rem;
-  color: #1d2b40;
-  font-size: 1.16rem;
-}
-
-.section-heading p {
-  margin-bottom: 0;
-}
-
-.field {
-  display: grid;
-  gap: 0.45rem;
-  margin-bottom: 1rem;
-}
-
-.field span {
-  color: #34475c;
-  font-size: 0.92rem;
-  font-weight: 700;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  min-height: 44px;
-  padding: 0 0.85rem;
-  border: 1px solid #d4e0e3;
-  border-radius: 8px;
-  background: #fbfdfd;
-  color: #172338;
-  outline: none;
-}
-
-.field textarea {
-  min-height: 92px;
-  padding-top: 0.75rem;
-  resize: vertical;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: #1f847f;
-  box-shadow: 0 0 0 3px rgba(31, 132, 127, 0.12);
-}
-
-.row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.submit-btn {
-  width: 100%;
-  min-height: 44px;
-  border: 0;
-  border-radius: 8px;
-  background: #1f847f;
-  color: #fff;
-  font-weight: 800;
-}
-
-.submit-btn:hover {
-  background: #176b67;
-}
-
-.submit-btn:disabled {
-  background: #9ab6b4;
-  cursor: not-allowed;
-}
-
-.state,
-.success {
-  margin: 1rem 0;
-  padding: 1rem;
-  border-radius: 8px;
-  background: #fff;
-  color: #637284;
-}
-
-.state-error {
-  color: #b42318;
-}
-
-.success {
-  border: 1px solid #cde8d8;
-  background: #f0fbf4;
-  color: #1f6c45;
-  font-weight: 800;
-}
-
-.list {
-  display: grid;
-  gap: 0.65rem;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem;
-  border: 1px solid #e1ecee;
-  border-radius: 8px;
-  background: #fbfdfd;
-}
-
-.list-item strong {
-  color: #203044;
-}
-
-.list-item p {
-  margin: 0.2rem 0 0;
-  font-size: 0.92rem;
-}
-
-.status {
-  flex: 0 0 auto;
-  padding: 0.35rem 0.6rem;
-  border-radius: 999px;
-  background: #edf7f6;
-  color: #12635f;
-  font-size: 0.78rem;
-  font-weight: 900;
-}
-
-@media (max-width: 860px) {
-  .forms-grid,
-  .lists-grid,
-  .row {
-    grid-template-columns: 1fr;
-  }
-}
+.page{min-height:100vh}.admin{width:min(1240px,calc(100% - 2rem));margin:auto;padding:2rem 0 4rem}.hero,.panel{border:1px solid #dce8ea;border-radius:10px;background:#fff;box-shadow:0 16px 40px rgba(25,45,65,.07)}.hero{display:flex;justify-content:space-between;gap:2rem;align-items:end;padding:2rem;margin-bottom:1rem}.eyebrow{margin:0 0 .6rem;color:#1f847f;font-weight:800;text-transform:uppercase;font-size:.8rem}h1,h2,p{margin-top:0}.hero p,header p{color:#637284}.stats{display:grid;grid-template-columns:repeat(4,100px);gap:.6rem}.stats div{padding:.8rem;border:1px solid #e2ecee;border-radius:8px;background:#f8fbfb}.stats strong,.stats span,.assignment small{display:block}.stats strong{font-size:1.4rem}.stats span,.assignment small{font-size:.78rem;color:#667788}.workspace{display:grid;grid-template-columns:1.2fr .8fr;gap:1rem}.panel{padding:1.3rem}header{margin-bottom:1rem}header h2{margin-bottom:.25rem}.field{display:grid;gap:.4rem;margin-bottom:1rem}.field span,legend{font-size:.9rem;font-weight:700;color:#34475c}.field input,.field select,.field textarea,.toolbar input,.toolbar select{width:100%;min-height:42px;padding:0 .75rem;border:1px solid #d4e0e3;border-radius:8px;background:#fbfdfd}.field textarea{padding-top:.7rem}.row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}.picker{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:0 0 1rem;padding:.8rem;border:1px solid #dce8ea;border-radius:8px}.check{display:flex;gap:.6rem;padding:.65rem;border:1px solid #e1ecee;border-radius:8px}.check span,.check small{display:block}.check small{color:#718291;margin-top:.2rem}.primary{width:100%;min-height:42px;border:0;border-radius:8px;background:#1f847f;color:#fff;font-weight:800}.primary:disabled{background:#9ab6b4}.message{margin:1rem 0;padding:1rem;border-radius:8px;background:#f8fbfb}.error{color:#9b241c;background:#fff3f2}.success{color:#1f6c45;background:#f0fbf4}.assignments{margin-top:1rem}.toolbar{display:grid;grid-template-columns:1fr 260px 180px;gap:.7rem}.list{display:grid;gap:.65rem}.assignment{display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;align-items:center;padding:.9rem;border:1px solid #e1ecee;border-radius:8px;background:#fbfdfd}.assignment p{margin:.25rem 0 0;font-weight:700}.meta{display:grid;gap:.25rem;color:#697b8c;font-size:.86rem}.actions{display:grid;justify-items:end;gap:.5rem}.tag{width:max-content;padding:.3rem .55rem;border-radius:999px;font-size:.75rem;font-weight:800}.status-pending{background:#eef3f7}.status-in_progress{background:#fff6df;color:#946713}.status-completed{background:#e8f6ee;color:#1f6c45}.status-cancelled{background:#eee}.priority-urgent{background:#fee4e2;color:#b42318}.priority-high{background:#fff0d5;color:#9a5b00}.priority-normal,.priority-low{background:#edf7f6;color:#12635f}.cancel{min-height:36px;padding:0 .7rem;border:0;border-radius:8px;color:#a22}.empty{text-align:center;color:#718291}@media(max-width:900px){.hero{display:block}.stats{grid-template-columns:repeat(2,1fr);margin-top:1rem}.workspace,.row,.toolbar,.assignment{grid-template-columns:1fr}.picker{grid-template-columns:1fr}.actions{justify-items:start}}
 </style>

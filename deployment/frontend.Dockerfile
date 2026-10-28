@@ -1,9 +1,11 @@
-FROM node:20-slim AS builder
+# syntax=docker/dockerfile:1
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
 COPY frontend/package*.json ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --no-audit --no-fund --fetch-timeout=60000
 
 COPY frontend/ ./
 RUN npm run build

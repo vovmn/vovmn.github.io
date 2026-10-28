@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+const { rateLimit } = require('express-rate-limit');
 const pool = require('./db/pool');
 const adminRoutes = require('./modules/admin/admin.routes');
 const appointmentRoutes = require('./modules/appointments/appointments.routes');
@@ -8,6 +10,10 @@ const authRoutes = require('./modules/auth/auth.routes');
 const questionnaireRoutes = require('./modules/questionnaire/questionnaire.routes');
 
 const app = express();
+
+app.disable('x-powered-by');
+app.set('trust proxy', 1);
+app.use(helmet());
 
 const allowedOrigins = (process.env.CLIENT_ORIGIN || process.env.CORS_ORIGIN || 'http://localhost:5173')
   .split(',')
@@ -28,7 +34,9 @@ app.use(cors({
     if (allowedOrigins.includes(origin) || isLocalOrigin(origin)) {
       return callback(null, true);
     }
-    return callback(new Error(`CORS origin denied: ${origin}`));
+    const error = new Error('CORS origin denied');
+    error.status = 403;
+    return callback(error);
   },
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -36,37 +44,27 @@ app.use(cors({
 }));
 
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ limit: '256kb' }));
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 300,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+});
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+});
+
+app.use('/api', apiLimiter);
+app.use(['/auth', '/api/auth'], authLimiter);
 
 app.use('/api/admin', adminRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/questionnaire', questionnaireRoutes);
-
-;(async () => {
-  try {
-    await pool.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
-    await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(50);');
-    await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS birth_date DATE;');
-    await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS residence VARCHAR(255);');
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS appointments (
-        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        scheduled_at TIMESTAMP NOT NULL,
-        specialist VARCHAR(255),
-        doctor VARCHAR(255),
-        status VARCHAR(20) DEFAULT 'scheduled' CHECK (status IN ('scheduled','completed','cancelled')),
-        comment TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-      CREATE INDEX IF NOT EXISTS idx_appointments_user ON appointments(user_id);
-      CREATE INDEX IF NOT EXISTS idx_appointments_scheduled_at ON appointments(scheduled_at);
-    `);
-    console.log('DB schema ensured');
-  } catch (err) {
-    console.error('Schema migration failed:', err.message);
-  }
-})();
 
 app.use('/auth', authRoutes);
 app.use('/api/auth', authRoutes);
@@ -82,6 +80,15 @@ app.get('/health', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Database connection failed' });
   }
+});
+
+app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  const status = Number.isInteger(err.status) ? err.status : 500;
+  if (status >= 500) console.error('Unhandled request error:', err.message);
+  return res.status(status).json({
+    error: status >= 500 ? 'Internal server error' : err.message,
+  });
 });
 
 module.exports = app;

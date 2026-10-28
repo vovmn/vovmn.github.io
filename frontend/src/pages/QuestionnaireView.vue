@@ -24,7 +24,7 @@
           </div>
 
           <div class="progress-box">
-            <span>{{ answeredCount }} / {{ questions.length }}</span>
+            <span>{{ answeredCount }} / {{ visibleQuestions.length }}</span>
             <p>заполнено</p>
             <div class="progress-track">
               <div class="progress-fill" :style="{ width: `${progressPercent}%` }"></div>
@@ -32,9 +32,18 @@
           </div>
         </section>
 
+        <aside class="clinical-notice">
+          Анкета помогает структурировать сведения о симптомах, но не ставит диагноз и не заменяет консультацию врача.
+        </aside>
+
+        <aside v-if="activeAlerts.length" class="urgent-alert" role="alert">
+          <strong>Обратите внимание</strong>
+          <p v-for="message in activeAlerts" :key="message">{{ message }}</p>
+        </aside>
+
         <section class="questions-list">
           <QuestionWidget
-            v-for="q in questions"
+            v-for="q in visibleQuestions"
             :key="q.id"
             :question="q"
             v-model="answers[q.id]"
@@ -48,7 +57,7 @@
           </div>
           <button
             class="submit-btn"
-            :disabled="isSubmitting"
+            :disabled="isSubmitting || hasMissingRequired"
             type="button"
             @click="handleSubmit"
           >
@@ -61,7 +70,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/axios'
 import Header from '@/components/Header.vue'
@@ -69,7 +78,7 @@ import QuestionWidget from '@/components/QuestionWidget.vue'
 
 const route = useRoute()
 const router = useRouter()
-const systemCode = route.params.systemCode
+const assignmentIdFromRoute = route.params.assignmentId
 
 const questions = ref([])
 const systemName = ref('')
@@ -80,18 +89,40 @@ const submitted = ref(false)
 const isSubmitting = ref(false)
 const answers = reactive({})
 
+const visibleQuestions = computed(() =>
+  questions.value.filter((question) => conditionMatches(question.display_condition))
+)
+
 const answeredCount = computed(() =>
-  questions.value.filter((question) => hasAnswer(question)).length
+  visibleQuestions.value.filter((question) => hasAnswer(question)).length
 )
 
 const progressPercent = computed(() => {
-  if (!questions.value.length) return 0
-  return Math.round((answeredCount.value / questions.value.length) * 100)
+  if (!visibleQuestions.value.length) return 0
+  return Math.round((answeredCount.value / visibleQuestions.value.length) * 100)
+})
+
+const hasMissingRequired = computed(() =>
+  visibleQuestions.value.some((question) => question.required && !hasAnswer(question))
+)
+
+const activeAlerts = computed(() => {
+  const messages = visibleQuestions.value
+    .filter((question) => question.alert && alertMatches(question.alert, answers[question.id]))
+    .map((question) => question.alert.message)
+  return [...new Set(messages)]
+})
+
+watchEffect(() => {
+  const visibleIds = new Set(visibleQuestions.value.map((question) => String(question.id)))
+  for (const questionId of Object.keys(answers)) {
+    if (!visibleIds.has(String(questionId))) delete answers[questionId]
+  }
 })
 
 onMounted(async () => {
   try {
-    const { data } = await api.post(`/api/questionnaire/start/${systemCode}`)
+    const { data } = await api.post(`/api/questionnaire/assignments/${assignmentIdFromRoute}/start`)
     assignmentId.value = data.assignment_id
     systemName.value = data.system_name
     questions.value = data.questions
@@ -106,13 +137,13 @@ onMounted(async () => {
 async function handleSubmit() {
   isSubmitting.value = true
   try {
-    const missingRequired = questions.value.find((question) => question.required && !hasAnswer(question))
+    const missingRequired = visibleQuestions.value.find((question) => question.required && !hasAnswer(question))
     if (missingRequired) {
       alert('Заполните все обязательные вопросы')
       return
     }
 
-    const payload = questions.value
+    const payload = visibleQuestions.value
       .filter((question) => hasAnswer(question))
       .map((question) => ({
         question_id: question.id,
@@ -132,6 +163,8 @@ async function handleSubmit() {
 function hasAnswer(question) {
   const answer = answers[question.id]
   if (!answer) return false
+  if (answer.skipped === true) return true
+  if (answer.value_unknown === true) return question.allow_unknown === true
 
   switch (question.question_type) {
     case 'boolean':
@@ -147,6 +180,41 @@ function hasAnswer(question) {
     default:
       return false
   }
+}
+
+function answerValue(questionCode) {
+  const question = questions.value.find((item) => item.code === questionCode)
+  if (!question) return undefined
+  const answer = answers[question.id]
+  if (!answer) return undefined
+  if (answer.skipped === true) return 'skipped'
+  if (answer.value_unknown === true) return 'unknown'
+  if (Object.prototype.hasOwnProperty.call(answer, 'value_boolean')) return answer.value_boolean
+  if (Object.prototype.hasOwnProperty.call(answer, 'value_numeric')) return answer.value_numeric
+  if (Object.prototype.hasOwnProperty.call(answer, 'value_text')) return answer.value_text
+  if (Object.prototype.hasOwnProperty.call(answer, 'selected_option_id')) return answer.selected_option_id
+  if (Array.isArray(answer.selected_option_ids)) return answer.selected_option_ids
+  return undefined
+}
+
+function conditionMatches(condition) {
+  if (!condition) return true
+  if (Array.isArray(condition.all)) return condition.all.every(conditionMatches)
+  if (Array.isArray(condition.any)) return condition.any.some(conditionMatches)
+  const actual = answerValue(condition.question_code)
+  if (condition.operator === 'equals') return actual === condition.value
+  if (condition.operator === 'not_equals') return actual !== undefined && actual !== condition.value
+  if (condition.operator === 'in') return Array.isArray(condition.values) && condition.values.includes(actual)
+  return false
+}
+
+function alertMatches(alert, answer) {
+  if (!answer || answer.value_unknown === true || answer.skipped === true) return false
+  const trigger = alert.trigger || { operator: 'equals', value: true }
+  const actual = Object.prototype.hasOwnProperty.call(answer, 'value_boolean')
+    ? answer.value_boolean
+    : answer.selected_option_id
+  return trigger.operator === 'equals' && actual === trigger.value
 }
 
 function goBack() {
@@ -257,6 +325,30 @@ h1 {
 .questions-list {
   display: grid;
   gap: 0.8rem;
+}
+
+.clinical-notice,
+.urgent-alert {
+  margin-bottom: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.clinical-notice {
+  border: 1px solid #cfe0e3;
+  background: #f5fafb;
+  color: #405567;
+}
+
+.urgent-alert {
+  border: 1px solid #f0a7a0;
+  background: #fff3f2;
+  color: #8f1d16;
+}
+
+.urgent-alert p {
+  margin: 0.45rem 0 0;
 }
 
 .submit-panel {

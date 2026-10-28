@@ -50,13 +50,20 @@ async function ensureTestSchema() {
     CREATE TABLE IF NOT EXISTS questions (
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       system_id UUID NOT NULL REFERENCES body_systems(id) ON DELETE CASCADE,
+      code VARCHAR(100),
       question_text TEXT NOT NULL,
       question_type VARCHAR(20) NOT NULL CHECK (question_type IN ('boolean','numeric','single_choice','multiple_choice','text')),
       gender_filter CHAR(1) DEFAULT NULL CHECK (gender_filter IN ('M','F', NULL)),
       required BOOLEAN DEFAULT TRUE,
+      active BOOLEAN NOT NULL DEFAULT TRUE,
+      allow_unknown BOOLEAN DEFAULT FALSE,
+      help_text TEXT,
+      recall_period VARCHAR(100),
+      display_condition JSONB,
+      validation JSONB,
+      alert JSONB,
       sort_order INTEGER DEFAULT 0,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE (system_id, question_text)
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS answer_options (
@@ -72,10 +79,17 @@ async function ensureTestSchema() {
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       system_id UUID NOT NULL REFERENCES body_systems(id),
-      status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending','in_progress','completed')),
+      assigned_by UUID REFERENCES users(id) ON DELETE SET NULL,
+      status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending','in_progress','completed','cancelled')),
+      priority VARCHAR(20) NOT NULL DEFAULT 'normal',
+      due_at TIMESTAMP,
+      note TEXT,
+      questionnaire_version VARCHAR(50),
       assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      started_at TIMESTAMP,
       completed_at TIMESTAMP,
-      UNIQUE (user_id, system_id)
+      cancelled_at TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS user_answers (
@@ -86,10 +100,32 @@ async function ensureTestSchema() {
       value_boolean BOOLEAN,
       value_numeric DOUBLE PRECISION,
       value_text TEXT,
+      value_unknown BOOLEAN NOT NULL DEFAULT FALSE,
+      skipped BOOLEAN NOT NULL DEFAULT FALSE,
+      skip_reason VARCHAR(50),
       selected_option_id UUID REFERENCES answer_options(id),
-      answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE (user_id, question_id, selected_option_id)
+      answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+  `);
+
+  await pool.query(`
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS code VARCHAR(100);
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT TRUE;
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS allow_unknown BOOLEAN DEFAULT FALSE;
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS help_text TEXT;
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS recall_period VARCHAR(100);
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS display_condition JSONB;
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS validation JSONB;
+    ALTER TABLE questions ADD COLUMN IF NOT EXISTS alert JSONB;
+    ALTER TABLE user_answers ADD COLUMN IF NOT EXISTS value_unknown BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE user_answers ADD COLUMN IF NOT EXISTS skipped BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE user_answers ADD COLUMN IF NOT EXISTS skip_reason VARCHAR(50);
+    ALTER TABLE user_questionnaire_assignments ADD COLUMN IF NOT EXISTS priority VARCHAR(20) NOT NULL DEFAULT 'normal';
+    ALTER TABLE user_questionnaire_assignments ADD COLUMN IF NOT EXISTS due_at TIMESTAMP;
+    ALTER TABLE user_questionnaire_assignments ADD COLUMN IF NOT EXISTS note TEXT;
+    ALTER TABLE user_questionnaire_assignments ADD COLUMN IF NOT EXISTS started_at TIMESTAMP;
+    ALTER TABLE user_questionnaire_assignments ADD COLUMN IF NOT EXISTS cancelled_at TIMESTAMP;
+    ALTER TABLE user_questionnaire_assignments ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
   `);
 }
 
@@ -104,23 +140,24 @@ async function seedTestQuestionnaire() {
   const systemId = systemResult.rows[0].id;
 
   const questionSpecs = [
-    ['Jest boolean question', 'boolean', 1],
-    ['Jest numeric question', 'numeric', 2],
-    ['Jest text question', 'text', 3],
-    ['Jest single choice question', 'single_choice', 4],
-    ['Jest multiple choice question', 'multiple_choice', 5],
+    ['jest_boolean', 'Jest boolean question', 'boolean', 1],
+    ['jest_numeric', 'Jest numeric question', 'numeric', 2],
+    ['jest_text', 'Jest text question', 'text', 3],
+    ['jest_single_choice', 'Jest single choice question', 'single_choice', 4],
+    ['jest_multiple_choice', 'Jest multiple choice question', 'multiple_choice', 5],
   ];
 
   const questionIds = {};
-  for (const [text, type, sortOrder] of questionSpecs) {
+  for (const [code, text, type, sortOrder] of questionSpecs) {
     const questionResult = await pool.query(
-      `INSERT INTO questions (system_id, question_text, question_type, sort_order)
-       VALUES ($1, $2, $3, $4)
-       ON CONFLICT (system_id, question_text) DO UPDATE SET
+      `INSERT INTO questions (system_id, code, question_text, question_type, sort_order)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (system_id, code) DO UPDATE SET
+         question_text = EXCLUDED.question_text,
          question_type = EXCLUDED.question_type,
          sort_order = EXCLUDED.sort_order
        RETURNING id`,
-      [systemId, text, type, sortOrder]
+      [systemId, code, text, type, sortOrder]
     );
     questionIds[type] = questionResult.rows[0].id;
   }
@@ -208,8 +245,19 @@ describe('Questionnaire answers persistence', () => {
     accessToken = loginRes.body.access_token;
     expect(accessToken).toBeTruthy();
 
+    const systemResult = await pool.query(
+      'SELECT id FROM body_systems WHERE code = $1',
+      [testSystemCode]
+    );
+    const assignmentResult = await pool.query(
+      `INSERT INTO user_questionnaire_assignments (user_id, system_id, status)
+       VALUES ($1, $2, 'pending') RETURNING id`,
+      [userId, systemResult.rows[0].id]
+    );
+    const assignmentId = assignmentResult.rows[0].id;
+
     const startRes = await request(app)
-      .post(`/api/questionnaire/start/${testSystemCode}`)
+      .post(`/api/questionnaire/assignments/${assignmentId}/start`)
       .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
 

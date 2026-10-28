@@ -9,6 +9,7 @@ router.get('/users', ctrl.listUsers);
 router.get('/systems', ctrl.listSystems);
 router.get('/questionnaire-assignments', ctrl.listQuestionnaireAssignments);
 router.post('/questionnaire-assignments', ctrl.assignQuestionnaire);
+router.patch('/questionnaire-assignments/:id/cancel', ctrl.cancelQuestionnaireAssignment);
 router.get('/appointments', ctrl.listAppointments);
 router.post('/appointments', ctrl.createAppointment);
 

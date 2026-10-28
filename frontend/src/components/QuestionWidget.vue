@@ -1,7 +1,11 @@
 <template>
   <article class="question-widget">
     <div class="question-head">
-      <p class="question-text">{{ question.question_text }}</p>
+      <div>
+        <p class="question-text">{{ question.question_text }}</p>
+        <p v-if="question.recall_period" class="question-meta">{{ question.recall_period }}</p>
+        <p v-if="question.help_text" class="question-help">{{ question.help_text }}</p>
+      </div>
       <span v-if="question.required" class="required">Обязательный</span>
     </div>
 
@@ -30,9 +34,13 @@
       <input
         type="number"
         :value="modelValue?.value_numeric ?? ''"
+        :min="question.validation?.min"
+        :max="question.validation?.max"
+        :step="question.validation?.step || 'any'"
         @input="emitNumericValue($event.target.value)"
         placeholder="Введите число"
       />
+      <span v-if="question.validation?.unit" class="unit">{{ question.validation.unit }}</span>
     </div>
 
     <div v-else-if="question.question_type === 'single_choice'" class="options">
@@ -79,6 +87,26 @@
 
     <div v-else class="unsupported">
       Тип вопроса "{{ question.question_type }}" не поддерживается
+    </div>
+
+    <div class="skip-actions">
+      <button
+        v-if="question.allow_unknown"
+        type="button"
+        class="unknown-btn"
+        :class="{ active: modelValue?.skipped === true && modelValue?.skip_reason === 'unknown' }"
+        @click="emitValue({ skipped: true, skip_reason: 'unknown' })"
+      >
+        Не знаю / не применимо
+      </button>
+      <button
+        type="button"
+        class="unknown-btn"
+        :class="{ active: modelValue?.skipped === true && modelValue?.skip_reason === 'prefer_not_to_answer' }"
+        @click="emitValue({ skipped: true, skip_reason: 'prefer_not_to_answer' })"
+      >
+        Пропустить
+      </button>
     </div>
   </article>
 </template>
@@ -145,6 +173,14 @@ function toggleOption(optionId, checked) {
   line-height: 1.45;
 }
 
+.question-meta,
+.question-help {
+  margin: 0.35rem 0 0;
+  color: #66788a;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
 .required {
   flex: 0 0 auto;
   padding: 0.28rem 0.5rem;
@@ -208,6 +244,36 @@ function toggleOption(optionId, checked) {
 .field input {
   min-height: 44px;
   padding: 0 0.85rem;
+}
+
+.unit {
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: #66788a;
+  font-size: 0.84rem;
+}
+
+.unknown-btn {
+  min-height: 38px;
+  margin-top: 0.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid #d4e0e3;
+  border-radius: 8px;
+  background: #fff;
+  color: #526579;
+  font-weight: 700;
+}
+
+.skip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.unknown-btn.active {
+  border-color: #7b8795;
+  background: #edf1f4;
+  color: #26384c;
 }
 
 .field textarea {

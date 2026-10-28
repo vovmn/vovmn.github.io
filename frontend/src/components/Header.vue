@@ -9,7 +9,8 @@
       <router-link to="/info">Опросники</router-link>
       <router-link v-if="auth.user?.role === 'admin'" to="/admin">Админка</router-link>
       <router-link to="/contacts">Контакты</router-link>
-      <router-link to="/documents">Документы</router-link>
+      <!-- <router-link to="/documents">Документы</router-link> -->
+      <router-link to="/about">О нас</router-link>
       <router-link to="/record">Запись</router-link>
     </nav>
 

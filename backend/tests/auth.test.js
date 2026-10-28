@@ -55,13 +55,42 @@ describe('Auth API', () => {
     expect(res.body).toHaveProperty('email');
   });
 
+  test('refresh token is rotated once and revoked on logout', async () => {
+    const loginRes = await request(app)
+      .post('/auth/login')
+      .send({ username: 'testuser_qa', password: 'Str0ngPass123' })
+      .expect(200);
+    const firstCookie = loginRes.headers['set-cookie'][0].split(';')[0];
+
+    const refreshRes = await request(app)
+      .post('/auth/refresh')
+      .set('Cookie', firstCookie)
+      .expect(200);
+    const rotatedCookie = refreshRes.headers['set-cookie'][0].split(';')[0];
+    expect(refreshRes.body).toHaveProperty('access_token');
+
+    await request(app)
+      .post('/auth/refresh')
+      .set('Cookie', firstCookie)
+      .expect(401);
+
+    await request(app)
+      .post('/auth/logout')
+      .set('Cookie', rotatedCookie)
+      .expect(200);
+    await request(app)
+      .post('/auth/refresh')
+      .set('Cookie', rotatedCookie)
+      .expect(401);
+  });
+
   test('POST /auth/register - rejects invalid gender', async () => {
     const res = await request(app)
       .post('/auth/register')
       .send({
         username: 'testuser2',
         email: 'test2@example.com',
-        password: 'pass',
+        password: 'AnotherStrongPass123',
         gender: 'X',
       })
       .expect(400);

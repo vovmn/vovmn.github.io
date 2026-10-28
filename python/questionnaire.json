@@ -1,281 +1,5347 @@
 {
+  "instrument_version": "2.0.0-draft",
+  "intended_use": "structured_anamnesis_not_diagnosis",
+  "clinical_validation_status": "requires_clinician_review_and_patient_validation",
+  "retired_question_texts": [
+    "Считаете ли вы свою физическую активность низкой?",
+    "Считаете ли вы свою физическую активность средней?",
+    "Считаете ли вы свою физическую активность высокой?",
+    "Считаете ли вы свою умственную нагрузку низкой?",
+    "Считаете ли вы свою умственную нагрузку средней?",
+    "Считаете ли вы свою умственную нагрузку высокой?",
+    "Патологий женских органов по УЗИ не выявлено (норма)?",
+    "Патологий шейки матки по кольпоскопии не выявлено (норма)?",
+    "Патологий мужских органов по УЗИ не выявлено (норма)?"
+  ],
   "body_systems": [
-    {"code": "nervous", "name": "Нервная система"},
-    {"code": "reproductive", "name": "Половая система"},
-    {"code": "digestive", "name": "Пищеварительная система"},
-    {"code": "endocrine", "name": "Эндокринная система"},
-    {"code": "respiratory", "name": "Дыхательная система"},
-    {"code": "dermal", "name": "Кожная система"},
-    {"code": "cardiovascular", "name": "Сердечно-сосудистая система"},
-    {"code": "immune", "name": "Иммунная система"},
-    {"code": "musculoskeletal", "name": "Опорно-двигательный аппарат"},
-    {"code": "excretory", "name": "Выделительная система"}
+    {
+      "code": "nervous",
+      "name": "Нервная система"
+    },
+    {
+      "code": "reproductive",
+      "name": "Половая система"
+    },
+    {
+      "code": "digestive",
+      "name": "Пищеварительная система"
+    },
+    {
+      "code": "endocrine",
+      "name": "Эндокринная система"
+    },
+    {
+      "code": "respiratory",
+      "name": "Дыхательная система"
+    },
+    {
+      "code": "dermal",
+      "name": "Кожная система"
+    },
+    {
+      "code": "cardiovascular",
+      "name": "Сердечно-сосудистая система"
+    },
+    {
+      "code": "immune",
+      "name": "Иммунная система"
+    },
+    {
+      "code": "musculoskeletal",
+      "name": "Опорно-двигательный аппарат"
+    },
+    {
+      "code": "excretory",
+      "name": "Выделительная система"
+    }
   ],
   "questions": [
-    {"system_code": "nervous", "text": "Испытываете ли вы подавленность, чувство тоски (депрессию)?", "type": "boolean", "gender_filter": null, "sort_order": 1},
-    {"system_code": "nervous", "text": "Отмечаете ли вы безразличие, отсутствие желания что-либо делать (апатию)?", "type": "boolean", "gender_filter": null, "sort_order": 2},
-    {"system_code": "nervous", "text": "Отмечаете ли вы повышенную раздражительность или вспыльчивость?", "type": "boolean", "gender_filter": null, "sort_order": 3},
-    {"system_code": "nervous", "text": "Боль в руках?", "type": "boolean", "gender_filter": null, "sort_order": 4},
-    {"system_code": "nervous", "text": "Боль в ногах?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "nervous", "text": "Боль в грудной клетке?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "nervous", "text": "Боль в поясничной области?", "type": "boolean", "gender_filter": null, "sort_order": 7},
-    {"system_code": "nervous", "text": "Боль в шейно-воротниковой зоне?", "type": "boolean", "gender_filter": null, "sort_order": 8},
-    {"system_code": "nervous", "text": "Боль в области копчика?", "type": "boolean", "gender_filter": null, "sort_order": 9},
-    {"system_code": "nervous", "text": "Спазмы в руках?", "type": "boolean", "gender_filter": null, "sort_order": 10},
-    {"system_code": "nervous", "text": "Спазмы в ногах?", "type": "boolean", "gender_filter": null, "sort_order": 11},
-    {"system_code": "nervous", "text": "Спазмы в грудной клетке?", "type": "boolean", "gender_filter": null, "sort_order": 12},
-    {"system_code": "nervous", "text": "Спазмы в поясничной области?", "type": "boolean", "gender_filter": null, "sort_order": 13},
-    {"system_code": "nervous", "text": "Спазмы в шейно-воротниковой зоне?", "type": "boolean", "gender_filter": null, "sort_order": 14},
-    {"system_code": "nervous", "text": "Спазмы в области копчика?", "type": "boolean", "gender_filter": null, "sort_order": 15},
-    {"system_code": "nervous", "text": "Онемение в руках?", "type": "boolean", "gender_filter": null, "sort_order": 16},
-    {"system_code": "nervous", "text": "Онемение в ногах?", "type": "boolean", "gender_filter": null, "sort_order": 17},
-    {"system_code": "nervous", "text": "Онемение в грудной клетке?", "type": "boolean", "gender_filter": null, "sort_order": 18},
-    {"system_code": "nervous", "text": "Онемение в поясничной области?", "type": "boolean", "gender_filter": null, "sort_order": 19},
-    {"system_code": "nervous", "text": "Онемение в шейно-воротниковой зоне?", "type": "boolean", "gender_filter": null, "sort_order": 20},
-    {"system_code": "nervous", "text": "Онемение в области копчика?", "type": "boolean", "gender_filter": null, "sort_order": 21},
-    {"system_code": "nervous", "text": "Ощущение холода в руках?", "type": "boolean", "gender_filter": null, "sort_order": 22},
-    {"system_code": "nervous", "text": "Ощущение холода в ногах?", "type": "boolean", "gender_filter": null, "sort_order": 23},
-    {"system_code": "nervous", "text": "Отмечаете ли вы дрожание (тремор) пальцев, рук, головы или других частей тела?", "type": "boolean", "gender_filter": null, "sort_order": 24},
-    {"system_code": "nervous", "text": "Есть ли у вас снижение слуха?", "type": "boolean", "gender_filter": null, "sort_order": 25},
-    {"system_code": "nervous", "text": "Есть ли шум или звон в ушах?", "type": "boolean", "gender_filter": null, "sort_order": 26},
-    {"system_code": "nervous", "text": "Есть ли снижение или потеря восприятия определённых запахов?", "type": "boolean", "gender_filter": null, "sort_order": 27},
-    {"system_code": "nervous", "text": "Есть ли искажённое восприятие запахов (приятный запах кажется неприятным или наоборот)?", "type": "boolean", "gender_filter": null, "sort_order": 28},
-    {"system_code": "nervous", "text": "Есть ли нарушение аккомодации (трудно быстро перефокусировать зрение с дальнего предмета на ближний)?", "type": "boolean", "gender_filter": null, "sort_order": 29},
-    {"system_code": "nervous", "text": "Есть ли нарушение цвето- или световосприятия (цвета кажутся тусклыми, свет режет глаза)?", "type": "boolean", "gender_filter": null, "sort_order": 30},
-    {"system_code": "nervous", "text": "Есть ли ощущение сужения полей зрения («туннельное» зрение, выпадение бокового зрения)?", "type": "boolean", "gender_filter": null, "sort_order": 31},
-    {"system_code": "nervous", "text": "Бывают ли у вас зрительные, слуховые или иные галлюцинации (видите/слышите то, чего нет)?", "type": "boolean", "gender_filter": null, "sort_order": 32},
-    {"system_code": "nervous", "text": "Есть ли нарушение координации движений (шаткость при ходьбе, промахивание мимо предметов)?", "type": "boolean", "gender_filter": null, "sort_order": 33},
-    {"system_code": "nervous", "text": "Есть ли нарушение вестибулярного аппарата (частые головокружения, ощущение вращения)?", "type": "boolean", "gender_filter": null, "sort_order": 34},
-    {"system_code": "nervous", "text": "Есть ли у вас нарушение мышечного тонуса (ощущение скованности или чрезмерной вялости мышц)?", "type": "boolean", "gender_filter": null, "sort_order": 35},
-    {"system_code": "nervous", "text": "Нарушение мышечного тонуса преимущественно слева?", "type": "boolean", "gender_filter": null, "sort_order": 36},
-    {"system_code": "nervous", "text": "Нарушение мышечного тонуса преимущественно справа?", "type": "boolean", "gender_filter": null, "sort_order": 37},
-    {"system_code": "nervous", "text": "Нарушение мышечного тонуса в верхней части тела (руки, плечевой пояс)?", "type": "boolean", "gender_filter": null, "sort_order": 38},
-    {"system_code": "nervous", "text": "Нарушение мышечного тонуса в нижней части тела (ноги, таз)?", "type": "boolean", "gender_filter": null, "sort_order": 39},
-    {"system_code": "nervous", "text": "Есть ли нарушение глотательного рефлекса (попёрхивание, трудности при глотании)?", "type": "boolean", "gender_filter": null, "sort_order": 40},
-    {"system_code": "nervous", "text": "Есть ли нарушение речи (нечёткость, смазанность речи, затруднённое произношение)?", "type": "boolean", "gender_filter": null, "sort_order": 41},
-    {"system_code": "nervous", "text": "Есть ли нарушение контроля мочеиспускания (недержание, затруднённое начало, чувство неполного опорожнения)?", "type": "boolean", "gender_filter": null, "sort_order": 42},
-    {"system_code": "nervous", "text": "Есть ли нарушение функции прямой кишки (недержание кала, затруднение контроля дефекации)?", "type": "boolean", "gender_filter": null, "sort_order": 43},
-    {"system_code": "reproductive", "text": "Были ли у вас попытки забеременеть в течение года и более?", "type": "boolean", "gender_filter": "F", "sort_order": 1},
-    {"system_code": "reproductive", "text": "Наступала ли у вас беременность хотя бы один раз (независимо от исхода)?", "type": "boolean", "gender_filter": "F", "sort_order": 2},
-    {"system_code": "reproductive", "text": "Диагностировано ли у вас бесплодие?", "type": "boolean", "gender_filter": "F", "sort_order": 3},
-    {"system_code": "reproductive", "text": "Миома матки по УЗИ?", "type": "boolean", "gender_filter": "F", "sort_order": 4},
-    {"system_code": "reproductive", "text": "Эндометриоз (эндометриоидные очаги) по УЗИ?", "type": "boolean", "gender_filter": "F", "sort_order": 5},
-    {"system_code": "reproductive", "text": "Воспаление придатков (аднексит) по УЗИ?", "type": "boolean", "gender_filter": "F", "sort_order": 6},
-    {"system_code": "reproductive", "text": "Сальпингит (воспаление маточных труб) по УЗИ?", "type": "boolean", "gender_filter": "F", "sort_order": 7},
-    {"system_code": "reproductive", "text": "Кисты яичников по УЗИ?", "type": "boolean", "gender_filter": "F", "sort_order": 8},
-    {"system_code": "reproductive", "text": "Новообразования (опухоли) матки или яичников по УЗИ?", "type": "boolean", "gender_filter": "F", "sort_order": 9},
-    {"system_code": "reproductive", "text": "Патологий женских органов по УЗИ не выявлено (норма)?", "type": "boolean", "gender_filter": "F", "sort_order": 10},
-    {"system_code": "reproductive", "text": "Эрозия шейки матки по кольпоскопии?", "type": "boolean", "gender_filter": "F", "sort_order": 11},
-    {"system_code": "reproductive", "text": "Лейкоплакия шейки матки по кольпоскопии?", "type": "boolean", "gender_filter": "F", "sort_order": 12},
-    {"system_code": "reproductive", "text": "Новообразования (опухоли) шейки матки по кольпоскопии?", "type": "boolean", "gender_filter": "F", "sort_order": 13},
-    {"system_code": "reproductive", "text": "Патологий шейки матки по кольпоскопии не выявлено (норма)?", "type": "boolean", "gender_filter": "F", "sort_order": 14},
-    {"system_code": "reproductive", "text": "Аденома предстательной железы по УЗИ?", "type": "boolean", "gender_filter": "M", "sort_order": 15},
-    {"system_code": "reproductive", "text": "Простатит (воспаление простаты) по УЗИ?", "type": "boolean", "gender_filter": "M", "sort_order": 16},
-    {"system_code": "reproductive", "text": "Воспаление семенных пузырьков (везикулит) по УЗИ?", "type": "boolean", "gender_filter": "M", "sort_order": 17},
-    {"system_code": "reproductive", "text": "Увеличение объёма предстательной железы по УЗИ?", "type": "boolean", "gender_filter": "M", "sort_order": 18},
-    {"system_code": "reproductive", "text": "Патологий мужских органов по УЗИ не выявлено (норма)?", "type": "boolean", "gender_filter": "M", "sort_order": 19},
-    {"system_code": "reproductive", "text": "Боль внизу живота во время менструации?", "type": "boolean", "gender_filter": "F", "sort_order": 20},
-    {"system_code": "reproductive", "text": "Боль внизу живота в период овуляции?", "type": "boolean", "gender_filter": "F", "sort_order": 21},
-    {"system_code": "reproductive", "text": "Боль внизу живота, не связанная с менструальным циклом?", "type": "boolean", "gender_filter": null, "sort_order": 22},
-    {"system_code": "reproductive", "text": "Боль в области малого таза во время полового акта?", "type": "boolean", "gender_filter": null, "sort_order": 23},
-    {"system_code": "reproductive", "text": "Боль в области малого таза при мочеиспускании?", "type": "boolean", "gender_filter": null, "sort_order": 24},
-    {"system_code": "reproductive", "text": "Боль в области малого таза постоянная (не зависит от действий)?", "type": "boolean", "gender_filter": null, "sort_order": 25},
-    {"system_code": "reproductive", "text": "Ощущение тяжести в области малого таза при половом акте?", "type": "boolean", "gender_filter": null, "sort_order": 26},
-    {"system_code": "reproductive", "text": "Ощущение тяжести в области малого таза при мочеиспускании?", "type": "boolean", "gender_filter": null, "sort_order": 27},
-    {"system_code": "reproductive", "text": "Ощущение тяжести в области малого таза постоянное?", "type": "boolean", "gender_filter": null, "sort_order": 28},
-    {"system_code": "reproductive", "text": "Ощущение застойности, распирания в области малого таза при половом акте?", "type": "boolean", "gender_filter": null, "sort_order": 29},
-    {"system_code": "reproductive", "text": "Ощущение застойности, распирания при мочеиспускании?", "type": "boolean", "gender_filter": null, "sort_order": 30},
-    {"system_code": "reproductive", "text": "Ощущение застойности, распирания постоянное?", "type": "boolean", "gender_filter": null, "sort_order": 31},
-    {"system_code": "digestive", "text": "Отмечаете ли вы постоянно повышенный аппетит?", "type": "boolean", "gender_filter": null, "sort_order": 1},
-    {"system_code": "digestive", "text": "Отмечаете ли вы сниженный аппетит?", "type": "boolean", "gender_filter": null, "sort_order": 2},
-    {"system_code": "digestive", "text": "Постоянная тяга к сладкому?", "type": "boolean", "gender_filter": null, "sort_order": 3},
-    {"system_code": "digestive", "text": "Постоянная тяга к кислому?", "type": "boolean", "gender_filter": null, "sort_order": 4},
-    {"system_code": "digestive", "text": "Постоянная тяга к солёному?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "digestive", "text": "Постоянная тяга к продуктам брожения (квашеная капуста, кисломолочные)?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "digestive", "text": "Постоянная тяга к белковой пище (мясо, рыба, яйца)?", "type": "boolean", "gender_filter": null, "sort_order": 7},
-    {"system_code": "digestive", "text": "Постоянная тяга к острой пище?", "type": "boolean", "gender_filter": null, "sort_order": 8},
-    {"system_code": "digestive", "text": "Постоянная тяга к алкоголю?", "type": "boolean", "gender_filter": null, "sort_order": 9},
-    {"system_code": "digestive", "text": "Боль или рези в животе сразу после еды?", "type": "boolean", "gender_filter": null, "sort_order": 10},
-    {"system_code": "digestive", "text": "Тошнота сразу после еды?", "type": "boolean", "gender_filter": null, "sort_order": 11},
-    {"system_code": "digestive", "text": "Изжога сразу после еды?", "type": "boolean", "gender_filter": null, "sort_order": 12},
-    {"system_code": "digestive", "text": "Отрыжка сразу после еды?", "type": "boolean", "gender_filter": null, "sort_order": 13},
-    {"system_code": "digestive", "text": "Неприятные ощущения в эпигастрии (под ложечкой) через час после еды?", "type": "boolean", "gender_filter": null, "sort_order": 14},
-    {"system_code": "digestive", "text": "Боль в левом подреберье (поджелудочная) через час после еды?", "type": "boolean", "gender_filter": null, "sort_order": 15},
-    {"system_code": "digestive", "text": "Боль в правом подреберье (печень) через час после еды?", "type": "boolean", "gender_filter": null, "sort_order": 16},
-    {"system_code": "digestive", "text": "Вздутие живота через час после еды?", "type": "boolean", "gender_filter": null, "sort_order": 17},
-    {"system_code": "digestive", "text": "Спазмы в животе через час после еды?", "type": "boolean", "gender_filter": null, "sort_order": 18},
-    {"system_code": "digestive", "text": "Усиленная перистальтика (урчание) через час после еды?", "type": "boolean", "gender_filter": null, "sort_order": 19},
-    {"system_code": "digestive", "text": "Страдаете ли вы запорами (стул реже 1 раза в 2 дня, твёрдый)?", "type": "boolean", "gender_filter": null, "sort_order": 20},
-    {"system_code": "digestive", "text": "Страдаете ли вы диареей (жидкий стул чаще 3 раз в день)?", "type": "boolean", "gender_filter": null, "sort_order": 21},
-    {"system_code": "digestive", "text": "Частота стула (раз в сутки)?", "type": "numeric", "gender_filter": null, "sort_order": 22},
-    {"system_code": "digestive", "text": "Отвращение к мясу?", "type": "boolean", "gender_filter": null, "sort_order": 23},
-    {"system_code": "digestive", "text": "Отвращение к рыбе?", "type": "boolean", "gender_filter": null, "sort_order": 24},
-    {"system_code": "digestive", "text": "Отвращение к молочным продуктам?", "type": "boolean", "gender_filter": null, "sort_order": 25},
-    {"system_code": "digestive", "text": "Отвращение к жареной пище?", "type": "boolean", "gender_filter": null, "sort_order": 26},
-    {"system_code": "digestive", "text": "Пищевая аллергия на злаковые (глютен)?", "type": "boolean", "gender_filter": null, "sort_order": 27},
-    {"system_code": "digestive", "text": "Пищевая аллергия на молочные продукты?", "type": "boolean", "gender_filter": null, "sort_order": 28},
-    {"system_code": "digestive", "text": "Пищевая аллергия на орехи?", "type": "boolean", "gender_filter": null, "sort_order": 29},
-    {"system_code": "digestive", "text": "Пищевая аллергия на морепродукты?", "type": "boolean", "gender_filter": null, "sort_order": 30},
-    {"system_code": "digestive", "text": "Пищевая аллергия на цитрусовые?", "type": "boolean", "gender_filter": null, "sort_order": 31},
-    {"system_code": "digestive", "text": "Пищевая аллергия на окрашенные фрукты (красные яблоки, клубника)?", "type": "boolean", "gender_filter": null, "sort_order": 32},
-    {"system_code": "digestive", "text": "Пищевая аллергия на мёд?", "type": "boolean", "gender_filter": null, "sort_order": 33},
-    {"system_code": "digestive", "text": "Пищевая аллергия на дрожжи?", "type": "boolean", "gender_filter": null, "sort_order": 34},
-    {"system_code": "digestive", "text": "Пищевая аллергия на мясные продукты?", "type": "boolean", "gender_filter": null, "sort_order": 35},
-    {"system_code": "digestive", "text": "Боли в левом подреберье в течение дня?", "type": "boolean", "gender_filter": null, "sort_order": 36},
-    {"system_code": "digestive", "text": "Боли в правом подреберье в течение дня?", "type": "boolean", "gender_filter": null, "sort_order": 37},
-    {"system_code": "digestive", "text": "Ощущение тяжести в левом подреберье?", "type": "boolean", "gender_filter": null, "sort_order": 38},
-    {"system_code": "digestive", "text": "Ощущение тяжести в правом подреберье?", "type": "boolean", "gender_filter": null, "sort_order": 39},
-    {"system_code": "digestive", "text": "Боли в других отделах брюшной полости (кроме подреберий)?", "type": "boolean", "gender_filter": null, "sort_order": 40},
-    {"system_code": "endocrine", "text": "Вес (кг)", "type": "numeric", "gender_filter": null, "sort_order": 1},
-    {"system_code": "endocrine", "text": "Рост (см)", "type": "numeric", "gender_filter": null, "sort_order": 2},
-    {"system_code": "endocrine", "text": "Повышение температуры утром?", "type": "boolean", "gender_filter": null, "sort_order": 3},
-    {"system_code": "endocrine", "text": "Повышение температуры днём?", "type": "boolean", "gender_filter": null, "sort_order": 4},
-    {"system_code": "endocrine", "text": "Повышение температуры вечером?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "endocrine", "text": "Температура стабильна в течение дня?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "endocrine", "text": "Средний объём выпиваемой воды за день (литров)", "type": "numeric", "gender_filter": null, "sort_order": 7},
-    {"system_code": "endocrine", "text": "Считаете ли вы свою физическую активность низкой?", "type": "boolean", "gender_filter": null, "sort_order": 8},
-    {"system_code": "endocrine", "text": "Считаете ли вы свою физическую активность средней?", "type": "boolean", "gender_filter": null, "sort_order": 9},
-    {"system_code": "endocrine", "text": "Считаете ли вы свою физическую активность высокой?", "type": "boolean", "gender_filter": null, "sort_order": 10},
-    {"system_code": "endocrine", "text": "Считаете ли вы свою умственную нагрузку низкой?", "type": "boolean", "gender_filter": null, "sort_order": 11},
-    {"system_code": "endocrine", "text": "Считаете ли вы свою умственную нагрузку средней?", "type": "boolean", "gender_filter": null, "sort_order": 12},
-    {"system_code": "endocrine", "text": "Считаете ли вы свою умственную нагрузку высокой?", "type": "boolean", "gender_filter": null, "sort_order": 13},
-    {"system_code": "endocrine", "text": "Есть ли у вас высыпания на теле (прыщи, акне, сыпь)?", "type": "boolean", "gender_filter": null, "sort_order": 14},
-    {"system_code": "endocrine", "text": "Является ли ваш менструальный цикл регулярным?", "type": "boolean", "gender_filter": "F", "sort_order": 15},
-    {"system_code": "endocrine", "text": "Длительность менструального цикла (дней)?", "type": "numeric", "gender_filter": "F", "sort_order": 16},
-    {"system_code": "endocrine", "text": "Возраст начала первых месячных (менархе, лет)?", "type": "numeric", "gender_filter": "F", "sort_order": 17},
-    {"system_code": "endocrine", "text": "Наступила ли у вас менопауза?", "type": "boolean", "gender_filter": "F", "sort_order": 18},
-    {"system_code": "endocrine", "text": "Возраст наступления менопаузы (лет)?", "type": "numeric", "gender_filter": "F", "sort_order": 19},
-    {"system_code": "respiratory", "text": "Воспаления в горле (за последний год):", "type": "single_choice", "gender_filter": null, "sort_order": 1, "options": [{"code": "none", "text": "Нет"}, {"code": "rare", "text": "Редко (1-2 раза)"}, {"code": "often", "text": "Часто (3 и более раз)"}, {"code": "constantly", "text": "Постоянно"}]},
-    {"system_code": "respiratory", "text": "Кашель:", "type": "single_choice", "gender_filter": null, "sort_order": 2, "options": [{"code": "none", "text": "Нет"}, {"code": "deep", "text": "Грудной (глубокий)"}, {"code": "superficial", "text": "Поверхностный (из горла)"}]},
-    {"system_code": "respiratory", "text": "Затруднение дыхания:", "type": "single_choice", "gender_filter": null, "sort_order": 3, "options": [{"code": "none", "text": "Нет"}, {"code": "physical", "text": "При физической нагрузке"}, {"code": "rest", "text": "В покое"}, {"code": "paroxysmal", "text": "Приступообразно"}]},
-    {"system_code": "respiratory", "text": "Синюшность губ?", "type": "boolean", "gender_filter": null, "sort_order": 4},
-    {"system_code": "respiratory", "text": "Синюшность пальцев рук/ног?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "respiratory", "text": "Синюшность в других местах?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "dermal", "text": "Шелушения на коже?", "type": "boolean", "gender_filter": null, "sort_order": 1},
-    {"system_code": "dermal", "text": "Покраснения на коже?", "type": "boolean", "gender_filter": null, "sort_order": 2},
-    {"system_code": "dermal", "text": "Точечные покраснения?", "type": "boolean", "gender_filter": null, "sort_order": 3},
-    {"system_code": "dermal", "text": "Общий отёк?", "type": "boolean", "gender_filter": null, "sort_order": 4},
-    {"system_code": "dermal", "text": "Сыпь?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "dermal", "text": "Мокнущая язва?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "dermal", "text": "Зуд?", "type": "boolean", "gender_filter": null, "sort_order": 7},
-    {"system_code": "dermal", "text": "Выпадение волос:", "type": "single_choice", "gender_filter": null, "sort_order": 8, "options": [{"code": "none", "text": "Нет"}, {"code": "minor", "text": "Незначительное"}, {"code": "moderate", "text": "Умеренное"}, {"code": "severe", "text": "Выраженное"}, {"code": "total", "text": "Полное"}]},
-    {"system_code": "dermal", "text": "Повреждение ногтевых пластин (изменение формы, цвета, ломкость)?", "type": "boolean", "gender_filter": null, "sort_order": 9},
-    {"system_code": "dermal", "text": "Кожные проявления только на голове/лице?", "type": "boolean", "gender_filter": null, "sort_order": 10},
-    {"system_code": "dermal", "text": "Только на туловище?", "type": "boolean", "gender_filter": null, "sort_order": 11},
-    {"system_code": "dermal", "text": "Только на руках?", "type": "boolean", "gender_filter": null, "sort_order": 12},
-    {"system_code": "dermal", "text": "Только на ногах?", "type": "boolean", "gender_filter": null, "sort_order": 13},
-    {"system_code": "dermal", "text": "На нескольких зонах?", "type": "boolean", "gender_filter": null, "sort_order": 14},
-    {"system_code": "dermal", "text": "На всём теле?", "type": "boolean", "gender_filter": null, "sort_order": 15},
-    {"system_code": "cardiovascular", "text": "Верхнее давление (систолическое) в покое, мм рт. ст.", "type": "numeric", "gender_filter": null, "sort_order": 1},
-    {"system_code": "cardiovascular", "text": "Нижнее давление (диастолическое) в покое, мм рт. ст.", "type": "numeric", "gender_filter": null, "sort_order": 2},
-    {"system_code": "cardiovascular", "text": "Частота пульса в покое, ударов в минуту", "type": "numeric", "gender_filter": null, "sort_order": 3},
-    {"system_code": "cardiovascular", "text": "Пульс:", "type": "single_choice", "gender_filter": null, "sort_order": 4, "options": [{"code": "regular", "text": "Ритмичный"}, {"code": "slight_arrhythmia", "text": "С лёгкими перебоями"}, {"code": "arrhythmic", "text": "Выраженно неритмичный"}]},
-    {"system_code": "cardiovascular", "text": "Ощущаете ли вы затруднение дыхания?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "cardiovascular", "text": "Ощущаете ли вы тяжесть в грудной клетке?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "cardiovascular", "text": "Боль в сердце?", "type": "boolean", "gender_filter": null, "sort_order": 7},
-    {"system_code": "cardiovascular", "text": "Характер боли в сердце: тупая?", "type": "boolean", "gender_filter": null, "sort_order": 8},
-    {"system_code": "cardiovascular", "text": "Характер боли в сердце: жгучая?", "type": "boolean", "gender_filter": null, "sort_order": 9},
-    {"system_code": "cardiovascular", "text": "Характер боли в сердце: острая / пронзающая?", "type": "boolean", "gender_filter": null, "sort_order": 10},
-    {"system_code": "cardiovascular", "text": "Боль в сердце постоянная?", "type": "boolean", "gender_filter": null, "sort_order": 11},
-    {"system_code": "cardiovascular", "text": "Боль в сердце периодическая?", "type": "boolean", "gender_filter": null, "sort_order": 12},
-    {"system_code": "cardiovascular", "text": "Боль в сердце возникает при физической нагрузке?", "type": "boolean", "gender_filter": null, "sort_order": 13},
-    {"system_code": "cardiovascular", "text": "Боль в сердце возникает при переутомлении?", "type": "boolean", "gender_filter": null, "sort_order": 14},
-    {"system_code": "cardiovascular", "text": "Боль в сердце возникает при эмоциональном перенапряжении?", "type": "boolean", "gender_filter": null, "sort_order": 15},
-    {"system_code": "cardiovascular", "text": "Боль в сердце возникает на вдохе?", "type": "boolean", "gender_filter": null, "sort_order": 16},
-    {"system_code": "cardiovascular", "text": "Выступающие болезненные вены на ногах:", "type": "single_choice", "gender_filter": null, "sort_order": 17, "options": [{"code": "none", "text": "Нет"}, {"code": "minor", "text": "Небольшие расширенные вены"}, {"code": "nodes", "text": "Явно выступающие узлы"}, {"code": "painful", "text": "С болью и отёком"}]},
-    {"system_code": "immune", "text": "Бледность:", "type": "single_choice", "gender_filter": null, "sort_order": 1, "options": [{"code": "none", "text": "Нет"}, {"code": "mild", "text": "Незначительная"}, {"code": "severe", "text": "Выраженная"}]},
-    {"system_code": "immune", "text": "Слабость:", "type": "single_choice", "gender_filter": null, "sort_order": 2, "options": [{"code": "none", "text": "Нет"}, {"code": "periodic", "text": "Периодически"}, {"code": "constant", "text": "Постоянно"}]},
-    {"system_code": "immune", "text": "Увеличение лимфатических узлов на шее?", "type": "boolean", "gender_filter": null, "sort_order": 3},
-    {"system_code": "immune", "text": "Увеличение лимфоузлов под мышками?", "type": "boolean", "gender_filter": null, "sort_order": 4},
-    {"system_code": "immune", "text": "Увеличение лимфоузлов в паху?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "immune", "text": "Увеличение лимфоузлов в нескольких зонах?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "immune", "text": "Боль в правом подреберье?", "type": "boolean", "gender_filter": null, "sort_order": 7},
-    {"system_code": "immune", "text": "Боль в левом подреберье?", "type": "boolean", "gender_filter": null, "sort_order": 8},
-    {"system_code": "immune", "text": "Частота ОРВИ и температура:", "type": "single_choice", "gender_filter": null, "sort_order": 9, "options": [{"code": "none", "text": "Не болею (реже 1 раза в год)"}, {"code": "1-2_low", "text": "1-2 раза в год, t до 37.5"}, {"code": "1-2_high", "text": "1-2 раза в год, t > 37.5"}, {"code": "3-4_low", "text": "3-4 раза в год, t до 37.5"}, {"code": "3-4_high", "text": "3-4 раза в год, t > 37.5"}, {"code": ">4", "text": "Более 4 раз в год"}]},
-    {"system_code": "immune", "text": "Как долго заживают раны и ссадины:", "type": "single_choice", "gender_filter": null, "sort_order": 10, "options": [{"code": "normal", "text": "Как обычно (до 7 дней)"}, {"code": "long", "text": "Дольше обычного (1-2 недели)"}, {"code": "very_long", "text": "Очень долго (более 2 недель)"}]},
-    {"system_code": "musculoskeletal", "text": "Боль в тазу?", "type": "boolean", "gender_filter": null, "sort_order": 1},
-    {"system_code": "musculoskeletal", "text": "Тип боли в тазу: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 2},
-    {"system_code": "musculoskeletal", "text": "Тип боли в тазу: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 3},
-    {"system_code": "musculoskeletal", "text": "Боль в тазу при движении?", "type": "boolean", "gender_filter": null, "sort_order": 4},
-    {"system_code": "musculoskeletal", "text": "Боль в тазу при длительном отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в тазу?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в тазу?", "type": "boolean", "gender_filter": null, "sort_order": 7},
-    {"system_code": "musculoskeletal", "text": "Боль в колене?", "type": "boolean", "gender_filter": null, "sort_order": 8},
-    {"system_code": "musculoskeletal", "text": "Тип боли в колене: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 9},
-    {"system_code": "musculoskeletal", "text": "Тип боли в колене: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 10},
-    {"system_code": "musculoskeletal", "text": "Боль в колене при движении?", "type": "boolean", "gender_filter": null, "sort_order": 11},
-    {"system_code": "musculoskeletal", "text": "Боль в колене при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 12},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в колене?", "type": "boolean", "gender_filter": null, "sort_order": 13},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в колене?", "type": "boolean", "gender_filter": null, "sort_order": 14},
-    {"system_code": "musculoskeletal", "text": "Боль в стопе?", "type": "boolean", "gender_filter": null, "sort_order": 15},
-    {"system_code": "musculoskeletal", "text": "Тип боли в стопе: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 16},
-    {"system_code": "musculoskeletal", "text": "Тип боли в стопе: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 17},
-    {"system_code": "musculoskeletal", "text": "Боль в стопе при движении?", "type": "boolean", "gender_filter": null, "sort_order": 18},
-    {"system_code": "musculoskeletal", "text": "Боль в стопе при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 19},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в стопе?", "type": "boolean", "gender_filter": null, "sort_order": 20},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в стопе?", "type": "boolean", "gender_filter": null, "sort_order": 21},
-    {"system_code": "musculoskeletal", "text": "Боль в плече?", "type": "boolean", "gender_filter": null, "sort_order": 22},
-    {"system_code": "musculoskeletal", "text": "Тип боли в плече: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 23},
-    {"system_code": "musculoskeletal", "text": "Тип боли в плече: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 24},
-    {"system_code": "musculoskeletal", "text": "Боль в плече при движении?", "type": "boolean", "gender_filter": null, "sort_order": 25},
-    {"system_code": "musculoskeletal", "text": "Боль в плече при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 26},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в плече?", "type": "boolean", "gender_filter": null, "sort_order": 27},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в плече?", "type": "boolean", "gender_filter": null, "sort_order": 28},
-    {"system_code": "musculoskeletal", "text": "Боль в локте?", "type": "boolean", "gender_filter": null, "sort_order": 29},
-    {"system_code": "musculoskeletal", "text": "Тип боли в локте: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 30},
-    {"system_code": "musculoskeletal", "text": "Тип боли в локте: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 31},
-    {"system_code": "musculoskeletal", "text": "Боль в локте при движении?", "type": "boolean", "gender_filter": null, "sort_order": 32},
-    {"system_code": "musculoskeletal", "text": "Боль в локте при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 33},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в локте?", "type": "boolean", "gender_filter": null, "sort_order": 34},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в локте?", "type": "boolean", "gender_filter": null, "sort_order": 35},
-    {"system_code": "musculoskeletal", "text": "Боль в кисти?", "type": "boolean", "gender_filter": null, "sort_order": 36},
-    {"system_code": "musculoskeletal", "text": "Тип боли в кисти: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 37},
-    {"system_code": "musculoskeletal", "text": "Тип боли в кисти: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 38},
-    {"system_code": "musculoskeletal", "text": "Боль в кисти при движении?", "type": "boolean", "gender_filter": null, "sort_order": 39},
-    {"system_code": "musculoskeletal", "text": "Боль в кисти при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 40},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в кисти?", "type": "boolean", "gender_filter": null, "sort_order": 41},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в кисти?", "type": "boolean", "gender_filter": null, "sort_order": 42},
-    {"system_code": "musculoskeletal", "text": "Боль в шейном отделе позвоночника?", "type": "boolean", "gender_filter": null, "sort_order": 43},
-    {"system_code": "musculoskeletal", "text": "Тип боли в шее: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 44},
-    {"system_code": "musculoskeletal", "text": "Тип боли в шее: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 45},
-    {"system_code": "musculoskeletal", "text": "Боль в шее при движении?", "type": "boolean", "gender_filter": null, "sort_order": 46},
-    {"system_code": "musculoskeletal", "text": "Боль в шее при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 47},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в шее?", "type": "boolean", "gender_filter": null, "sort_order": 48},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в шее?", "type": "boolean", "gender_filter": null, "sort_order": 49},
-    {"system_code": "musculoskeletal", "text": "Боль в грудном отделе позвоночника?", "type": "boolean", "gender_filter": null, "sort_order": 50},
-    {"system_code": "musculoskeletal", "text": "Тип боли в грудном отделе: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 51},
-    {"system_code": "musculoskeletal", "text": "Тип боли в грудном отделе: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 52},
-    {"system_code": "musculoskeletal", "text": "Боль в грудном отделе при движении?", "type": "boolean", "gender_filter": null, "sort_order": 53},
-    {"system_code": "musculoskeletal", "text": "Боль в грудном отделе при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 54},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в грудном отделе?", "type": "boolean", "gender_filter": null, "sort_order": 55},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в грудном отделе?", "type": "boolean", "gender_filter": null, "sort_order": 56},
-    {"system_code": "musculoskeletal", "text": "Боль в поясничном отделе?", "type": "boolean", "gender_filter": null, "sort_order": 57},
-    {"system_code": "musculoskeletal", "text": "Тип боли в пояснице: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 58},
-    {"system_code": "musculoskeletal", "text": "Тип боли в пояснице: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 59},
-    {"system_code": "musculoskeletal", "text": "Боль в пояснице при движении?", "type": "boolean", "gender_filter": null, "sort_order": 60},
-    {"system_code": "musculoskeletal", "text": "Боль в пояснице при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 61},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в пояснице?", "type": "boolean", "gender_filter": null, "sort_order": 62},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в пояснице?", "type": "boolean", "gender_filter": null, "sort_order": 63},
-    {"system_code": "musculoskeletal", "text": "Боль в крестце?", "type": "boolean", "gender_filter": null, "sort_order": 64},
-    {"system_code": "musculoskeletal", "text": "Тип боли в крестце: холодный?", "type": "boolean", "gender_filter": null, "sort_order": 65},
-    {"system_code": "musculoskeletal", "text": "Тип боли в крестце: с воспалением?", "type": "boolean", "gender_filter": null, "sort_order": 66},
-    {"system_code": "musculoskeletal", "text": "Боль в крестце при движении?", "type": "boolean", "gender_filter": null, "sort_order": 67},
-    {"system_code": "musculoskeletal", "text": "Боль в крестце при отсутствии движения?", "type": "boolean", "gender_filter": null, "sort_order": 68},
-    {"system_code": "musculoskeletal", "text": "Постоянная боль в крестце?", "type": "boolean", "gender_filter": null, "sort_order": 69},
-    {"system_code": "musculoskeletal", "text": "Стреляющая боль в крестце?", "type": "boolean", "gender_filter": null, "sort_order": 70},
-    {"system_code": "excretory", "text": "Средний объём выпиваемой воды (литров в день)", "type": "numeric", "gender_filter": null, "sort_order": 1},
-    {"system_code": "excretory", "text": "Мочеиспускание днём:", "type": "single_choice", "gender_filter": null, "sort_order": 2, "options": [{"code": "normal", "text": "В обычном ритме"}, {"code": "frequent", "text": "Чаще обычного (>5-6 раз)"}]},
-    {"system_code": "excretory", "text": "Мочеиспускание ночью:", "type": "single_choice", "gender_filter": null, "sort_order": 3, "options": [{"code": "none", "text": "Нет, сплю всю ночь"}, {"code": "once", "text": "1 раз за ночь"}, {"code": "twice_or_more", "text": "2 и более раз"}]},
-    {"system_code": "excretory", "text": "Примерный общий объём мочи за сутки (литров)", "type": "numeric", "gender_filter": null, "sort_order": 4},
-    {"system_code": "excretory", "text": "Общие отеки (отёчность всего тела)?", "type": "boolean", "gender_filter": null, "sort_order": 5},
-    {"system_code": "excretory", "text": "Отеки на лице?", "type": "boolean", "gender_filter": null, "sort_order": 6},
-    {"system_code": "excretory", "text": "Отеки на ногах (стопы, голени)?", "type": "boolean", "gender_filter": null, "sort_order": 7},
-    {"system_code": "excretory", "text": "Отеки появляются утром?", "type": "boolean", "gender_filter": null, "sort_order": 8},
-    {"system_code": "excretory", "text": "Отеки усиливаются к вечеру?", "type": "boolean", "gender_filter": null, "sort_order": 9},
-    {"system_code": "excretory", "text": "Отеки не зависят от времени?", "type": "boolean", "gender_filter": null, "sort_order": 10},
-    {"system_code": "excretory", "text": "Цвет мочи:", "type": "single_choice", "gender_filter": null, "sort_order": 11, "options": [{"code": "light", "text": "Светлая (соломенно-жёлтая)"}, {"code": "dark_yellow", "text": "Тёмно-жёлтая"}, {"code": "turbid", "text": "Мутная"}, {"code": "reddish", "text": "Красноватая / розовая"}, {"code": "brown", "text": "Коричневая (цвета чая)"}]},
-    {"system_code": "excretory", "text": "Запах мочи:", "type": "single_choice", "gender_filter": null, "sort_order": 12, "options": [{"code": "normal", "text": "Обычный"}, {"code": "sharp", "text": "Резкий / неприятный"}, {"code": "sweet", "text": "Сладковатый (ацетона)"}]},
-    {"system_code": "excretory", "text": "Пена в моче:", "type": "single_choice", "gender_filter": null, "sort_order": 13, "options": [{"code": "none", "text": "Нет"}, {"code": "much", "text": "Да, много пены"}, {"code": "little", "text": "Да, немного пены"}]},
-    {"system_code": "excretory", "text": "Осадок в моче (хлопья, муть)?", "type": "boolean", "gender_filter": null, "sort_order": 14}
-  ]
-}   
+    {
+      "system_code": "nervous",
+      "text": "Испытываете ли вы подавленность, чувство тоски (депрессию)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 1,
+      "code": "nervous_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Отмечаете ли вы безразличие, отсутствие желания что-либо делать (апатию)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 2,
+      "code": "nervous_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Отмечаете ли вы повышенную раздражительность или вспыльчивость?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 3,
+      "code": "nervous_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Боль в руках?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "nervous_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_pain_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Боль в ногах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "nervous_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_pain_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Боль в грудной клетке?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "nervous_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_pain_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Боль в поясничной области?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 8,
+      "code": "nervous_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_pain_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Боль в шейно-воротниковой зоне?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "nervous_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_pain_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Боль в области копчика?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 10,
+      "code": "nervous_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_pain_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Спазмы в руках?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 12,
+      "code": "nervous_010",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_spasm_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Спазмы в ногах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 13,
+      "code": "nervous_011",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_spasm_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Спазмы в грудной клетке?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 14,
+      "code": "nervous_012",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_spasm_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Спазмы в поясничной области?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 15,
+      "code": "nervous_013",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_spasm_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Спазмы в шейно-воротниковой зоне?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 16,
+      "code": "nervous_014",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_spasm_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Спазмы в области копчика?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 17,
+      "code": "nervous_015",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_spasm_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Онемение в руках?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 19,
+      "code": "nervous_016",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_numbness_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Онемение в ногах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 20,
+      "code": "nervous_017",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_numbness_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Онемение в грудной клетке?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 21,
+      "code": "nervous_018",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_numbness_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Онемение в поясничной области?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 22,
+      "code": "nervous_019",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_numbness_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Онемение в шейно-воротниковой зоне?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 23,
+      "code": "nervous_020",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_numbness_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Онемение в области копчика?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 24,
+      "code": "nervous_021",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_numbness_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Ощущение холода в руках?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 25,
+      "code": "nervous_022",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Ощущение холода в ногах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 26,
+      "code": "nervous_023",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Отмечаете ли вы дрожание (тремор) пальцев, рук, головы или других частей тела?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 27,
+      "code": "nervous_024",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли у вас снижение слуха?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 29,
+      "code": "nervous_025",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_sensory_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли шум или звон в ушах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 30,
+      "code": "nervous_026",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_sensory_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли снижение или потеря восприятия определённых запахов?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 31,
+      "code": "nervous_027",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_sensory_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли искажённое восприятие запахов (приятный запах кажется неприятным или наоборот)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 32,
+      "code": "nervous_028",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_sensory_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение аккомодации (трудно быстро перефокусировать зрение с дальнего предмета на ближний)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 33,
+      "code": "nervous_029",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_sensory_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение цвето- или световосприятия (цвета кажутся тусклыми, свет режет глаза)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 34,
+      "code": "nervous_030",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_sensory_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли ощущение сужения полей зрения («туннельное» зрение, выпадение бокового зрения)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 35,
+      "code": "nervous_031",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_sensory_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "nervous",
+      "text": "Бывают ли у вас зрительные, слуховые или иные галлюцинации (видите/слышите то, чего нет)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 36,
+      "code": "nervous_032",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Галлюцинации требуют очной медицинской оценки. При угрозе себе или окружающим обратитесь за экстренной помощью."
+      }
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение координации движений (шаткость при ходьбе, промахивание мимо предметов)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 37,
+      "code": "nervous_033",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение вестибулярного аппарата (частые головокружения, ощущение вращения)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 38,
+      "code": "nervous_034",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли у вас нарушение мышечного тонуса (ощущение скованности или чрезмерной вялости мышц)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 39,
+      "code": "nervous_035",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Нарушение мышечного тонуса преимущественно слева?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 40,
+      "code": "nervous_036",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_035",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Нарушение мышечного тонуса преимущественно справа?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 41,
+      "code": "nervous_037",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_035",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Нарушение мышечного тонуса в верхней части тела (руки, плечевой пояс)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 42,
+      "code": "nervous_038",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_035",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Нарушение мышечного тонуса в нижней части тела (ноги, таз)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 43,
+      "code": "nervous_039",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "nervous_035",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение глотательного рефлекса (попёрхивание, трудности при глотании)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 44,
+      "code": "nervous_040",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение речи (нечёткость, смазанность речи, затруднённое произношение)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 45,
+      "code": "nervous_041",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение контроля мочеиспускания (недержание, затруднённое начало, чувство неполного опорожнения)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 46,
+      "code": "nervous_042",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "nervous",
+      "text": "Есть ли нарушение функции прямой кишки (недержание кала, затруднение контроля дефекации)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 47,
+      "code": "nervous_043",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Были ли у вас попытки забеременеть в течение года и более?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 1,
+      "code": "reproductive_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Наступала ли у вас беременность хотя бы один раз (независимо от исхода)?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 2,
+      "code": "reproductive_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Диагностировано ли у вас бесплодие?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 3,
+      "code": "reproductive_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Миома матки по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 5,
+      "code": "reproductive_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Эндометриоз (эндометриоидные очаги) по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 6,
+      "code": "reproductive_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Воспаление придатков (аднексит) по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 7,
+      "code": "reproductive_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Сальпингит (воспаление маточных труб) по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 8,
+      "code": "reproductive_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Кисты яичников по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 9,
+      "code": "reproductive_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Новообразования (опухоли) матки или яичников по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 10,
+      "code": "reproductive_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Эрозия шейки матки по кольпоскопии?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 12,
+      "code": "reproductive_011",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_colposcopy",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Лейкоплакия шейки матки по кольпоскопии?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 13,
+      "code": "reproductive_012",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_colposcopy",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Новообразования (опухоли) шейки матки по кольпоскопии?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 14,
+      "code": "reproductive_013",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_colposcopy",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Аденома предстательной железы по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "M",
+      "sort_order": 16,
+      "code": "reproductive_015",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_prostate_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Простатит (воспаление простаты) по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "M",
+      "sort_order": 17,
+      "code": "reproductive_016",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_prostate_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Воспаление семенных пузырьков (везикулит) по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "M",
+      "sort_order": 18,
+      "code": "reproductive_017",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_prostate_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Увеличение объёма предстательной железы по УЗИ?",
+      "type": "boolean",
+      "gender_filter": "M",
+      "sort_order": 19,
+      "code": "reproductive_018",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_prostate_ultrasound",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Боль внизу живота во время менструации?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 20,
+      "code": "reproductive_020",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Боль внизу живота в период овуляции?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 21,
+      "code": "reproductive_021",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Боль внизу живота, не связанная с менструальным циклом?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 23,
+      "code": "reproductive_022",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Боль в области малого таза во время полового акта?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 24,
+      "code": "reproductive_023",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Боль в области малого таза при мочеиспускании?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 25,
+      "code": "reproductive_024",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Боль в области малого таза постоянная (не зависит от действий)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 26,
+      "code": "reproductive_025",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Ощущение тяжести в области малого таза при половом акте?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 27,
+      "code": "reproductive_026",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Ощущение тяжести в области малого таза при мочеиспускании?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 28,
+      "code": "reproductive_027",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Ощущение тяжести в области малого таза постоянное?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 29,
+      "code": "reproductive_028",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Ощущение застойности, распирания в области малого таза при половом акте?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 30,
+      "code": "reproductive_029",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Ощущение застойности, распирания при мочеиспускании?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 31,
+      "code": "reproductive_030",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Ощущение застойности, распирания постоянное?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 32,
+      "code": "reproductive_031",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "reproductive_pelvic_symptoms_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Отмечаете ли вы постоянно повышенный аппетит?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 1,
+      "code": "digestive_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Отмечаете ли вы сниженный аппетит?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 2,
+      "code": "digestive_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Постоянная тяга к сладкому?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 3,
+      "code": "digestive_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Постоянная тяга к кислому?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "digestive_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Постоянная тяга к солёному?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "digestive_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Постоянная тяга к продуктам брожения (квашеная капуста, кисломолочные)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "digestive_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Постоянная тяга к белковой пище (мясо, рыба, яйца)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "digestive_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Постоянная тяга к острой пище?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 8,
+      "code": "digestive_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Постоянная тяга к алкоголю?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "digestive_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Боль или рези в животе сразу после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 10,
+      "code": "digestive_010",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Тошнота сразу после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 11,
+      "code": "digestive_011",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Изжога сразу после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 12,
+      "code": "digestive_012",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Отрыжка сразу после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 13,
+      "code": "digestive_013",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Неприятные ощущения в эпигастрии (под ложечкой) через час после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 14,
+      "code": "digestive_014",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Боль в левом подреберье (поджелудочная) через час после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 15,
+      "code": "digestive_015",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Боль в правом подреберье (печень) через час после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 16,
+      "code": "digestive_016",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Вздутие живота через час после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 17,
+      "code": "digestive_017",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Спазмы в животе через час после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 18,
+      "code": "digestive_018",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Усиленная перистальтика (урчание) через час после еды?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 19,
+      "code": "digestive_019",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Страдаете ли вы запорами (стул реже 1 раза в 2 дня, твёрдый)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 20,
+      "code": "digestive_020",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Страдаете ли вы диареей (жидкий стул чаще 3 раз в день)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 21,
+      "code": "digestive_021",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Частота стула (раз в сутки)?",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 22,
+      "code": "digestive_022",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 0,
+        "max": 20,
+        "step": 0.5,
+        "unit": "раз/сутки"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Отвращение к мясу?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 23,
+      "code": "digestive_023",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Отвращение к рыбе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 24,
+      "code": "digestive_024",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Отвращение к молочным продуктам?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 25,
+      "code": "digestive_025",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Отвращение к жареной пище?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 26,
+      "code": "digestive_026",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на злаковые (глютен)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 28,
+      "code": "digestive_027",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на молочные продукты?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 29,
+      "code": "digestive_028",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на орехи?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 30,
+      "code": "digestive_029",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на морепродукты?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 31,
+      "code": "digestive_030",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на цитрусовые?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 32,
+      "code": "digestive_031",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на окрашенные фрукты (красные яблоки, клубника)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 33,
+      "code": "digestive_032",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на мёд?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 34,
+      "code": "digestive_033",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на дрожжи?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 35,
+      "code": "digestive_034",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Пищевая аллергия на мясные продукты?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 36,
+      "code": "digestive_035",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "digestive_food_allergy_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Боли в левом подреберье в течение дня?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 37,
+      "code": "digestive_036",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Боли в правом подреберье в течение дня?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 38,
+      "code": "digestive_037",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Ощущение тяжести в левом подреберье?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 39,
+      "code": "digestive_038",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Ощущение тяжести в правом подреберье?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 40,
+      "code": "digestive_039",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Боли в других отделах брюшной полости (кроме подреберий)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 41,
+      "code": "digestive_040",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Вес (кг)",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 1,
+      "code": "endocrine_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 20,
+        "max": 400,
+        "step": 0.1,
+        "unit": "кг"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Рост (см)",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 2,
+      "code": "endocrine_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 80,
+        "max": 250,
+        "step": 1,
+        "unit": "см"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Повышение температуры утром?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 3,
+      "code": "endocrine_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Повышение температуры днём?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "endocrine_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Повышение температуры вечером?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "endocrine_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Температура стабильна в течение дня?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "endocrine_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Средний объём выпиваемой воды за день (литров)",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "endocrine_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 0,
+        "max": 15,
+        "step": 0.1,
+        "unit": "л/сутки"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Как вы оцениваете свою обычную физическую активность?",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 8,
+      "code": "endocrine_activity_level",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null,
+      "options": [
+        {
+          "text": "Низкая",
+          "code": "low",
+          "sort_order": 1
+        },
+        {
+          "text": "Умеренная",
+          "code": "moderate",
+          "sort_order": 2
+        },
+        {
+          "text": "Высокая",
+          "code": "high",
+          "sort_order": 3
+        }
+      ]
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Как вы оцениваете свою обычную умственную нагрузку?",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "endocrine_mental_load",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null,
+      "options": [
+        {
+          "text": "Низкая",
+          "code": "low",
+          "sort_order": 1
+        },
+        {
+          "text": "Умеренная",
+          "code": "moderate",
+          "sort_order": 2
+        },
+        {
+          "text": "Высокая",
+          "code": "high",
+          "sort_order": 3
+        }
+      ]
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Есть ли у вас высыпания на теле (прыщи, акне, сыпь)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 10,
+      "code": "endocrine_014",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Является ли ваш менструальный цикл регулярным?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 12,
+      "code": "endocrine_015",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "endocrine_current_menstruation",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Длительность менструального цикла (дней)?",
+      "type": "numeric",
+      "gender_filter": "F",
+      "sort_order": 13,
+      "code": "endocrine_016",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 15,
+        "max": 90,
+        "step": 1,
+        "unit": "дней"
+      },
+      "display_condition": {
+        "question_code": "endocrine_current_menstruation",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Возраст начала первых месячных (менархе, лет)?",
+      "type": "numeric",
+      "gender_filter": "F",
+      "sort_order": 14,
+      "code": "endocrine_017",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 7,
+        "max": 25,
+        "step": 1,
+        "unit": "лет"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Наступила ли у вас менопауза?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 15,
+      "code": "endocrine_018",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "question_code": "endocrine_current_menstruation",
+        "operator": "equals",
+        "value": false
+      },
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Возраст наступления менопаузы (лет)?",
+      "type": "numeric",
+      "gender_filter": "F",
+      "sort_order": 16,
+      "code": "endocrine_019",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 30,
+        "max": 70,
+        "step": 1,
+        "unit": "лет"
+      },
+      "display_condition": {
+        "question_code": "endocrine_018",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "respiratory",
+      "text": "Воспаления в горле (за последний год):",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 1,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "rare",
+          "text": "Редко (1-2 раза)"
+        },
+        {
+          "code": "often",
+          "text": "Часто (3 и более раз)"
+        },
+        {
+          "code": "constantly",
+          "text": "Постоянно"
+        }
+      ],
+      "code": "respiratory_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "respiratory",
+      "text": "Кашель:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 2,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "deep",
+          "text": "Грудной (глубокий)"
+        },
+        {
+          "code": "superficial",
+          "text": "Поверхностный (из горла)"
+        }
+      ],
+      "code": "respiratory_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "respiratory",
+      "text": "Затруднение дыхания:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 3,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "physical",
+          "text": "При физической нагрузке"
+        },
+        {
+          "code": "rest",
+          "text": "В покое"
+        },
+        {
+          "code": "paroxysmal",
+          "text": "Приступообразно"
+        }
+      ],
+      "code": "respiratory_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "respiratory",
+      "text": "Синюшность губ?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "respiratory_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "respiratory",
+      "text": "Синюшность пальцев рук/ног?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "respiratory_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "respiratory",
+      "text": "Синюшность в других местах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "respiratory_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "dermal",
+      "text": "Шелушения на коже?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 1,
+      "code": "dermal_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Покраснения на коже?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 2,
+      "code": "dermal_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Точечные покраснения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 3,
+      "code": "dermal_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Общий отёк?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "dermal_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Сыпь?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "dermal_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Мокнущая язва?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "dermal_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Зуд?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "dermal_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Выпадение волос:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 8,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "minor",
+          "text": "Незначительное"
+        },
+        {
+          "code": "moderate",
+          "text": "Умеренное"
+        },
+        {
+          "code": "severe",
+          "text": "Выраженное"
+        },
+        {
+          "code": "total",
+          "text": "Полное"
+        }
+      ],
+      "code": "dermal_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Повреждение ногтевых пластин (изменение формы, цвета, ломкость)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "dermal_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Кожные проявления только на голове/лице?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 10,
+      "code": "dermal_010",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "any": [
+          {
+            "question_code": "dermal_001",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_002",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_003",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_004",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_005",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_006",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_007",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Только на туловище?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 11,
+      "code": "dermal_011",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "any": [
+          {
+            "question_code": "dermal_001",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_002",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_003",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_004",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_005",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_006",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_007",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Только на руках?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 12,
+      "code": "dermal_012",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "any": [
+          {
+            "question_code": "dermal_001",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_002",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_003",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_004",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_005",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_006",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_007",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "Только на ногах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 13,
+      "code": "dermal_013",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "any": [
+          {
+            "question_code": "dermal_001",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_002",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_003",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_004",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_005",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_006",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_007",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "На нескольких зонах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 14,
+      "code": "dermal_014",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "any": [
+          {
+            "question_code": "dermal_001",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_002",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_003",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_004",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_005",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_006",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_007",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "alert": null
+    },
+    {
+      "system_code": "dermal",
+      "text": "На всём теле?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 15,
+      "code": "dermal_015",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": {
+        "any": [
+          {
+            "question_code": "dermal_001",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_002",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_003",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_004",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_005",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_006",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "question_code": "dermal_007",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Верхнее давление (систолическое) в покое, мм рт. ст.",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 1,
+      "code": "cardiovascular_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 50,
+        "max": 300,
+        "step": 1,
+        "unit": "мм рт. ст."
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Нижнее давление (диастолическое) в покое, мм рт. ст.",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 2,
+      "code": "cardiovascular_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 30,
+        "max": 200,
+        "step": 1,
+        "unit": "мм рт. ст."
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Частота пульса в покое, ударов в минуту",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 3,
+      "code": "cardiovascular_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 25,
+        "max": 250,
+        "step": 1,
+        "unit": "уд/мин"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Пульс:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 4,
+      "options": [
+        {
+          "code": "regular",
+          "text": "Ритмичный"
+        },
+        {
+          "code": "slight_arrhythmia",
+          "text": "С лёгкими перебоями"
+        },
+        {
+          "code": "arrhythmic",
+          "text": "Выраженно неритмичный"
+        }
+      ],
+      "code": "cardiovascular_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Ощущаете ли вы затруднение дыхания?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "cardiovascular_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Ощущаете ли вы тяжесть в грудной клетке?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "cardiovascular_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Боль в сердце?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "cardiovascular_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": {
+        "severity": "urgent",
+        "trigger": {
+          "operator": "equals",
+          "value": true
+        },
+        "message": "Если симптом возник внезапно, выражен сильно или быстро нарастает, немедленно обратитесь за экстренной медицинской помощью."
+      }
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Характер боли в сердце: тупая?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 8,
+      "code": "cardiovascular_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Характер боли в сердце: жгучая?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "cardiovascular_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Характер боли в сердце: острая / пронзающая?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 10,
+      "code": "cardiovascular_010",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Боль в сердце постоянная?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 11,
+      "code": "cardiovascular_011",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Боль в сердце периодическая?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 12,
+      "code": "cardiovascular_012",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Боль в сердце возникает при физической нагрузке?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 13,
+      "code": "cardiovascular_013",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Боль в сердце возникает при переутомлении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 14,
+      "code": "cardiovascular_014",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Боль в сердце возникает при эмоциональном перенапряжении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 15,
+      "code": "cardiovascular_015",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Боль в сердце возникает на вдохе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 16,
+      "code": "cardiovascular_016",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "cardiovascular_007",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "cardiovascular",
+      "text": "Выступающие болезненные вены на ногах:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 17,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "minor",
+          "text": "Небольшие расширенные вены"
+        },
+        {
+          "code": "nodes",
+          "text": "Явно выступающие узлы"
+        },
+        {
+          "code": "painful",
+          "text": "С болью и отёком"
+        }
+      ],
+      "code": "cardiovascular_017",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Бледность:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 1,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "mild",
+          "text": "Незначительная"
+        },
+        {
+          "code": "severe",
+          "text": "Выраженная"
+        }
+      ],
+      "code": "immune_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Слабость:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 2,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "periodic",
+          "text": "Периодически"
+        },
+        {
+          "code": "constant",
+          "text": "Постоянно"
+        }
+      ],
+      "code": "immune_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Увеличение лимфатических узлов на шее?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "immune_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "immune_lymph_nodes_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Увеличение лимфоузлов под мышками?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "immune_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "immune_lymph_nodes_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Увеличение лимфоузлов в паху?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "immune_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "immune_lymph_nodes_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Увеличение лимфоузлов в нескольких зонах?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "immune_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "immune_lymph_nodes_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Боль в правом подреберье?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 8,
+      "code": "immune_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Боль в левом подреберье?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "immune_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Частота ОРВИ и температура:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 10,
+      "options": [
+        {
+          "code": "none",
+          "text": "Не болею (реже 1 раза в год)"
+        },
+        {
+          "code": "1-2_low",
+          "text": "1-2 раза в год, t до 37.5"
+        },
+        {
+          "code": "1-2_high",
+          "text": "1-2 раза в год, t > 37.5"
+        },
+        {
+          "code": "3-4_low",
+          "text": "3-4 раза в год, t до 37.5"
+        },
+        {
+          "code": "3-4_high",
+          "text": "3-4 раза в год, t > 37.5"
+        },
+        {
+          "code": ">4",
+          "text": "Более 4 раз в год"
+        }
+      ],
+      "code": "immune_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Как долго заживают раны и ссадины:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 11,
+      "options": [
+        {
+          "code": "normal",
+          "text": "Как обычно (до 7 дней)"
+        },
+        {
+          "code": "long",
+          "text": "Дольше обычного (1-2 недели)"
+        },
+        {
+          "code": "very_long",
+          "text": "Очень долго (более 2 недель)"
+        }
+      ],
+      "code": "immune_010",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в тазу?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 1,
+      "code": "musculoskeletal_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в тазу ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 2,
+      "code": "musculoskeletal_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_001",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 3,
+      "code": "musculoskeletal_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_001",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в тазу при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "musculoskeletal_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_001",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в тазу при длительном отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "musculoskeletal_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_001",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в тазу?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "musculoskeletal_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_001",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в тазу?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "musculoskeletal_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_001",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в колене?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 8,
+      "code": "musculoskeletal_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в колене ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "musculoskeletal_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_008",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 10,
+      "code": "musculoskeletal_010",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_008",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в колене при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 11,
+      "code": "musculoskeletal_011",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_008",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в колене при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 12,
+      "code": "musculoskeletal_012",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_008",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в колене?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 13,
+      "code": "musculoskeletal_013",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_008",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в колене?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 14,
+      "code": "musculoskeletal_014",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_008",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в стопе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 15,
+      "code": "musculoskeletal_015",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в стопе ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 16,
+      "code": "musculoskeletal_016",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_015",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 17,
+      "code": "musculoskeletal_017",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_015",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в стопе при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 18,
+      "code": "musculoskeletal_018",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_015",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в стопе при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 19,
+      "code": "musculoskeletal_019",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_015",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в стопе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 20,
+      "code": "musculoskeletal_020",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_015",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в стопе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 21,
+      "code": "musculoskeletal_021",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_015",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в плече?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 22,
+      "code": "musculoskeletal_022",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в плече ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 23,
+      "code": "musculoskeletal_023",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_022",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 24,
+      "code": "musculoskeletal_024",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_022",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в плече при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 25,
+      "code": "musculoskeletal_025",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_022",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в плече при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 26,
+      "code": "musculoskeletal_026",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_022",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в плече?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 27,
+      "code": "musculoskeletal_027",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_022",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в плече?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 28,
+      "code": "musculoskeletal_028",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_022",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в локте?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 29,
+      "code": "musculoskeletal_029",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в локте ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 30,
+      "code": "musculoskeletal_030",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_029",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 31,
+      "code": "musculoskeletal_031",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_029",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в локте при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 32,
+      "code": "musculoskeletal_032",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_029",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в локте при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 33,
+      "code": "musculoskeletal_033",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_029",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в локте?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 34,
+      "code": "musculoskeletal_034",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_029",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в локте?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 35,
+      "code": "musculoskeletal_035",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_029",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в кисти?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 36,
+      "code": "musculoskeletal_036",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в кисти ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 37,
+      "code": "musculoskeletal_037",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_036",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 38,
+      "code": "musculoskeletal_038",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_036",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в кисти при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 39,
+      "code": "musculoskeletal_039",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_036",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в кисти при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 40,
+      "code": "musculoskeletal_040",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_036",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в кисти?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 41,
+      "code": "musculoskeletal_041",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_036",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в кисти?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 42,
+      "code": "musculoskeletal_042",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_036",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в шейном отделе позвоночника?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 43,
+      "code": "musculoskeletal_043",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в шейном отделе позвоночника ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 44,
+      "code": "musculoskeletal_044",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_043",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 45,
+      "code": "musculoskeletal_045",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_043",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в шее при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 46,
+      "code": "musculoskeletal_046",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_043",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в шее при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 47,
+      "code": "musculoskeletal_047",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_043",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в шее?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 48,
+      "code": "musculoskeletal_048",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_043",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в шее?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 49,
+      "code": "musculoskeletal_049",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_043",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в грудном отделе позвоночника?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 50,
+      "code": "musculoskeletal_050",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в грудном отделе позвоночника ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 51,
+      "code": "musculoskeletal_051",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_050",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 52,
+      "code": "musculoskeletal_052",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_050",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в грудном отделе при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 53,
+      "code": "musculoskeletal_053",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_050",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в грудном отделе при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 54,
+      "code": "musculoskeletal_054",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_050",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в грудном отделе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 55,
+      "code": "musculoskeletal_055",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_050",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в грудном отделе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 56,
+      "code": "musculoskeletal_056",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_050",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в поясничном отделе?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 57,
+      "code": "musculoskeletal_057",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в поясничном отделе ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 58,
+      "code": "musculoskeletal_058",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_057",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 59,
+      "code": "musculoskeletal_059",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_057",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в пояснице при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 60,
+      "code": "musculoskeletal_060",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_057",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в пояснице при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 61,
+      "code": "musculoskeletal_061",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_057",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в пояснице?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 62,
+      "code": "musculoskeletal_062",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_057",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в пояснице?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 63,
+      "code": "musculoskeletal_063",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_057",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в крестце?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 64,
+      "code": "musculoskeletal_064",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Сопровождается ли боль в крестце ощущением холода?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 65,
+      "code": "musculoskeletal_065",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_064",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Есть ли в области боли припухлость, покраснение или местное повышение температуры?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 66,
+      "code": "musculoskeletal_066",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_064",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в крестце при движении?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 67,
+      "code": "musculoskeletal_067",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_064",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Боль в крестце при отсутствии движения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 68,
+      "code": "musculoskeletal_068",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_064",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Постоянная боль в крестце?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 69,
+      "code": "musculoskeletal_069",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_064",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "musculoskeletal",
+      "text": "Стреляющая боль в крестце?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 70,
+      "code": "musculoskeletal_070",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "musculoskeletal_064",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Средний объём выпиваемой воды (литров в день)",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 1,
+      "code": "excretory_001",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 0,
+        "max": 15,
+        "step": 0.1,
+        "unit": "л/сутки"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Мочеиспускание днём:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 2,
+      "options": [
+        {
+          "code": "normal",
+          "text": "В обычном ритме"
+        },
+        {
+          "code": "frequent",
+          "text": "Чаще обычного (>5-6 раз)"
+        }
+      ],
+      "code": "excretory_002",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Мочеиспускание ночью:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 3,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет, сплю всю ночь"
+        },
+        {
+          "code": "once",
+          "text": "1 раз за ночь"
+        },
+        {
+          "code": "twice_or_more",
+          "text": "2 и более раз"
+        }
+      ],
+      "code": "excretory_003",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Примерный общий объём мочи за сутки (литров)",
+      "type": "numeric",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "excretory_004",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": {
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "unit": "л/сутки"
+      },
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Общие отеки (отёчность всего тела)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 6,
+      "code": "excretory_005",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "excretory_edema_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Отеки на лице?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 7,
+      "code": "excretory_006",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "excretory_edema_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Отеки на ногах (стопы, голени)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 8,
+      "code": "excretory_007",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "excretory_edema_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Отеки появляются утром?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 9,
+      "code": "excretory_008",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "excretory_edema_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Отеки усиливаются к вечеру?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 10,
+      "code": "excretory_009",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "excretory_edema_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Отеки не зависят от времени?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 11,
+      "code": "excretory_010",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": {
+        "question_code": "excretory_edema_any",
+        "operator": "equals",
+        "value": true
+      },
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Цвет мочи:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 12,
+      "options": [
+        {
+          "code": "light",
+          "text": "Светлая (соломенно-жёлтая)"
+        },
+        {
+          "code": "dark_yellow",
+          "text": "Тёмно-жёлтая"
+        },
+        {
+          "code": "turbid",
+          "text": "Мутная"
+        },
+        {
+          "code": "reddish",
+          "text": "Красноватая / розовая"
+        },
+        {
+          "code": "brown",
+          "text": "Коричневая (цвета чая)"
+        }
+      ],
+      "code": "excretory_011",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Запах мочи:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 13,
+      "options": [
+        {
+          "code": "normal",
+          "text": "Обычный"
+        },
+        {
+          "code": "sharp",
+          "text": "Резкий / неприятный"
+        },
+        {
+          "code": "sweet",
+          "text": "Сладковатый (ацетона)"
+        }
+      ],
+      "code": "excretory_012",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Пена в моче:",
+      "type": "single_choice",
+      "gender_filter": null,
+      "sort_order": 14,
+      "options": [
+        {
+          "code": "none",
+          "text": "Нет"
+        },
+        {
+          "code": "much",
+          "text": "Да, много пены"
+        },
+        {
+          "code": "little",
+          "text": "Да, немного пены"
+        }
+      ],
+      "code": "excretory_013",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Осадок в моче (хлопья, муть)?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 15,
+      "code": "excretory_014",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "endocrine",
+      "text": "Есть ли у вас менструации в настоящее время?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 11,
+      "code": "endocrine_current_menstruation",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Проходили ли вы УЗИ органов малого таза, результаты которого вам известны?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 4,
+      "code": "reproductive_pelvic_ultrasound",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Проходили ли вы кольпоскопию, результаты которой вам известны?",
+      "type": "boolean",
+      "gender_filter": "F",
+      "sort_order": 11,
+      "code": "reproductive_colposcopy",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Проходили ли вы УЗИ предстательной железы, результаты которого вам известны?",
+      "type": "boolean",
+      "gender_filter": "M",
+      "sort_order": 15,
+      "code": "reproductive_prostate_ultrasound",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": null,
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Беспокоит ли вас боль в какой-либо части тела?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 4,
+      "code": "nervous_pain_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Беспокоят ли вас мышечные спазмы?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 11,
+      "code": "nervous_spasm_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Беспокоит ли вас онемение?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 18,
+      "code": "nervous_numbness_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "nervous",
+      "text": "Замечали ли вы изменения слуха, обоняния или зрения?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 28,
+      "code": "nervous_sensory_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "digestive",
+      "text": "Есть ли у вас подтверждённая врачом пищевая аллергия?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 27,
+      "code": "digestive_food_allergy_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "immune",
+      "text": "Замечали ли вы увеличение лимфатических узлов?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 3,
+      "code": "immune_lymph_nodes_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "excretory",
+      "text": "Замечали ли вы отёки?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 5,
+      "code": "excretory_edema_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    },
+    {
+      "system_code": "reproductive",
+      "text": "Беспокоят ли вас боль, тяжесть или распирание в области малого таза?",
+      "type": "boolean",
+      "gender_filter": null,
+      "sort_order": 22,
+      "code": "reproductive_pelvic_symptoms_any",
+      "required": true,
+      "allow_unknown": true,
+      "help_text": null,
+      "recall_period": "За последние 4 недели",
+      "validation": null,
+      "display_condition": null,
+      "alert": null
+    }
+  ],
+  "schema_version": 2,
+  "clinical_notice": "Анкета собирает сведения о симптомах и не заменяет консультацию врача или медицинскую диагностику."
+}

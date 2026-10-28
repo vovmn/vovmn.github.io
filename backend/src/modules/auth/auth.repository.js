@@ -50,4 +50,26 @@ async function findRefreshSession(tokenHash) {
   return rows[0] || null;
 }
 
-module.exports = { findUserByUsername, findUserById, RegisterUser, saveRefreshSession, findRefreshSession };
+async function consumeRefreshSession(tokenHash) {
+  const { rows } = await pool.query(
+    `DELETE FROM refresh_tokens
+     WHERE token_hash = $1 AND expires_at > now()
+     RETURNING id, user_id, expires_at`,
+    [tokenHash]
+  );
+  return rows[0] || null;
+}
+
+async function deleteRefreshSession(tokenHash) {
+  await pool.query('DELETE FROM refresh_tokens WHERE token_hash = $1', [tokenHash]);
+}
+
+module.exports = {
+  findUserByUsername,
+  findUserById,
+  RegisterUser,
+  saveRefreshSession,
+  findRefreshSession,
+  consumeRefreshSession,
+  deleteRefreshSession,
+};

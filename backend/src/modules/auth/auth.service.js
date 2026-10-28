@@ -3,11 +3,17 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const repo = require('./auth.repository');
 
+const jwtOptions = {
+  algorithms: ['HS256'],
+  issuer: 'imulab-api',
+  audience: 'imulab-web',
+};
+
 function signAccessToken(user) {
   return jwt.sign(
     { sub: user.id, role: user.role, gender: user.gender }, // ← теперь gender в токене
     process.env.JWT_ACCESS_SECRET,
-    { expiresIn: '15m' }
+    { algorithm: 'HS256', issuer: jwtOptions.issuer, audience: jwtOptions.audience, expiresIn: '15m' }
   );
 }
 
@@ -17,6 +23,14 @@ function makeRefreshToken() {
 
 function hashToken(token) {
   return crypto.createHash('sha256').update(token).digest('hex');
+}
+
+async function createRefreshSession(userId) {
+  const refreshToken = makeRefreshToken();
+  const refreshHash = hashToken(refreshToken);
+  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  await repo.saveRefreshSession(userId, refreshHash, expiresAt);
+  return refreshToken;
 }
 
 async function login(username, password) {
@@ -35,18 +49,14 @@ async function login(username, password) {
   }
 
   const accessToken = signAccessToken(user);
-
-  const refreshToken = makeRefreshToken();
-  const refreshHash = hashToken(refreshToken);
-  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-  await repo.saveRefreshSession(user.id, refreshHash, expiresAt);
+  const refreshToken = await createRefreshSession(user.id);
 
   return { accessToken, refreshToken, user };
 }
 
 async function verifyAccessToken(token) {
   try {
-    return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    return jwt.verify(token, process.env.JWT_ACCESS_SECRET, jwtOptions);
   } catch (err) {
     const error = new Error('Invalid or expired access token');
     error.status = 401;
@@ -69,7 +79,43 @@ async function register(username, email, password, phone = null, birth_date = nu
   const hash = await argon2.hash(password);
   const user = await repo.RegisterUser(username, email, hash, phone, birth_date, residence, gender);
   const accessToken = signAccessToken(user);
-  return { user, accessToken };
+  const refreshToken = await createRefreshSession(user.id);
+  return { user, accessToken, refreshToken };
 }
 
-module.exports = { login, register, verifyAccessToken, findUserById, signAccessToken };
+async function rotateRefreshToken(token) {
+  const session = await repo.consumeRefreshSession(hashToken(token));
+  if (!session) {
+    const err = new Error('Invalid or expired refresh token');
+    err.status = 401;
+    throw err;
+  }
+
+  const user = await repo.findUserById(session.user_id);
+  if (!user) {
+    const err = new Error('User not found');
+    err.status = 401;
+    throw err;
+  }
+
+  return {
+    user,
+    accessToken: signAccessToken(user),
+    refreshToken: await createRefreshSession(user.id),
+  };
+}
+
+async function revokeRefreshToken(token) {
+  if (token) await repo.deleteRefreshSession(hashToken(token));
+}
+
+module.exports = {
+  login,
+  register,
+  verifyAccessToken,
+  findUserById,
+  signAccessToken,
+  findRefreshSession: repo.findRefreshSession,
+  rotateRefreshToken,
+  revokeRefreshToken,
+};

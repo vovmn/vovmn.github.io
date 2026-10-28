@@ -1,7 +1,9 @@
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
+FROM node:20-alpine
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm ci --production
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev --no-audit --no-fund --fetch-timeout=60000
 COPY . .
 ENV NODE_ENV=production
 EXPOSE 5000

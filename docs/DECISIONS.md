@@ -55,3 +55,12 @@ This is a lightweight decision log. Append new decisions; do not rewrite prior e
 - Evidence: `.codex/config.toml`, `.codex/agents/`, `AGENTS.md`.
 - Consequences: Exploration and review can stay out of the main agent context. Subagents are reserved for independent bounded work because parallel agents add their own model/tool usage and can increase total tokens.
 - Rationale: Reduce expensive main-agent context and keep repeatable tasks narrow without overwriting personal Codex settings.
+
+## ADR-007 — Administrator-managed patient accounts and recorded age
+
+- Date recorded: 2026-10-28
+- Status: Accepted
+- Decision: Remove public registration. Only authenticated administrators create patient accounts. A patient must have username, password hash, gender and an age stored with `age_recorded_at`; contact details and birth date are optional.
+- Evidence: `backend/src/modules/auth/auth.routes.js`, `backend/src/modules/admin/`, `backend/schema.sql`, `frontend/src/pages/Admin.vue`.
+- Consequences: Account creation has a server-side authorization boundary. Recorded age can become stale, so medical consumers must use `age_recorded_at`; the system never invents a birth date from an integer age.
+- Rationale: The clinic controls access while retaining the minimal fields requested for questionnaire filtering and interpretation.

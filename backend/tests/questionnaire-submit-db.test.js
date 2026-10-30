@@ -1,6 +1,7 @@
 require('dotenv').config({ path: require('path').resolve(__dirname, '..', '.env') });
 
 const request = require('supertest');
+const argon2 = require('argon2');
 const pool = require('../src/db/pool');
 
 const username = `answers_test_${Date.now()}`;
@@ -19,13 +20,15 @@ async function ensureTestSchema() {
     CREATE TABLE IF NOT EXISTS users (
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       username VARCHAR(100) NOT NULL UNIQUE,
-      email VARCHAR(255) NOT NULL UNIQUE,
+      email VARCHAR(255) UNIQUE,
       password_hash TEXT NOT NULL,
       role VARCHAR(50) NOT NULL DEFAULT 'user',
       phone VARCHAR(50),
       birth_date DATE,
       residence VARCHAR(255),
       gender CHAR(1) CHECK (gender IN ('M', 'F')),
+      age SMALLINT,
+      age_recorded_at DATE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -109,6 +112,9 @@ async function ensureTestSchema() {
   `);
 
   await pool.query(`
+    ALTER TABLE users ALTER COLUMN email DROP NOT NULL;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS age SMALLINT;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS age_recorded_at DATE;
     ALTER TABLE questions ADD COLUMN IF NOT EXISTS code VARCHAR(100);
     ALTER TABLE questions ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT TRUE;
     ALTER TABLE questions ADD COLUMN IF NOT EXISTS allow_unknown BOOLEAN DEFAULT FALSE;
@@ -224,18 +230,15 @@ afterAll(async () => {
 });
 
 describe('Questionnaire answers persistence', () => {
-  test('registers user, logs in, submits answers and stores them in DB', async () => {
-    const registerRes = await request(app)
-      .post('/auth/register')
-      .send({
-        username,
-        email,
-        password,
-        gender: 'F',
-      })
-      .expect(201);
-
-    userId = registerRes.body.user.id;
+  test('logs in as a provisioned user, submits answers and stores them in DB', async () => {
+    const passwordHash = await argon2.hash(password);
+    const created = await pool.query(
+      `INSERT INTO users (username, email, password_hash, role, gender, age, age_recorded_at)
+       VALUES ($1, $2, $3, 'user', 'F', 30, CURRENT_DATE)
+       RETURNING id`,
+      [username, email, passwordHash]
+    );
+    userId = created.rows[0].id;
 
     const loginRes = await request(app)
       .post('/auth/login')

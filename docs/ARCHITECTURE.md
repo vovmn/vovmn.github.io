@@ -42,6 +42,9 @@ Feature modules generally follow route -> controller -> database access. The aut
 
 ## Authentication and authorization
 
+- There is no public registration route. Administrators provision patients through `POST /api/admin/users`.
+- New patients require a username, password, recorded age and gender; contact/profile fields are optional.
+- Legacy patients with incomplete age/gender are listed for remediation in the admin UI and cannot receive or open questionnaires until those fields are complete.
 - Passwords are handled with Argon2 in the auth flow.
 - Successful authentication produces an access token used as a bearer token by protected API calls.
 - Refresh state is persisted in the database and a refresh cookie is used by the refresh endpoint.

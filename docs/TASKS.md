@@ -34,6 +34,7 @@ Use this file for repository-level technical work. Do not invent owners or dates
 ## Done
 
 - [x] 2026-10-28 — Added verified project/architecture maps, decision/task logs, repository guidance, project Codex configuration, and lightweight Explorer/Coder/Reviewer agents. Verification: strict Codex configuration parsing plus targeted repository checks.
+- [x] 2026-10-28 — Removed public registration, added admin-only patient provisioning/remediation with required username/password/recorded age/gender, blocked questionnaires for incomplete demographics, and hardened UUID inputs. Verification: backend 3/3 suites and 15/15 tests passed against an isolated disposable Compose database, including SQL-injection payloads; schema `20261028_03` applied to the existing local DB and loaded successfully into a fresh DB; frontend production build passed. ESLint remains blocked by the pre-existing missing root `eslint` dependency.
 
 ## Completion template
 

@@ -59,13 +59,14 @@ async function getSystems(req, res) {
 async function startQuestionnaire(req, res) {
   const { assignmentId } = req.params;
   const userId = req.user.sub;
-  const userGender = req.user.gender;
 
   try {
     const assignmentResult = await pool.query(
       `SELECT a.id, a.system_id, a.status, a.due_at, a.priority, a.note,
+              u.gender, u.age, u.age_recorded_at,
               s.code AS system_code, s.name AS system_name
        FROM user_questionnaire_assignments a
+       JOIN users u ON u.id = a.user_id
        JOIN body_systems s ON s.id = a.system_id
        WHERE a.id = $1 AND a.user_id = $2`,
       [assignmentId, userId]
@@ -74,6 +75,9 @@ async function startQuestionnaire(req, res) {
       return res.status(404).json({ error: 'Assignment not found' });
     }
     const assignment = assignmentResult.rows[0];
+    if (!assignment.gender || assignment.age === null || !assignment.age_recorded_at) {
+      return res.status(409).json({ error: 'Patient age and gender must be completed before questionnaire access' });
+    }
     if (assignment.status === 'cancelled') {
       return res.status(409).json({ error: 'Assignment is cancelled' });
     }
@@ -99,7 +103,7 @@ async function startQuestionnaire(req, res) {
          AND (q.gender_filter IS NULL OR q.gender_filter = $2)
        GROUP BY q.id
        ORDER BY q.sort_order`,
-      [assignment.system_id, userGender]
+      [assignment.system_id, assignment.gender]
     );
 
     res.json({
@@ -131,7 +135,10 @@ async function submitAnswers(req, res) {
     await client.query('BEGIN');
 
     const assignCheck = await client.query(
-      'SELECT id, user_id, system_id, status FROM user_questionnaire_assignments WHERE id = $1',
+      `SELECT a.id, a.user_id, a.system_id, a.status, u.gender, u.age, u.age_recorded_at
+       FROM user_questionnaire_assignments a
+       JOIN users u ON u.id = a.user_id
+       WHERE a.id = $1`,
       [assignmentId]
     );
     if (assignCheck.rows.length === 0 || String(assignCheck.rows[0].user_id) !== String(userId)) {
@@ -141,6 +148,10 @@ async function submitAnswers(req, res) {
     if (assignCheck.rows[0].status === 'cancelled') {
       await client.query('ROLLBACK');
       return res.status(409).json({ error: 'Assignment is cancelled' });
+    }
+    if (!assignCheck.rows[0].gender || assignCheck.rows[0].age === null || !assignCheck.rows[0].age_recorded_at) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ error: 'Patient age and gender must be completed before questionnaire access' });
     }
 
     if (answers.some((ans) => !ans?.question_id)) {
@@ -166,7 +177,7 @@ async function submitAnswers(req, res) {
          AND (q.gender_filter IS NULL OR q.gender_filter = $2)
        GROUP BY q.id
        ORDER BY q.sort_order`,
-      [assignCheck.rows[0].system_id, req.user.gender]
+      [assignCheck.rows[0].system_id, assignCheck.rows[0].gender]
     );
 
     const questionsById = new Map(questionsResult.rows.map((q) => [String(q.id), q]));

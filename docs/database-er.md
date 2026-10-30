@@ -6,17 +6,31 @@
 
 ```mermaid
 erDiagram
+    ANTIGENS {
+        uuid id PK
+        varchar name UK
+        timestamp created_at
+    }
+
     USERS {
         uuid id PK
         varchar username UK
-        varchar email UK
+        varchar email UK "nullable"
         text password_hash
         varchar role
         varchar phone "nullable"
         date birth_date "nullable"
         varchar residence "nullable"
-        char gender "nullable: M or F"
+        char gender "required for patients: M or F"
+        smallint age "required for patients: 0..120"
+        date age_recorded_at "required for patients"
         timestamp created_at
+    }
+
+    USER_ANTIGENS {
+        uuid user_id PK,FK
+        uuid antigen_id PK,FK
+        timestamp assigned_at
     }
 
     REFRESH_TOKENS {
@@ -116,6 +130,8 @@ erDiagram
         timestamp applied_at
     }
 
+    ANTIGENS ||--o{ USER_ANTIGENS : assigned_through
+    USERS ||--o{ USER_ANTIGENS : has
     USERS ||--o{ REFRESH_TOKENS : owns
     USERS ||--o{ USER_QUESTIONNAIRE_ASSIGNMENTS : receives
     USERS o|--o{ USER_QUESTIONNAIRE_ASSIGNMENTS : assigns
@@ -140,6 +156,8 @@ erDiagram
 - `(questions.system_id, questions.code)` уникально; у активного вопроса `code`
   не может быть `NULL`.
 - `(answer_options.question_id, answer_options.option_code)` уникально.
+- `user_antigens` реализует связь «многие ко многим»; составной первичный ключ
+  `(user_id, antigen_id)` запрещает только точные дубли одной пары.
 - `user_answers_payload_check` допускает ровно одно значение, явное «не знаю»
   либо явный пропуск с причиной.
 - `assignments_lifecycle_check` согласует статус назначения с датами начала,

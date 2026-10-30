@@ -11,7 +11,6 @@ import Info from './pages/Info.vue'
 import Login from './pages/login.vue'
 import QuestionnaireView from './pages/QuestionnaireView.vue'
 import Record from './pages/record.vue'
-import Register from './pages/register.vue'
 import { useAuthStore } from './stores/auth'
 
 const routes = [
@@ -21,7 +20,6 @@ const routes = [
   { path: '/about', component: About, name: 'About', meta: { requiresAuth: true } },
   { path: '/contacts', component: Contacts, name: 'Contacts', meta: { requiresAuth: true } },
   { path: '/login', component: Login, name: 'Login', meta: { publicOnly: true } },
-  { path: '/register', component: Register, name: 'Register', meta: { publicOnly: true } },
   { path: '/documents', component: Documents, name: 'Documents', meta: { requiresAuth: true } },
   { path: '/record', component: Record, name: 'Record', meta: { requiresAuth: true } },
   { path: '/info', component: Info, name: 'Info', meta: { requiresAuth: true } },

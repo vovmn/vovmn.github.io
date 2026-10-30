@@ -9,17 +9,37 @@ CREATE TABLE schema_migrations (
   applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE antigens (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(100) NOT NULL UNIQUE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   username VARCHAR(100) NOT NULL UNIQUE,
-  email VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) UNIQUE,
   password_hash TEXT NOT NULL,
   role VARCHAR(50) NOT NULL DEFAULT 'user' CHECK (role IN ('user','admin')),
   phone VARCHAR(50),
   birth_date DATE,
   residence VARCHAR(255),
   gender CHAR(1) CHECK (gender IN ('M','F')),
+  age SMALLINT,
+  age_recorded_at DATE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_antigens (
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  antigen_id UUID NOT NULL REFERENCES antigens(id) ON DELETE CASCADE,
+  assigned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, antigen_id)
+);
+
+ALTER TABLE users ADD CONSTRAINT users_patient_identity_check CHECK (
+  role = 'admin'
+  OR (gender IS NOT NULL AND age BETWEEN 0 AND 120 AND age_recorded_at IS NOT NULL)
 );
 
 CREATE TABLE refresh_tokens (
@@ -161,6 +181,8 @@ CREATE TRIGGER trg_assignment_updated_at
 
 CREATE INDEX idx_refresh_tokens_user_expires ON refresh_tokens(user_id, expires_at);
 CREATE UNIQUE INDEX uq_refresh_tokens_hash ON refresh_tokens(token_hash);
+CREATE INDEX idx_antigens_name ON antigens(name);
+CREATE INDEX idx_user_antigens_antigen ON user_antigens(antigen_id);
 CREATE INDEX idx_questions_system ON questions(system_id);
 CREATE INDEX idx_questions_active_flow
   ON questions(system_id, gender_filter, sort_order) WHERE active;
@@ -181,6 +203,6 @@ CREATE INDEX idx_appointments_status_scheduled ON appointments(status, scheduled
 
 INSERT INTO schema_migrations (version, description)
 VALUES (
-  '20261028_02',
-  'Security hardening and unique refresh-token hashes'
+  '20261031_02',
+  'Many-to-many patient antigen assignments'
 );

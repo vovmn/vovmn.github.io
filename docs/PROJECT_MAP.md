@@ -1,6 +1,6 @@
 # IMLab project map
 
-Last verified: 2026-10-28 on branch `imulab`.
+Last verified: 2026-10-31 on branch `imulab`.
 
 This map describes the active Vue/Node repository. A separate detached .NET worktree exists beside this checkout, but it is not part of this repository map.
 
@@ -35,7 +35,7 @@ This map describes the active Vue/Node repository. A separate detached .NET work
 
 - `frontend/src/main.js`: creates the app, Pinia and hash router; defines route guards for authenticated, public-only and admin routes.
 - `frontend/src/App.vue`: application shell.
-- `frontend/src/pages/`: route-level views: `Admin.vue`, `About.vue`, `documents.vue`, `home.vue` (contacts), `Info.vue`, `login.vue`, `register.vue`, `record.vue`, and `QuestionnaireView.vue`.
+- `frontend/src/pages/`: route-level views: `Admin.vue`, `About.vue`, `documents.vue`, `home.vue` (contacts), `Info.vue`, `login.vue`, `record.vue`, and `QuestionnaireView.vue`.
 - `frontend/src/components/`: shared UI including `Header.vue`, `QuestionWidget.vue`, `DocumentCard.vue`, and `main_content.vue`.
 - `frontend/src/stores/auth.js`: Pinia authentication state and current-user lifecycle.
 - `frontend/src/services/http.js`: primary Axios client, bearer-token injection and refresh handling. Production defaults to `/api`; development defaults to `http://localhost:5000`.
@@ -49,8 +49,8 @@ This map describes the active Vue/Node repository. A separate detached .NET work
 - `backend/src/db/pool.js`: shared PostgreSQL connection pool.
 - `backend/src/middlewares/requireAuth.js`: bearer-token authentication.
 - `backend/src/middlewares/requireAdmin.js`: admin-role enforcement.
-- `backend/src/modules/auth/`: routes, controller, service and repository for registration, login, current user, refresh and logout.
-- `backend/src/modules/admin/`: admin-only user/system/assignment/appointment operations.
+- `backend/src/modules/auth/`: routes, controller, service and repository for login, current user, refresh and logout. Public registration is intentionally absent.
+- `backend/src/modules/admin/`: admin-only patient creation, antigen registry/assignment, questionnaire assignment and appointment operations.
 - `backend/src/modules/questionnaire/`: patient questionnaire system lookup, assignment start, submission and assignment listing.
 - `backend/src/modules/appointments/`: patient appointment listing.
 
@@ -58,8 +58,8 @@ This map describes the active Vue/Node repository. A separate detached .NET work
 
 | Mount | Notable endpoints |
 | --- | --- |
-| `/auth` and `/api/auth` | `POST /login`, `POST /register`, `GET /me`, `POST /logout`, `POST /refresh` |
-| `/api/admin` | Users, systems, questionnaire assignments and appointments; router is guarded by auth and admin middleware |
+| `/auth` and `/api/auth` | `POST /login`, `GET /me`, `POST /logout`, `POST /refresh` |
+| `/api/admin` | Patient administration plus `GET/POST /antigens` and `PATCH /users/:id/antigens`; all endpoints are guarded by auth and admin middleware |
 | `/api/questionnaire` | Systems, assignment start, answer submission and the current user's assignments |
 | `/api/appointments` | `GET /my` |
 | `/health` | Backend and database health probe |
@@ -68,6 +68,7 @@ This map describes the active Vue/Node repository. A separate detached .NET work
 
 - `backend/schema.sql`: canonical schema for a fresh database according to `docs/database-schema.md`.
 - `backend/scripts/init-db.js`: transactional initialization/upgrade and questionnaire import used by Compose.
+- `backend/scripts/create-admin.js`: one-time administrator provisioning with Argon2 and a generated password when none is supplied.
 - `backend/init.sql`: older/parallel SQL initialization input; inspect consumers before changing it.
 - `backend/src/app.js`: currently performs additional schema changes at process startup.
 - `python/questionnaire.json`: versioned questionnaire data imported by the initializer.

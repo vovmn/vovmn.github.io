@@ -2,9 +2,11 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
-// In development use VITE_API_URL or localhost:5000; in production default to
-// the relative `/api` path so nginx can proxy requests to the backend.
-const baseURL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5000')
+// A production build always uses same-origin paths handled by nginx. This also
+// prevents a developer's local .env from embedding localhost into the image.
+const baseURL = import.meta.env.DEV
+  ? (import.meta.env.VITE_API_URL || 'http://localhost:5000')
+  : ''
 
 export const http = axios.create({
   baseURL, // например https://api.site.com

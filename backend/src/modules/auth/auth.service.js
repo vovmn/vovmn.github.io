@@ -68,7 +68,8 @@ async function findUserById(id) {
   return repo.findUserById(id);
 }
 
-async function register(username, email, password, phone = null, birth_date = null, residence = null, gender = null) {
+async function createUser(input) {
+  const { username, password } = input;
   const existing = await repo.findUserByUsername(username);
   if (existing) {
     const err = new Error('User already exists');
@@ -76,11 +77,8 @@ async function register(username, email, password, phone = null, birth_date = nu
     throw err;
   }
 
-  const hash = await argon2.hash(password);
-  const user = await repo.RegisterUser(username, email, hash, phone, birth_date, residence, gender);
-  const accessToken = signAccessToken(user);
-  const refreshToken = await createRefreshSession(user.id);
-  return { user, accessToken, refreshToken };
+  const passwordHash = await argon2.hash(password);
+  return repo.createUser({ ...input, passwordHash });
 }
 
 async function rotateRefreshToken(token) {
@@ -111,7 +109,7 @@ async function revokeRefreshToken(token) {
 
 module.exports = {
   login,
-  register,
+  createUser,
   verifyAccessToken,
   findUserById,
   signAccessToken,

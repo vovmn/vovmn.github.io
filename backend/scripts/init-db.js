@@ -19,24 +19,39 @@ if (!fs.existsSync(questionnairePath)) {
 const questionnaireSource = fs.readFileSync(questionnairePath, 'utf8');
 const data = JSON.parse(questionnaireSource);
 const questionnaireChecksum = crypto.createHash('sha256').update(questionnaireSource).digest('hex');
-const schemaVersion = '20261028_02';
+const schemaVersion = '20261031_02';
 const pool = new Pool({ connectionString });
 
 async function createSchema(client) {
   await client.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
 
   await client.query(`
+    CREATE TABLE IF NOT EXISTS antigens (
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      name VARCHAR(100) NOT NULL UNIQUE,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE TABLE IF NOT EXISTS users (
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       username VARCHAR(100) NOT NULL UNIQUE,
-      email VARCHAR(255) NOT NULL UNIQUE,
+      email VARCHAR(255) UNIQUE,
       password_hash TEXT NOT NULL,
       role VARCHAR(50) NOT NULL DEFAULT 'user',
       phone VARCHAR(50),
       birth_date DATE,
       residence VARCHAR(255),
       gender CHAR(1) CHECK (gender IN ('M', 'F')),
+      age SMALLINT,
+      age_recorded_at DATE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS user_antigens (
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      antigen_id UUID NOT NULL REFERENCES antigens(id) ON DELETE CASCADE,
+      assigned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (user_id, antigen_id)
     );
 
     CREATE TABLE IF NOT EXISTS schema_migrations (
@@ -150,9 +165,18 @@ async function createSchema(client) {
     CREATE INDEX IF NOT EXISTS idx_appointments_scheduled_at ON appointments(scheduled_at);
     CREATE INDEX IF NOT EXISTS idx_appointments_status_scheduled
       ON appointments(status, scheduled_at);
+    CREATE INDEX IF NOT EXISTS idx_antigens_name ON antigens(name);
+    CREATE INDEX IF NOT EXISTS idx_user_antigens_antigen ON user_antigens(antigen_id);
   `);
 
   await client.query(`
+    ALTER TABLE users ALTER COLUMN email DROP NOT NULL;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS age SMALLINT;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS age_recorded_at DATE;
+    UPDATE users
+       SET age = DATE_PART('year', AGE(CURRENT_DATE, birth_date))::smallint,
+           age_recorded_at = CURRENT_DATE
+     WHERE role = 'user' AND age IS NULL AND birth_date IS NOT NULL;
     ALTER TABLE questions ADD COLUMN IF NOT EXISTS code VARCHAR(100);
     ALTER TABLE questions ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT TRUE;
     ALTER TABLE questions ADD COLUMN IF NOT EXISTS allow_unknown BOOLEAN DEFAULT FALSE;
@@ -197,12 +221,33 @@ async function createSchema(client) {
       ON user_questionnaire_assignments(status, due_at);
     CREATE INDEX IF NOT EXISTS idx_assignments_user_status_due
       ON user_questionnaire_assignments(user_id, status, due_at);
+    CREATE INDEX IF NOT EXISTS idx_antigens_name ON antigens(name);
+    CREATE INDEX IF NOT EXISTS idx_user_antigens_antigen ON user_antigens(antigen_id);
   `);
 
   await client.query(`
     ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
     ALTER TABLE users ADD CONSTRAINT users_role_check
       CHECK (role IN ('user','admin')) NOT VALID;
+    ALTER TABLE users DROP CONSTRAINT IF EXISTS users_patient_identity_check;
+    ALTER TABLE users ADD CONSTRAINT users_patient_identity_check
+      CHECK (
+        role = 'admin'
+        OR (gender IS NOT NULL AND age BETWEEN 0 AND 120 AND age_recorded_at IS NOT NULL)
+      ) NOT VALID;
+
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'antigen_id'
+      ) THEN
+        INSERT INTO user_antigens (user_id, antigen_id)
+        SELECT id, antigen_id FROM users WHERE antigen_id IS NOT NULL
+        ON CONFLICT DO NOTHING;
+        ALTER TABLE users DROP COLUMN antigen_id;
+      END IF;
+    END $$;
 
     ALTER TABLE questions DROP CONSTRAINT IF EXISTS questions_active_code_check;
     ALTER TABLE questions ADD CONSTRAINT questions_active_code_check
@@ -378,7 +423,7 @@ async function seedQuestionnaire(client) {
     `INSERT INTO schema_migrations (version, description)
      VALUES ($1, $2)
      ON CONFLICT (version) DO NOTHING`,
-    [schemaVersion, 'Security hardening and unique refresh-token hashes']
+    [schemaVersion, 'Many-to-many patient antigen assignments']
   );
 }
 

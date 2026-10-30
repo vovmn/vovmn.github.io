@@ -2,24 +2,21 @@
 set -e
 
 BASE_URL="http://localhost:5000"
-USERNAME="testuser_$(date +%s)"
-PASSWORD="TestPass123!"
-EMAIL="${USERNAME}@example.com"
-GENDER="M"  # или F
+USERNAME="${TEST_USERNAME:?Set TEST_USERNAME to an admin-provisioned patient}"
+PASSWORD="${TEST_PASSWORD:?Set TEST_PASSWORD}"
+ASSIGNMENT_ID="${TEST_ASSIGNMENT_ID:?Set TEST_ASSIGNMENT_ID to a patient assignment UUID}"
 
 echo "============================================"
-echo "1. Регистрируем пользователя с gender=$GENDER"
-REGISTER=$(curl -s -X POST "$BASE_URL/auth/register" \
+echo "1. Входим под заранее созданным пациентом"
+LOGIN=$(curl -s -X POST "$BASE_URL/auth/login" \
   -H "Content-Type: application/json" \
   -d "{
     \"username\": \"$USERNAME\",
-    \"email\": \"$EMAIL\",
-    \"password\": \"$PASSWORD\",
-    \"gender\": \"$GENDER\"
+    \"password\": \"$PASSWORD\"
   }")
 
-echo "$REGISTER" | jq .
-ACCESS_TOKEN=$(echo "$REGISTER" | jq -r '.access_token')
+echo "$LOGIN" | jq .
+ACCESS_TOKEN=$(echo "$LOGIN" | jq -r '.access_token')
 if [ "$ACCESS_TOKEN" == "null" ]; then
   echo "Ошибка: не получен access_token"
   exit 1
@@ -35,12 +32,11 @@ SYSTEM_CODE=$(echo "$SYSTEMS" | jq -r '.[0].code')  # первая попавш�
 echo "Выбранная система: $SYSTEM_CODE"
 
 echo -e "\n============================================"
-echo "3. Начинаем опросник (назначаем систему пользователю)"
-START=$(curl -s -X POST "$BASE_URL/api/questionnaire/start/$SYSTEM_CODE" \
+echo "3. Начинаем назначенный опросник"
+START=$(curl -s -X POST "$BASE_URL/api/questionnaire/assignments/$ASSIGNMENT_ID/start" \
   -H "Authorization: Bearer $ACCESS_TOKEN")
 echo "$START" | jq .
 
-ASSIGNMENT_ID=$(echo "$START" | jq -r '.assignment_id')
 QUESTION_COUNT=$(echo "$START" | jq '.questions | length')
 echo "Назначение создано: $ASSIGNMENT_ID"
 echo "Количество вопросов: $QUESTION_COUNT"

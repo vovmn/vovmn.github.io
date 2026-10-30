@@ -1,4 +1,5 @@
 const request = require('supertest');
+const argon2 = require('argon2');
 const app = require('../src/app');    // ← исправлено
 const pool = require('../src/db/pool');
 
@@ -8,15 +9,13 @@ let nervousAssignmentId;
 let reproductiveAssignmentId;
 
 beforeAll(async () => {
-  // Регистрируем нового юзера с gender=F, чтобы проверить фильтрацию по полу
-  await request(app)
-    .post('/auth/register')
-    .send({
-      username: 'qtest_female',
-      email: 'qtest_f@example.com',
-      password: 'QuestionnairePass123',
-      gender: 'F',
-    });
+  await pool.query("DELETE FROM users WHERE username = 'qtest_female'");
+  const passwordHash = await argon2.hash('QuestionnairePass123');
+  await pool.query(
+    `INSERT INTO users (username, email, password_hash, role, gender, age, age_recorded_at)
+     VALUES ($1, NULL, $2, 'user', 'F', 32, CURRENT_DATE)`,
+    ['qtest_female', passwordHash]
+  );
 
   const loginRes = await request(app)
     .post('/auth/login')

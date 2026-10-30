@@ -2,29 +2,45 @@ const pool = require('../../db/pool');
 
 async function findUserByUsername(username) {
   const { rows } = await pool.query(
-    `SELECT id, username, email, password_hash, role, gender
-     FROM users
-     WHERE username = $1`,
+    `SELECT u.id, u.username, u.email, u.password_hash, u.role, u.gender, u.age,
+            u.age_recorded_at,
+            COALESCE((
+              SELECT json_agg(json_build_object('id', antigen.id, 'name', antigen.name) ORDER BY antigen.name)
+              FROM user_antigens assignment
+              JOIN antigens antigen ON antigen.id = assignment.antigen_id
+              WHERE assignment.user_id = u.id
+            ), '[]'::json) AS antigens
+     FROM users u
+     WHERE u.username = $1`,
     [username]
   );
   return rows[0] || null;
 }
 
-async function RegisterUser(username, email, hash, phone = null, birth_date = null, residence = null, gender = null) {
+async function createUser({ username, email = null, passwordHash, phone = null, birthDate = null, residence = null, gender, age }) {
   const { rows } = await pool.query(
-    `INSERT INTO users (username, email, password_hash, role, phone, birth_date, residence, gender)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-     RETURNING id, username, email, role, phone, birth_date, residence, gender`,
-    [username, email, hash, 'user', phone, birth_date, residence, gender]
+    `INSERT INTO users (
+       username, email, password_hash, role, phone, birth_date, residence, gender, age, age_recorded_at
+     )
+     VALUES ($1, $2, $3, 'user', $4, $5, $6, $7, $8, CURRENT_DATE)
+     RETURNING id, username, email, role, phone, birth_date, residence, gender, age, age_recorded_at`,
+    [username, email, passwordHash, phone, birthDate, residence, gender, age]
   );
   return rows[0] || null;
 }
 
 async function findUserById(id) {
   const { rows } = await pool.query(
-    `SELECT id, username, email, role, phone, birth_date, residence, gender
-     FROM users
-     WHERE id = $1`,
+    `SELECT u.id, u.username, u.email, u.role, u.phone, u.birth_date, u.residence,
+            u.gender, u.age, u.age_recorded_at,
+            COALESCE((
+              SELECT json_agg(json_build_object('id', antigen.id, 'name', antigen.name) ORDER BY antigen.name)
+              FROM user_antigens assignment
+              JOIN antigens antigen ON antigen.id = assignment.antigen_id
+              WHERE assignment.user_id = u.id
+            ), '[]'::json) AS antigens
+     FROM users u
+     WHERE u.id = $1`,
     [id]
   );
   return rows[0] || null;
@@ -67,7 +83,7 @@ async function deleteRefreshSession(tokenHash) {
 module.exports = {
   findUserByUsername,
   findUserById,
-  RegisterUser,
+  createUser,
   saveRefreshSession,
   findRefreshSession,
   consumeRefreshSession,

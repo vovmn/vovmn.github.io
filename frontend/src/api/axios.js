@@ -36,11 +36,7 @@ api.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const { data } = await axios.post(
-          `${api.defaults.baseURL}/auth/refresh`,
-          {},
-          { withCredentials: true }
-        )
+        const { data } = await axios.post('/auth/refresh', {}, { withCredentials: true })
         const newToken = data.access_token
         localStorage.setItem('access_token', newToken)   // <-- сохраняем под тем же ключом
         api.defaults.headers.common.Authorization = `Bearer ${newToken}`

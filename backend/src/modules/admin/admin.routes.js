@@ -6,6 +6,11 @@ const requireAdmin = require('../../middlewares/requireAdmin');
 router.use(requireAuth, requireAdmin);
 
 router.get('/users', ctrl.listUsers);
+router.post('/users', ctrl.createUser);
+router.patch('/users/:id/demographics', ctrl.updateUserDemographics);
+router.patch('/users/:id/antigens', ctrl.updateUserAntigens);
+router.get('/antigens', ctrl.listAntigens);
+router.post('/antigens', ctrl.createAntigen);
 router.get('/systems', ctrl.listSystems);
 router.get('/questionnaire-assignments', ctrl.listQuestionnaireAssignments);
 router.post('/questionnaire-assignments', ctrl.assignQuestionnaire);

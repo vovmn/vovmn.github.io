@@ -45,10 +45,6 @@
           {{ loading ? 'Входим...' : 'Войти' }}
         </button>
 
-        <p class="switch-link">
-          Нет аккаунта?
-          <router-link to="/register">Зарегистрироваться</router-link>
-        </p>
       </form>
     </section>
   </main>
@@ -239,17 +235,6 @@ async function onSubmit() {
 
 .submit-btn:disabled {
   background: #9ab6b4;
-}
-
-.switch-link {
-  margin: 1.2rem 0 0;
-  color: #607184;
-  text-align: center;
-}
-
-.switch-link a {
-  color: #12635f;
-  font-weight: 800;
 }
 
 @media (max-width: 760px) {

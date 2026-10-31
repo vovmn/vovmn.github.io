@@ -7,12 +7,24 @@ function sendError(res, err, fallback = 'Internal server error') {
   });
 }
 
-function setRefreshCookie(res, refreshToken) {
-  res.cookie('refresh_token', refreshToken, {
+function useSecureCookies(req) {
+  if (process.env.COOKIE_SECURE === 'true') return true;
+  if (process.env.COOKIE_SECURE === 'false') return false;
+  return req.secure;
+}
+
+function refreshCookieOptions(req) {
+  return {
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    secure: useSecureCookies(req),
     path: '/',
+  };
+}
+
+function setRefreshCookie(req, res, refreshToken) {
+  res.cookie('refresh_token', refreshToken, {
+    ...refreshCookieOptions(req),
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 }
@@ -25,7 +37,7 @@ async function login(req, res) {
     }
 
     const { accessToken, refreshToken, user } = await authService.login(username, password);
-    setRefreshCookie(res, refreshToken);
+    setRefreshCookie(req, res, refreshToken);
 
     return res.json({
       access_token: accessToken,
@@ -71,7 +83,7 @@ async function me(req, res) {
 async function logout(req, res) {
   try {
     await authService.revokeRefreshToken(req.cookies && req.cookies.refresh_token);
-    res.clearCookie('refresh_token', { path: '/' });
+    res.clearCookie('refresh_token', refreshCookieOptions(req));
     return res.json({ success: true });
   } catch (err) {
     return sendError(res, err);
@@ -84,7 +96,7 @@ async function refresh(req, res) {
     if (!token) return res.status(401).json({ error: 'Refresh token required' });
 
     const { accessToken, refreshToken } = await authService.rotateRefreshToken(token);
-    setRefreshCookie(res, refreshToken);
+    setRefreshCookie(req, res, refreshToken);
     return res.json({ access_token: accessToken });
   } catch (err) {
     return sendError(res, err, 'Unauthorized');

@@ -44,13 +44,17 @@ function resolveQueue(error, token = null) {
   queue = []
 }
 
+function isAuthLifecycleRequest(url = '') {
+  return /(^|\/)auth\/(login|refresh|logout)(?:[/?#]|$)/.test(url)
+}
+
 http.interceptors.response.use(
   (r) => r,
   async (error) => {
     const auth = useAuthStore()
     const original = error.config
 
-    if (error.response?.status === 401 && !original._retry) {
+    if (original && error.response?.status === 401 && !original._retry && !isAuthLifecycleRequest(original.url)) {
       original._retry = true
 
       if (isRefreshing) {

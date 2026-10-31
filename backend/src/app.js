@@ -28,10 +28,17 @@ function isLocalOrigin(origin) {
   ].some((pattern) => pattern.test(origin));
 }
 
-app.use(cors({
+function getRequestOrigin(req) {
+  const forwardedHost = req.get('x-forwarded-host');
+  const host = (forwardedHost || req.get('host') || '').split(',')[0].trim();
+  return host ? `${req.protocol}://${host}` : null;
+}
+
+app.use((req, res, next) => cors({
   origin(origin, callback) {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin) || isLocalOrigin(origin)) {
+    const requestOrigin = getRequestOrigin(req);
+    if (allowedOrigins.includes(origin) || isLocalOrigin(origin) || origin === requestOrigin) {
       return callback(null, true);
     }
     const error = new Error('CORS origin denied');
@@ -41,7 +48,7 @@ app.use(cors({
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-}));
+})(req, res, next));
 
 app.use(cookieParser());
 app.use(express.json({ limit: '256kb' }));

@@ -10,20 +10,20 @@ describe('CORS policy', () => {
   test('allows the public origin served by the reverse proxy', async () => {
     await request(app)
       .options('/auth/login')
-      .set('Host', 'clinic.example')
-      .set('X-Forwarded-Host', 'clinic.example')
+      .set('Host', 'clinic.example:8080')
+      .set('X-Forwarded-Host', 'clinic.example:8080')
       .set('X-Forwarded-Proto', 'https')
-      .set('Origin', 'https://clinic.example')
+      .set('Origin', 'https://clinic.example:8080')
       .set('Access-Control-Request-Method', 'POST')
-      .expect('Access-Control-Allow-Origin', 'https://clinic.example')
+      .expect('Access-Control-Allow-Origin', 'https://clinic.example:8080')
       .expect(204);
   });
 
   test('rejects an unrelated web origin', async () => {
     const response = await request(app)
       .options('/auth/login')
-      .set('Host', 'clinic.example')
-      .set('X-Forwarded-Host', 'clinic.example')
+      .set('Host', 'clinic.example:8080')
+      .set('X-Forwarded-Host', 'clinic.example:8080')
       .set('X-Forwarded-Proto', 'https')
       .set('Origin', 'https://evil.example')
       .set('Access-Control-Request-Method', 'POST')
